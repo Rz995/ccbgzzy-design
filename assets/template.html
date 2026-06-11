@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCBGZZY_DESIGN · 起手模板（report 骨架）</title>
+<!-- 顺序固定：base → effects → theme-config -->
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="effects.css">
+<script src="theme-config.js"></script>
+<style>
+  /* 仅页面级布局；颜色全部用 token，不写死。无渐变。 */
+  .topbar{ position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between;
+    padding:14px 0; background:var(--bg); border-bottom:1px solid var(--border); margin-bottom:var(--space-6); flex-wrap:wrap; gap:12px; }
+  .brand{ font-family:var(--font-display); font-weight:800; color:var(--title); letter-spacing:.5px; }
+  .brand span{ color:var(--fg-muted); font-weight:400; font-size:var(--text-sm); margin-left:10px; }
+  .summary{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg);
+    padding:22px 24px; box-shadow:var(--shadow-sm); }
+  .summary p{ font-size:var(--text-lead); color:var(--fg); max-width:none; line-height:1.7; }
+  footer{ padding:28px 0; text-align:center; color:var(--fg-muted); font-size:var(--text-sm);
+    border-top:1px solid var(--border); margin-top:var(--space-6); }
+  /* 这是 report/dashboard 信息页骨架：结论 + 关键指标在最前，明细靠后。
+     做 landing/活动页时再换成更视觉化的结构。 */
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 顶部：标题 + 主题切换 -->
+  <div class="topbar">
+    <div class="brand">页面标题占位<span>副标题 / 时间范围占位</span></div>
+    <div class="ccbgzzy-themebar">
+      <select class="ccbgzzy-theme-select" id="theme-select" aria-label="选择主题"></select>
+      <div class="ccbgzzy-switcher" id="switcher"></div>
+      <button class="btn btn-ghost" style="min-height:38px;padding:7px 14px;" onclick="CCBGZZY_toggleMode()">深/浅</button>
+    </div>
+  </div>
+
+  <!-- Conclusion：结论前置（标题用 h2 级，不做大 hero） -->
+  <section class="section" style="padding-top:0;">
+    <span class="eyebrow">结论</span>
+    <h2 style="margin:14px 0 12px;">一句话结论占位（写洞察，不写废话）</h2>
+    <div class="summary" data-reveal>
+      <p>用一两句话给出本页最重要的结论，最关键的 <span class="pop">数字</span> 可点亮一处。删掉本段，填入真实内容。</p>
+    </div>
+  </section>
+
+  <!-- Key Metrics：关键指标紧跟结论 -->
+  <section class="section">
+    <h3 class="section-title">关键指标</h3>
+    <div class="grid grid-4">
+      <div class="kpi" data-reveal><div class="kpi-label">指标一</div><div class="kpi-value num">128</div><div class="kpi-sub">较上期 +12</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">指标二</div><div class="kpi-value num">86%</div><div class="kpi-sub">对照说明</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">指标三</div><div class="kpi-value num">41</div><div class="kpi-sub"><span class="badge is-success">↑ 增长</span></div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">指标四（焦点）</div><div class="kpi-value is-pop num">57%</div><div class="kpi-sub"><span class="badge is-warning">需关注</span></div></div>
+    </div>
+  </section>
+
+  <!-- Analysis：对比/排行（中密度用横条，不堆数字网格） -->
+  <section class="section">
+    <h3 class="section-title">分项对比</h3>
+    <p class="section-desc">按某指标排序的对比占位。</p>
+    <div data-reveal>
+      <div style="display:grid;grid-template-columns:140px 1fr 56px;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);">
+        <div style="color:var(--title);font-weight:600;">条目一</div><div class="progress"><span style="width:92%"></span></div><div class="num" style="text-align:right;font-weight:600;color:var(--title);">92%</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr 56px;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);">
+        <div style="color:var(--title);font-weight:600;">条目二</div><div class="progress"><span style="width:74%"></span></div><div class="num" style="text-align:right;font-weight:600;color:var(--title);">74%</div></div>
+      <div style="display:grid;grid-template-columns:140px 1fr 56px;align-items:center;gap:16px;padding:12px 0;">
+        <div style="color:var(--title);font-weight:600;">条目三</div><div class="progress"><span style="width:31%"></span></div><div class="num" style="text-align:right;font-weight:600;color:var(--title);">31%</div></div>
+    </div>
+  </section>
+
+  <!-- Details：明细表靠后；长表用 .tall（表头吸顶） -->
+  <section class="section">
+    <h3 class="section-title">明细</h3>
+    <div class="data-table tall" data-reveal>
+      <table class="table table-compact">
+        <thead><tr><th>名称</th><th class="num">数量</th><th class="num">占比</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td>条目一</td><td class="num">128</td><td class="num">92%</td><td><span class="badge is-success">正常</span></td></tr>
+          <tr><td>条目二</td><td class="num">86</td><td class="num">74%</td><td><span class="badge is-warning">待处理</span></td></tr>
+          <tr><td>条目三</td><td class="num">24</td><td class="num">31%</td><td><span class="badge is-danger">异常</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Action -->
+  <section class="section" style="border-bottom:none;">
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="btn btn-primary">主操作占位</button>
+      <button class="btn btn-ghost">次操作占位</button>
+    </div>
+  </section>
+
+  <footer>页面页脚占位 · CCBGZZY_DESIGN</footer>
+</div>
+
+<script>
+  // 主题切换器
+  (function () {
+    var box = document.getElementById('switcher'); if (!box) return;
+    var select = document.getElementById('theme-select');
+    var options = typeof CCBGZZY_getThemeOptions === 'function'
+      ? CCBGZZY_getThemeOptions()
+      : Object.keys(window.CCBGZZY_THEME_META).map(function (key) {
+          var m = window.CCBGZZY_THEME_META[key]; m.key = key; return m;
+        });
+    options.forEach(function (m) {
+      var key = m.key;
+      if (select) {
+        var opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = (m.family ? m.family + ' · ' : '') + m.label + (m.mode === 'dark' ? '（深）' : '（浅）');
+        select.appendChild(opt);
+      }
+      var s = document.createElement('button');
+      var dot = document.createElement('span');
+      var label = document.createElement('span');
+      s.type = 'button';
+      s.className = 'ccbgzzy-swatch';
+      s.title = m.label + '（' + (m.mode === 'dark' ? '深' : '浅') + '）';
+      s.setAttribute('aria-label', s.title);
+      s.dataset.theme = key;
+      dot.className = 'ccbgzzy-swatch-dot';
+      dot.style.background = m.swatchAccent;
+      dot.style.borderColor = m.swatchBg;
+      label.className = 'ccbgzzy-swatch-label';
+      label.textContent = m.label;
+      s.appendChild(dot);
+      s.appendChild(label);
+      s.onclick = function () { CCBGZZY_applyTheme(key); CCBGZZY_syncSwitcher(key); };
+      box.appendChild(s);
+    });
+    if (select) select.onchange = function () { CCBGZZY_applyTheme(select.value); CCBGZZY_syncSwitcher(select.value); };
+    window.CCBGZZY_syncSwitcher = function (active) {
+      box.querySelectorAll('.ccbgzzy-swatch').forEach(function (el) { el.classList.toggle('active', el.dataset.theme === active); });
+      if (select) select.value = active;
+    };
+    CCBGZZY_syncSwitcher(document.documentElement.getAttribute('data-theme') || window.CCBGZZY_DEFAULT_THEME);
+  })();
+  // 滚动入场
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }); }, { threshold: .14 });
+  document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+  // 三层水印
+  CCBGZZY_initWatermark();
+</script>
+</body>
+</html>

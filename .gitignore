@@ -1,0 +1,14 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# build artifacts / scratch
+*.single.html
+/tmp/
+node_modules/
+
+# do not commit packaged skill into the repo
+*.skill

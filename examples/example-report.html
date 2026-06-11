@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>月度经营报告 · 2026年5月 · CCBGZZY_DESIGN</title>
+<style>
+/* ===================================================================
+ * CCBGZZY_DESIGN · base.css  (v1.0.0-rc.6)
+ * 统一基底：reset + 字体 + 等比字号(放大·硬性) + 语义 token + 标准组件
+ * 颜色由 theme-config.js 注入；默认值=砂绿 sage，避免 FOUC。
+ * =================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&family=Sora:wght@600;700;800&display=swap');
+
+:root {
+  /* —— 字体栈（标题 Sora/思源宋；正文 思源黑覆盖简繁日韩英法）—— */
+  --font-display:'Sora','Noto Serif SC','Songti SC','Noto Serif TC','Noto Serif JP','Nanum Myeongjo',Georgia,serif;
+  --font-body:'Noto Sans SC','Noto Sans TC','Noto Sans JP','Noto Sans KR','PingFang SC','Microsoft YaHei','Hiragino Sans GB','Malgun Gothic',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'JetBrains Mono','SF Mono','Cascadia Code','Menlo','Consolas',monospace;
+
+  /* —— 等比字号 v1.1（基准 17px · 比例 1.25）——
+     注意：下方组件已内置"硬性最小字号"，正文绝不低于 16px、表格不低于 15px。 */
+  --text-hero:4.0rem;     /* 68px 大数字/主视觉 */
+  --text-h1:3.0rem;       /* 51px 页面主标题 */
+  --text-h2:2.25rem;      /* 38px 栏目大标题 */
+  --text-h3:1.75rem;      /* 30px 模块标题 */
+  --text-h4:1.375rem;     /* 23px 卡片标题 */
+  --text-lead:1.25rem;    /* 21px 前言/突出 */
+  --text-body:1rem;       /* 17px 正文基准 */
+  --text-sm:0.9375rem;    /* 16px 辅助(硬性下限) */
+  --text-xs:0.8125rem;    /* 14px 最小(仅角标/水印，正文禁用) */
+
+  --leading-tight:1.2; --leading-normal:1.6; --leading-relaxed:1.75;
+
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+  --space-5:24px; --space-6:32px; --space-7:48px; --space-8:64px;
+
+  /* 圆角 14–16px（规矩）；阴影用 #1A1A1A 不用纯黑 */
+  --radius-sm:10px; --radius:14px; --radius-lg:16px; --radius-pill:999px;
+  --shadow-sm:0 1px 3px rgba(26,26,26,.08);
+  --shadow:0 8px 24px rgba(26,26,26,.10);
+  --shadow-lg:0 20px 48px rgba(26,26,26,.16);
+  --ease:cubic-bezier(.16,1,.3,1); --dur:.35s;
+
+  /* —— 语义色默认值（砂绿 Sage；theme-config.js 即时覆盖）—— */
+  --bg:#EFEAE0; --surface:#E5DFD2; --surface-2:#DBD4C5;
+  --title:#1A1A1A; --fg:#3A382F; --fg-2:#6A685B; --fg-muted:#908D7E;
+  --primary:#6B8A6F; --primary-strong:#56745B;
+  --accent:#CD6F47; --accent-soft:rgba(205,111,71,.14);
+  --border:rgba(26,26,26,.10); --border-strong:rgba(26,26,26,.20);
+  --success:#5E8B5A; --warning:#C0883C; --attention:#9C8A63; --danger:#B5503C; --info:#5E7E86;
+  --seq-1:#D7E1D7; --seq-2:#BDCEC0; --seq-3:#95B099; --seq-4:#6B8A6F; --seq-5:#4E6A52;
+}
+:root {
+  --primary-soft:color-mix(in srgb,var(--primary) 14%,transparent);
+  --primary-soft-2:color-mix(in srgb,var(--primary) 24%,transparent);
+  --primary-ghost:color-mix(in srgb,var(--primary) 6%,transparent);
+}
+
+/* ---------- Reset ---------- */
+*,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+html{ font-size:17px; scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  font-family:var(--font-body); font-size:var(--text-body); line-height:var(--leading-normal);
+  background:var(--bg); color:var(--fg); min-height:100vh;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+img,svg,video{ max-width:100%; display:block; }
+a{ color:var(--primary); text-decoration:none; transition:color .2s; }
+a:hover{ color:var(--primary-strong); }
+::selection{ background:var(--primary-soft-2); color:var(--title); }
+
+/* ---------- 文字层级（硬性最小字号）---------- */
+h1,h2,h3,h4{ font-family:var(--font-display); color:var(--title); line-height:var(--leading-tight); font-weight:700; text-wrap:balance; }
+h1{ font-size:var(--text-h1); } h2{ font-size:var(--text-h2); }
+h3{ font-size:var(--text-h3); } h4{ font-size:var(--text-h4); }
+p{ color:var(--fg); font-size:var(--text-body); max-width:74ch; text-wrap:pretty; }
+small,.text-sm{ font-size:var(--text-sm); }   /* 16px 下限 */
+.text-muted{ color:var(--fg-muted); }
+.text-2{ color:var(--fg-2); }
+.lead{ font-size:var(--text-lead); color:var(--fg-2); line-height:var(--leading-relaxed); }
+.em,strong.em,.accent{ color:var(--primary); font-weight:600; }
+.pop{ color:var(--accent); font-weight:600; }   /* 唯一暖色强调，慎用 */
+.num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
+
+/* ---------- 布局 ---------- */
+.container{ max-width:1320px; margin:0 auto; padding:0 var(--space-6); }
+.stack>*+*{ margin-top:var(--space-4); }
+.grid{ display:grid; gap:var(--space-5); }
+.grid-2{ grid-template-columns:repeat(2,1fr); }
+.grid-3{ grid-template-columns:repeat(3,1fr); }
+.grid-4{ grid-template-columns:repeat(4,1fr); }
+.grid-5{ grid-template-columns:repeat(5,1fr); }
+@media (max-width:1000px){ .grid-4,.grid-5{ grid-template-columns:repeat(2,1fr);} .grid-3{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:600px){ .grid-2,.grid-3,.grid-4,.grid-5{ grid-template-columns:1fr;} }
+
+/* ---------- Section ---------- */
+.section{ padding:var(--space-7) 0; border-bottom:1px solid var(--border); }
+.section-title{ font-family:var(--font-display); font-size:var(--text-h3); color:var(--title);
+  display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-2); }
+.section-title::before{ content:''; width:5px; height:1.05em; border-radius:3px;
+  background:var(--primary); }
+.section-desc{ color:var(--fg-2); font-size:var(--text-lead); max-width:66ch; margin-bottom:var(--space-6); }
+.eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:var(--text-sm);
+  letter-spacing:2px; text-transform:uppercase; color:var(--primary);
+  border:1px solid var(--border); border-radius:var(--radius-pill); padding:6px 14px; background:var(--primary-ghost); }
+.eyebrow::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--primary); }
+
+/* ---------- Card ---------- */
+.card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:var(--space-5); transition:transform var(--dur) var(--ease),border-color var(--dur),box-shadow var(--dur); }
+.card:hover{ transform:translateY(-3px); border-color:var(--border-strong); box-shadow:var(--shadow); }
+.card-title{ font-size:var(--text-h4); color:var(--title); margin-bottom:var(--space-2); }
+.card-desc{ color:var(--fg-2); font-size:var(--text-body); }
+.card.accent-top{ position:relative; overflow:hidden; }
+.card.accent-top::before{ content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--primary); }
+
+/* ---------- KPI（大数字，硬性大字号）---------- */
+.kpi{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:var(--space-5); position:relative; }
+.kpi-label{ font-size:var(--text-sm); color:var(--fg-muted); margin-bottom:var(--space-2); }
+.kpi-value{ font-family:var(--font-display); font-size:3rem; color:var(--title); line-height:1.05;
+  font-variant-numeric:tabular-nums; font-weight:700; }   /* 51px，绝不缩小 */
+.kpi-value.is-primary{ color:var(--primary); }
+.kpi-value.is-pop{ color:var(--accent); }   /* 整页最重要的那一个数字，唯一暖色 */
+.kpi-sub{ font-size:var(--text-sm); color:var(--fg-muted); margin-top:var(--space-1); }
+/* KPI 顶部用同色阶台阶区分类别（不是多种色相）*/
+.kpi[data-seq="1"]::after,.kpi[data-seq="2"]::after,.kpi[data-seq="3"]::after,
+.kpi[data-seq="4"]::after,.kpi[data-seq="5"]::after{ content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:var(--radius) var(--radius) 0 0; }
+.kpi[data-seq="1"]::after{ background:var(--seq-1);} .kpi[data-seq="2"]::after{ background:var(--seq-2);}
+.kpi[data-seq="3"]::after{ background:var(--seq-3);} .kpi[data-seq="4"]::after{ background:var(--seq-4);}
+.kpi[data-seq="5"]::after{ background:var(--seq-5);}
+
+/* ---------- Badge / 状态 ---------- */
+.badge{ display:inline-flex; align-items:center; gap:6px; font-size:var(--text-sm); font-weight:600;
+  padding:3px 11px; border-radius:var(--radius-pill); border:1px solid var(--border); color:var(--fg-2); }
+.badge::before{ content:''; width:7px; height:7px; border-radius:50%; background:currentColor; }
+.badge.is-success{ color:var(--success); border-color:color-mix(in srgb,var(--success) 38%,transparent); background:color-mix(in srgb,var(--success) 10%,transparent); }
+.badge.is-warning{ color:var(--warning); border-color:color-mix(in srgb,var(--warning) 38%,transparent); background:color-mix(in srgb,var(--warning) 10%,transparent); }
+.badge.is-danger{ color:var(--danger); border-color:color-mix(in srgb,var(--danger) 38%,transparent); background:color-mix(in srgb,var(--danger) 10%,transparent); }
+.badge.is-attention{ color:var(--attention); border-color:color-mix(in srgb,var(--attention) 38%,transparent); background:color-mix(in srgb,var(--attention) 10%,transparent); }
+.badge.is-info{ color:var(--info); border-color:color-mix(in srgb,var(--info) 38%,transparent); background:color-mix(in srgb,var(--info) 10%,transparent); }
+
+/* ---------- Button（≥44px 点击区）---------- */
+.btn{ display:inline-flex; align-items:center; gap:8px; font-family:inherit; font-size:var(--text-body); font-weight:600;
+  padding:11px 22px; min-height:44px; border-radius:var(--radius-sm); border:1px solid transparent; cursor:pointer; transition:all .2s var(--ease); }
+.btn-primary{ background:var(--primary); color:var(--bg); }
+.btn-primary:hover{ background:var(--primary-strong); transform:translateY(-1px); }
+.btn-ghost{ background:transparent; color:var(--primary); border-color:var(--border-strong); }
+.btn-ghost:hover{ background:var(--primary-soft); }
+
+/* ===================================================================
+ * Table —— 重做（依据头部规范：留白>边框、数字右对齐tabular、行高大）
+ * 原则：靠对齐+留白+分组建立秩序，少用竖线/重填充；颜色只在状态点。
+ * =================================================================== */
+.data-table{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+/* 长表（行多、需上下滚动的"Excel 式"明细）：限高+容器内滚动，表头自动吸顶。
+   注意：thead th 的 sticky 只有在"有自身滚动的容器"里才生效，所以长表必须用 .tall。 */
+.data-table.tall{ max-height:70vh; overflow:auto; border:1px solid var(--border); border-radius:var(--radius); }
+.data-table.tall .table thead th{ top:0; box-shadow:0 1px 0 var(--border-strong); }
+.table{ width:100%; border-collapse:collapse; font-size:var(--text-sm); }   /* 16px，不缩 */
+.table thead th{
+  text-align:left; padding:14px 16px; font-size:var(--text-sm); color:var(--fg-muted);
+  font-weight:600; letter-spacing:.3px; white-space:nowrap;
+  border-bottom:2px solid var(--border-strong); position:sticky; top:0; background:var(--surface); z-index:1;
+}
+.table tbody td{ padding:14px 16px; color:var(--fg); border-bottom:1px solid var(--border); vertical-align:middle; line-height:1.5; }
+.table tbody tr{ transition:background .15s; }
+.table tbody tr:hover td{ background:var(--surface-2); }
+/* 首列=主标识，加重 */
+.table tbody td:first-child{ color:var(--title); font-weight:600; }
+/* 数字列：右对齐 + 等宽数字 + 小数对齐 */
+.table th.num,.table td.num{ text-align:right; font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
+/* 大表可选斑马纹（低饱和，仅大数据量启用）*/
+.table.zebra tbody tr:nth-child(even) td{ background:color-mix(in srgb,var(--fg) 3%,transparent); }
+.table.zebra tbody tr:hover td{ background:var(--surface-2); }
+/* 分组小标题行 */
+.table tr.group-row td{ background:var(--surface-2); color:var(--fg-2); font-weight:600; font-size:var(--text-sm); }
+.table-info{ font-size:var(--text-sm); color:var(--fg-muted); margin-top:var(--space-3); }
+/* 密集模式：高密度明细页才显式启用，行距收紧但字号仍 ≥16px（--text-sm） */
+.table-compact thead th{ padding:9px 12px; }
+.table-compact tbody td{ padding:9px 12px; }
+
+/* ---------- 进度条（用同色阶，不用花色）---------- */
+.progress{ height:8px; border-radius:var(--radius-pill); background:var(--surface-2); overflow:hidden; }
+.progress>span{ display:block; height:100%; border-radius:inherit; background:var(--primary); }
+.progress.is-accent>span{ background:var(--accent); }
+
+/* ===================================================================
+ * Calendar / Schedule 组件（calendar 页面类型用，见 references/calendar-schedule.md）
+ * 三层展示：总览 / 月历(每格1–3条) / 详情折叠。无渐变、语义色边界照旧。
+ * =================================================================== */
+/* 关键日期横条 */
+.keydate-strip{ display:flex; flex-wrap:wrap; gap:10px; }
+.keydate{ display:inline-flex; align-items:center; gap:8px; background:var(--surface);
+  border:1px solid var(--border); border-left:3px solid var(--primary); border-radius:var(--radius-sm);
+  padding:8px 12px; font-size:var(--text-sm); color:var(--title); }
+.keydate.is-accent{ border-left-color:var(--accent); }
+.keydate b{ color:var(--title); } .keydate small{ color:var(--fg-muted); }
+/* 周节奏 */
+.week-row{ display:grid; grid-template-columns:90px 1fr; gap:14px; align-items:baseline;
+  padding:11px 0; border-bottom:1px solid var(--border); }
+.week-row:last-child{ border-bottom:none; }
+.week-row .wk{ color:var(--title); font-weight:600; }
+.week-row .wk-desc{ color:var(--fg-2); font-size:var(--text-body); }
+/* 月历网格 */
+.cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+.cal-head{ font-size:var(--text-sm); color:var(--fg-muted); text-align:center; padding:6px 0; font-weight:600; }
+.cal-day{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);
+  min-height:118px; padding:8px 9px; display:flex; flex-direction:column; gap:5px; }
+.cal-day.is-dim{ background:transparent; border-color:transparent; }
+.cal-day.is-dim .cal-date{ color:var(--fg-muted); opacity:.5; }
+.cal-day.is-key{ border-color:var(--accent); box-shadow:inset 0 2px 0 var(--accent); }
+.cal-date{ font-size:var(--text-sm); color:var(--title); font-weight:600; display:flex; justify-content:space-between; align-items:center; }
+.cal-date .mk{ font-size:var(--text-xs); color:var(--fg-muted); font-weight:400; }   /* 重复目标的简短标记 */
+.cal-task{ font-size:var(--text-sm); color:var(--fg); line-height:1.35; display:flex; align-items:center; gap:6px; }
+.cal-more{ font-size:var(--text-sm); color:var(--primary); font-weight:600; cursor:pointer; margin-top:auto; }
+/* 任务标签：每任务最多 2 个（主标签 + 状态标签）*/
+.cal-tag{ display:inline-block; font-size:var(--text-xs); padding:1px 7px; border-radius:var(--radius-pill); white-space:nowrap; }
+.cal-tag.tag-cat{ background:color-mix(in srgb,var(--primary) 14%,transparent); color:var(--primary-strong); }
+.cal-tag.tag-state{ background:var(--surface-2); color:var(--fg-2); border:1px solid var(--border); }
+.cal-tag.is-accent{ background:var(--accent-soft); color:var(--accent); }
+.cal-tag.is-warning{ background:color-mix(in srgb,var(--warning) 14%,transparent); color:var(--warning); }
+.cal-tag.is-info{ background:color-mix(in srgb,var(--info) 14%,transparent); color:var(--info); }
+@media (max-width:760px){ .cal-grid{ grid-template-columns:repeat(7,minmax(96px,1fr)); overflow-x:auto; } }
+
+/* ---------- 同色阶图例（多类别用台阶，不用多色相）---------- */
+.seq-legend{ display:flex; flex-wrap:wrap; gap:14px; font-size:var(--text-sm); color:var(--fg-2); }
+.seq-legend i{ width:13px; height:13px; border-radius:3px; display:inline-block; margin-right:6px; vertical-align:-1px; }
+.seq-1{ background:var(--seq-1);} .seq-2{ background:var(--seq-2);} .seq-3{ background:var(--seq-3);}
+.seq-4{ background:var(--seq-4);} .seq-5{ background:var(--seq-5);}
+
+/* ---------- 主题切换器 ---------- */
+.ccbgzzy-themebar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end; max-width:100%; }
+.ccbgzzy-theme-select{
+  min-height:38px; max-width:220px; padding:7px 12px; border-radius:var(--radius-sm);
+  border:1px solid var(--border-strong); background:var(--surface); color:var(--title);
+  font:inherit; font-size:var(--text-sm); cursor:pointer;
+}
+.ccbgzzy-switcher{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:flex-end; max-width:min(780px,100%); }
+.ccbgzzy-swatch{
+  appearance:none; display:inline-flex; align-items:center; gap:6px; min-height:30px; max-width:142px;
+  padding:5px 8px; border-radius:var(--radius-sm); cursor:pointer; border:1px solid var(--border);
+  background:var(--surface); color:var(--fg-2); font:inherit; font-size:var(--text-xs);
+  transition:transform .2s var(--ease),border-color .2s,background .2s,color .2s,box-shadow .2s;
+}
+.ccbgzzy-swatch-dot{ width:14px; height:14px; flex:0 0 14px; border-radius:50%; border:2px solid var(--surface); box-shadow:0 0 0 1px var(--border-strong); }
+.ccbgzzy-swatch-label{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ccbgzzy-swatch:hover{ transform:translateY(-1px); border-color:var(--border-strong); background:var(--surface-2); }
+.ccbgzzy-swatch.active{ color:var(--title); border-color:var(--primary); background:var(--surface-2); box-shadow:0 0 0 2px var(--primary-soft); }
+@media (max-width:760px){
+  .ccbgzzy-themebar{ justify-content:flex-start; width:100%; }
+  .ccbgzzy-theme-select{ order:1; flex:1 1 190px; min-width:0; max-width:none; width:auto; }
+  .ccbgzzy-themebar>.btn{ order:2; flex:0 0 auto; }
+  .ccbgzzy-switcher{ order:3; justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; width:100%; padding:2px 0 4px; }
+  .ccbgzzy-swatch{ flex:0 0 auto; max-width:150px; }
+}
+
+/* ---------- 滚动入场（渐进增强：无 JS 时核心内容默认可见）----------
+   关键：只有当 <html> 带 .ccbgzzy-js（由 theme-config.js 立即注入）时才启用隐藏动画。
+   QuickLook / 静态渲染 / 禁用 JS 时无此类 → [data-reveal] 完全可见，内容不丢。 */
+html.ccbgzzy-js [data-reveal]{ opacity:0; transform:translateY(22px); transition:opacity .6s var(--ease),transform .6s var(--ease); }
+html.ccbgzzy-js [data-reveal].is-visible{ opacity:1; transform:none; }
+
+/* ---------- 移动端：允许响应式缩放，但正文不得低于 15px ---------- */
+@media (max-width:600px){
+  html{ font-size:16px; }              /* 1rem=16px，正文仍 ≥15px 下限 */
+  .container{ padding:0 var(--space-4); }
+  .section{ padding:var(--space-6) 0; }
+}
+
+/* ---------- reduce-motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.01ms!important; transition-duration:.01ms!important; }
+  html.ccbgzzy-js [data-reveal]{ opacity:1!important; transform:none!important; }
+}
+
+</style>
+<style>
+/* ===================================================================
+ * CCBGZZY_DESIGN · effects.css (v1.0.0-rc.6)
+ * 精选动效——克制 + 全程 0 渐变（flat）。
+ * 规则：一屏一个"主角"动效；只用纯色/位移/透明度，禁止任何 gradient。
+ * 全部基于主题 token，自动适配深浅。reduce-motion 已在 base.css 处理。
+ * =================================================================== */
+
+/* ---------- 标题逐字入场（位移+透明度，无渐变）---------- */
+.fx-split .char{ display:inline-block; opacity:0; transform:translateY(40px);
+  animation:fx-char-in .6s var(--ease,cubic-bezier(.16,1,.3,1)) forwards; }
+@keyframes fx-char-in{ to{ opacity:1; transform:none; } }
+
+/* ---------- 强调文字（纯色，无扫光渐变）---------- */
+.fx-shine{ color:var(--primary); }
+
+/* ---------- 呼吸光点（box-shadow 扩散，非渐变）---------- */
+.fx-pulse{ position:relative; }
+.fx-pulse::after{ content:''; position:absolute; inset:0; border-radius:inherit;
+  box-shadow:0 0 0 0 var(--primary); animation:fx-pulse 2.2s var(--ease) infinite; }
+@keyframes fx-pulse{ 0%{ box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 45%,transparent);} 70%,100%{ box-shadow:0 0 0 10px transparent;} }
+
+/* ---------- 卡片 hover（纯色提示，无 spotlight 渐变）---------- */
+.fx-spotlight{ transition:background .3s var(--ease),border-color .3s; }
+.fx-spotlight:hover{ background:var(--surface-2); border-color:var(--border-strong); }
+
+/* ---------- 上浮入场 ---------- */
+.fx-rise{ opacity:0; transform:translateY(18px); animation:fx-rise .7s var(--ease) forwards; }
+@keyframes fx-rise{ to{ opacity:1; transform:none; } }
+
+/* ---------- 入场交错延迟 ---------- */
+.fx-delay-1{animation-delay:.1s;} .fx-delay-2{animation-delay:.2s;} .fx-delay-3{animation-delay:.3s;}
+.fx-delay-4{animation-delay:.4s;} .fx-delay-5{animation-delay:.5s;} .fx-delay-6{animation-delay:.6s;}
+
+/* 注：v1.1 的 fx-aurora / fx-grid（极光、网格渐变背景）已整体移除——
+ *    统一改为纯色平面，符合"无渐变"硬规则。Hero 背景请直接用 --bg。 */
+
+</style>
+<script>
+/**
+ * ===================================================================
+ * CCBGZZY_DESIGN · 统一主题配置中心 (theme-config.js)
+ * ===================================================================
+ * 版本：v1.0.0-rc.6
+ * 作用：集中管理全部主题与语义色 token。一处定义，全站统一。
+ *
+ * ★ v1.1 配色哲学：「同色阶 + 单点强调」（科研期刊式）
+ *   - 一个主题只围绕"一种主色相"展开，层级靠**明度台阶**(seq-1..5)拉开，
+ *     而不是靠多种花花绿绿的颜色。这就是"统一"。
+ *   - 全局只保留**一个**暖色强调 --accent，用在最该被看到的那一处。这就是"重点"。
+ *   - 统一中又有重点 = 同色阶撑结构 + 单点 accent 提焦点。
+ *
+ * 设计原则（务必遵守）：
+ *   1. 内容里禁止硬编码颜色，一律引用 var(--token)。
+ *   2. 文字最多三层：--title / --fg / --fg-2(--fg-muted)。
+ *   3. 多类别/多系列数据用 --seq-1..5（同色阶台阶），不要用多种不同色相。
+ *   4. --accent 是稀缺资源，整页用一两处；--success/--warning/--danger/--info 语义固定。
+ *
+ * Token 速查：
+ *   --bg / --surface / --surface-2   背景三层（底/卡片/悬浮）
+ *   --title / --fg / --fg-2 / --fg-muted   文字四层
+ *   --primary / --primary-strong     主色（链接/主按钮/激活态）
+ *   --accent / --accent-soft         唯一暖色强调（单点焦点）
+ *   --seq-1..--seq-5                 同色阶台阶（浅→深），多类别/排序/分组用
+ *   --border / --border-strong       边框
+ *   --success / --warning / --danger / --info   状态色（语义固定）
+ * ===================================================================
+ */
+
+window.CCBGZZY_THEMES = {
+
+  /* ════════════════════════════════════════════════════════════
+   * ★ 推荐默认主题 · 砂绿 Sage
+   *   严格采用用户给定 6 色值：奶油底 + 鼠尾草绿(同色阶) + 标志橙(单点) + #1A1A1A 文字。
+   *   规矩：圆角 14–16px · 留白≥20% · 关键词只换 1–2 处色 · 用 #1A1A1A 不用 #000。
+   *   气质：organic / editorial · 可亲近的高级感。
+   * ════════════════════════════════════════════════════════════ */
+  'sage': {
+    mode: 'light',
+    '--bg':'#EFEAE0',         /* 主背景 */
+    '--surface':'#E5DFD2',    /* 浅卡片 */
+    '--surface-2':'#DBD4C5',  /* 次级/悬浮（同family推深一档）*/
+    '--title':'#1A1A1A',      /* 强调黑（标题）*/
+    '--fg':'#3A382F',         /* 正文（#1A1A1A 柔化一档）*/
+    '--fg-2':'#6A685B',       /* 次要文字 */
+    '--fg-muted':'#908D7E',   /* 辅助文字 */
+    '--primary':'#6B8A6F',    /* 深鼠尾草（主色/结构）*/
+    '--primary-strong':'#56745B',
+    '--accent':'#CD6F47',     /* 标志橙（唯一单点强调）*/
+    '--accent-soft':'rgba(205,111,71,0.14)',
+    '--border':'rgba(26,26,26,0.10)', '--border-strong':'rgba(26,26,26,0.20)',
+    '--success':'#5E8B5A', '--warning':'#C0883C', '--attention':'#9C8A63', '--danger':'#B5503C', '--info':'#5E7E86',
+    /* 同色阶：浅鼠尾草 → 深鼠尾草（seq-5 最显著）*/
+    '--seq-1':'#D7E1D7', '--seq-2':'#BDCEC0', '--seq-3':'#95B099', '--seq-4':'#6B8A6F', '--seq-5':'#4E6A52',
+  },
+
+  /* ★ 稳定主题 · 砂绿 sage-dark（深色版，与 sage 配对）
+   *   暖炭底 + 鼠尾草 + 标志橙，文字暖白。深浅切换的另一半。 */
+  'sage-dark': {
+    mode: 'dark',
+    '--bg':'#1B1A16', '--surface':'#26241E', '--surface-2':'#322F27',
+    '--title':'#F0EBE0', '--fg':'#D8D2C4', '--fg-2':'#A7A192', '--fg-muted':'#7C7768',
+    '--primary':'#8FAE93', '--primary-strong':'#A9C2AC',
+    '--accent':'#DD8359', '--accent-soft':'rgba(221,131,89,0.18)',
+    '--border':'rgba(240,235,224,0.12)', '--border-strong':'rgba(240,235,224,0.24)',
+    '--success':'#6FA873', '--warning':'#C99A4A', '--attention':'#C9B27A', '--danger':'#C56B54', '--info':'#6E97A0',
+    /* 深色版：seq-5 最浅=最显著（在暗底上更亮更突出）*/
+    '--seq-1':'#3E5142', '--seq-2':'#4E6A52', '--seq-3':'#6B8A6F', '--seq-4':'#8FAE93', '--seq-5':'#B6CDB9',
+  },
+
+  /* ───────── 开放主题 · 墨金 Obsidian Gold ─────────
+   * 近黑底 + 暖金主色，蓝为单点强调。权威·金融质感。 */
+  'obsidian-gold': {
+    mode: 'dark',
+    '--bg':'#0A0A0F', '--surface':'#15151D', '--surface-2':'#20202C',
+    '--title':'#FBF7EC', '--fg':'#E2DCCC', '--fg-2':'#B0A892', '--fg-muted':'#7C745F',
+    '--primary':'#C2A458', '--primary-strong':'#DCC07E',
+    '--accent':'#6F94AD', '--accent-soft':'rgba(111,148,173,0.16)',
+    '--border':'rgba(201,168,76,0.16)', '--border-strong':'rgba(201,168,76,0.34)',
+    '--success':'#5FB87A', '--warning':'#E0A33E', '--danger':'#DC6B62', '--info':'#6FA8D0',
+    '--seq-1':'#E8D6A6', '--seq-2':'#D6BC72', '--seq-3':'#C9A84C', '--seq-4':'#9A7F33', '--seq-5':'#6E5A22',
+  },
+
+  /* ───────── 开放主题 · 深海 Deep Ocean ─────────
+   * 取自 Maastricht/Columbia/Pale Cerulean/Blue Yonder 同色蓝阶，暖砂为单点强调。 */
+  'deep-ocean': {
+    mode: 'dark',
+    '--bg':'#04233F', '--surface':'#0A3454', '--surface-2':'#134267',
+    '--title':'#F2F7FC', '--fg':'#D4E2F0', '--fg-2':'#A9C4E0', '--fg-muted':'#88A2BE',
+    '--primary':'#93BEE2', '--primary-strong':'#B6D6EE',
+    '--accent':'#CC9D6E', '--accent-soft':'rgba(204,157,110,0.18)',
+    '--border':'rgba(154,188,224,0.16)', '--border-strong':'rgba(154,188,224,0.32)',
+    '--success':'#5BB98C', '--warning':'#E6B566', '--danger':'#E0707A', '--info':'#79B0E0',
+    '--seq-1':'#C4D4E6', '--seq-2':'#9ABCE0', '--seq-3':'#6F9FCC', '--seq-4':'#4474A3', '--seq-5':'#2A537E',
+  },
+
+  /* ───────── 开放主题 · 月白 Platinum Blue ─────────
+   * 取自 Platinum/Yankees/Dark Sky/B'dazzled/Charcoal 冷调蓝灰，陶土为单点强调。 */
+  'platinum-blue': {
+    mode: 'light',
+    '--bg':'#F4F5F6', '--surface':'#FFFFFF', '--surface-2':'#E8EBEF',
+    '--title':'#22303F', '--fg':'#394A56', '--fg-2':'#5E7081', '--fg-muted':'#8A98A4',
+    '--primary':'#3D6B89', '--primary-strong':'#2A506B',
+    '--accent':'#B27355', '--accent-soft':'rgba(178,115,85,0.14)',
+    '--border':'rgba(34,48,63,0.12)', '--border-strong':'rgba(34,48,63,0.24)',
+    '--success':'#2E8B6A', '--warning':'#B07A20', '--danger':'#BE4F49', '--info':'#2C6485',
+    '--seq-1':'#C9DCEA', '--seq-2':'#8FBFDA', '--seq-3':'#5E92B5', '--seq-4':'#2C6485', '--seq-5':'#1B3D54',
+  },
+
+  /* ───────── 开放主题 · 暖砂 Warm Sand ─────────
+   * 取自 Studio Vaia「Cold Sky」暖中性(羊毛/焦糖)+冷蓝，冷蓝为单点强调。 */
+  'warm-sand': {
+    mode: 'light',
+    '--bg':'#F4EFE8', '--surface':'#FBF8F3', '--surface-2':'#EAE1D5',
+    '--title':'#2E3A45', '--fg':'#574F45', '--fg-2':'#837868', '--fg-muted':'#A89C8B',
+    '--primary':'#4E7C93', '--primary-strong':'#3A6173',
+    '--accent':'#B56B7A', '--accent-soft':'rgba(181,107,122,0.12)',
+    '--border':'rgba(46,58,69,0.12)', '--border-strong':'rgba(46,58,69,0.22)',
+    '--success':'#5E8B5A', '--warning':'#C28A3E', '--danger':'#B5604A', '--info':'#4E7C93',
+    '--seq-1':'#CBD9DE', '--seq-2':'#9DBAC4', '--seq-3':'#6E97A5', '--seq-4':'#4E7C93', '--seq-5':'#355A68',
+  },
+
+  /* ═══════ 开放候选主题 · 4 套 × light/dark ═══════
+   * 规则：文字只用中性 title/fg/fg-2/fg-muted（不用色卡高饱和色）；
+   *       primary=主色、accent=唯一强调(每页1–2处)、seq=图表色阶；
+   *       danger 仅严重异常；全程无渐变。 */
+
+  /* A · 海洋清风 ocean-breeze（蓝绿主色 + 橙强调）*/
+  'ocean-breeze': {
+    mode:'light',
+    '--bg':'#F2F7FB','--surface':'#FFFFFF','--surface-2':'#E4EEF5',
+    '--title':'#16323A','--fg':'#33474E','--fg-2':'#5E737A','--fg-muted':'#8A9AA0',
+    '--primary':'#3E8C97','--primary-strong':'#2C6A74',
+    '--accent':'#E58A4A','--accent-soft':'rgba(229,138,74,0.14)',
+    '--border':'rgba(22,50,58,0.12)','--border-strong':'rgba(22,50,58,0.22)',
+    '--success':'#4F9E86','--warning':'#E0A23E','--attention':'#C7A86A','--danger':'#C8534A','--info':'#4198AC',
+    '--seq-1':'#BFDDF2','--seq-2':'#7BC0CD','--seq-3':'#51999F','--seq-4':'#3E8C97','--seq-5':'#2C6A74',
+  },
+  'ocean-breeze-dark': {
+    mode:'dark',
+    '--bg':'#0E2027','--surface':'#163039','--surface-2':'#1F404A',
+    '--title':'#EAF3F5','--fg':'#C9DCE0','--fg-2':'#9DB6BC','--fg-muted':'#748A90',
+    '--primary':'#6FB9C4','--primary-strong':'#8FCDD6',
+    '--accent':'#EE9E62','--accent-soft':'rgba(238,158,98,0.18)',
+    '--border':'rgba(234,243,245,0.12)','--border-strong':'rgba(234,243,245,0.24)',
+    '--success':'#6FBFA0','--warning':'#E6B566','--attention':'#CDB682','--danger':'#D77468','--info':'#6FB9C4',
+    '--seq-1':'#234A53','--seq-2':'#347078','--seq-3':'#4198AC','--seq-4':'#7BC0CD','--seq-5':'#BFDDF2',
+  },
+
+  /* B · 蓝天绿地 sky-field（蓝主色 + 珊瑚强调，深红仅严重异常）*/
+  'sky-field': {
+    mode:'light',
+    '--bg':'#F3F9FC','--surface':'#FFFFFF','--surface-2':'#E1F3FA',
+    '--title':'#1E2E3C','--fg':'#38485A','--fg-2':'#647686','--fg-muted':'#93A0AB',
+    '--primary':'#377EB8','--primary-strong':'#2A608E',
+    '--accent':'#DC7369','--accent-soft':'rgba(220,115,105,0.14)',
+    '--border':'rgba(30,46,60,0.12)','--border-strong':'rgba(30,46,60,0.22)',
+    '--success':'#5A9A55','--warning':'#C99A2E','--attention':'#B6A86A','--danger':'#B23648','--info':'#377EB8',
+    '--seq-1':'#E1F3FA','--seq-2':'#A9D2EA','--seq-3':'#6FA9D0','--seq-4':'#377EB8','--seq-5':'#285C86',
+  },
+  'sky-field-dark': {
+    mode:'dark',
+    '--bg':'#101E2A','--surface':'#1A2D3D','--surface-2':'#233A4D',
+    '--title':'#EAF2F8','--fg':'#C6D6E2','--fg-2':'#9AAEBE','--fg-muted':'#6F8294',
+    '--primary':'#5E9FD0','--primary-strong':'#7FB6E0',
+    '--accent':'#E08A80','--accent-soft':'rgba(224,138,128,0.18)',
+    '--border':'rgba(234,242,248,0.12)','--border-strong':'rgba(234,242,248,0.24)',
+    '--success':'#6FB46A','--warning':'#D8AE55','--attention':'#C2B488','--danger':'#C9505F','--info':'#5E9FD0',
+    '--seq-1':'#21425E','--seq-2':'#2F6491','--seq-3':'#377EB8','--seq-4':'#6FA9D0','--seq-5':'#A9D2EA',
+  },
+
+  /* C · 夏日海滩 summer-coast（蓝绿主色 + 珊瑚强调，活动/活泼）*/
+  'summer-coast': {
+    mode:'light',
+    '--bg':'#FBF7F0','--surface':'#FFFFFF','--surface-2':'#F1EAE0',
+    '--title':'#2A2622','--fg':'#4A443D','--fg-2':'#756D63','--fg-muted':'#A39A8E',
+    '--primary':'#3C9BC9','--primary-strong':'#2C77A0',
+    '--accent':'#F4775A','--accent-soft':'rgba(244,119,90,0.14)',
+    '--border':'rgba(42,38,34,0.12)','--border-strong':'rgba(42,38,34,0.22)',
+    '--success':'#6FAE63','--warning':'#E6A23C','--attention':'#E2B96A','--danger':'#D8504F','--info':'#3C9BC9',
+    '--seq-1':'#CDEBEA','--seq-2':'#8FD0CD','--seq-3':'#65BDBA','--seq-4':'#3C9BC9','--seq-5':'#2C77A0',
+  },
+  'summer-coast-dark': {
+    mode:'dark',
+    '--bg':'#1A1714','--surface':'#262019','--surface-2':'#322A20',
+    '--title':'#F4ECE0','--fg':'#DAD0C2','--fg-2':'#ABA08F','--fg-muted':'#7E7464',
+    '--primary':'#5BB6D4','--primary-strong':'#7FCBE2',
+    '--accent':'#FB8E70','--accent-soft':'rgba(251,142,112,0.18)',
+    '--border':'rgba(244,236,224,0.12)','--border-strong':'rgba(244,236,224,0.24)',
+    '--success':'#79B86C','--warning':'#E6B466','--attention':'#E8C57E','--danger':'#E06B66','--info':'#5BB6D4',
+    '--seq-1':'#1F5A78','--seq-2':'#2C77A0','--seq-3':'#3C9BC9','--seq-4':'#65BDBA','--seq-5':'#A7DAD7',
+  },
+
+  /* D · 清新假日 fresh-holiday（薄荷绿主色 + 珊瑚强调，轻量）*/
+  'fresh-holiday': {
+    mode:'light',
+    '--bg':'#F4F8F6','--surface':'#FFFFFF','--surface-2':'#E7EFEA',
+    '--title':'#1E2B27','--fg':'#3A4742','--fg-2':'#647069','--fg-muted':'#929EAB',
+    '--primary':'#38A87E','--primary-strong':'#2A8463',
+    '--accent':'#F58A6E','--accent-soft':'rgba(245,138,110,0.14)',
+    '--border':'rgba(30,43,39,0.12)','--border-strong':'rgba(30,43,39,0.22)',
+    '--success':'#4E9E63','--warning':'#D9A23A','--attention':'#C9A86A','--danger':'#D45F4F','--info':'#5A97C4',
+    '--seq-1':'#BFE8D5','--seq-2':'#8FD9BB','--seq-3':'#6AD1A3','--seq-4':'#3FA882','--seq-5':'#2C7D62',
+  },
+  'fresh-holiday-dark': {
+    mode:'dark',
+    '--bg':'#131A17','--surface':'#1D2723','--surface-2':'#27332E',
+    '--title':'#ECF3EF','--fg':'#CCDAD2','--fg-2':'#9DACA4','--fg-muted':'#748079',
+    '--primary':'#5FC79A','--primary-strong':'#7FD6B0',
+    '--accent':'#FF9E84','--accent-soft':'rgba(255,158,132,0.18)',
+    '--border':'rgba(236,243,239,0.12)','--border-strong':'rgba(236,243,239,0.24)',
+    '--success':'#5FB87F','--warning':'#E0B45A','--attention':'#C9B27A','--danger':'#DE6E5E','--info':'#7FB5DC',
+    '--seq-1':'#235543','--seq-2':'#2C7D62','--seq-3':'#3FA882','--seq-4':'#6AD1A3','--seq-5':'#A7E3CC',
+  },
+
+};
+
+/* 主题展示顺序（切换器 UI）。当前试用阶段：14 个 theme key 全部开放可切换。 */
+window.CCBGZZY_THEME_ORDER = [
+  'sage', 'sage-dark',
+  'ocean-breeze', 'ocean-breeze-dark',
+  'sky-field', 'sky-field-dark',
+  'summer-coast', 'summer-coast-dark',
+  'fresh-holiday', 'fresh-holiday-dark',
+  'warm-sand', 'obsidian-gold',
+  'platinum-blue', 'deep-ocean',
+];
+
+/* 主题元信息（切换器 UI）。
+   family 用于分组/下拉展示；label 用于可见标签；swatch* 用于色卡。 */
+window.CCBGZZY_THEME_META = {
+  'sage':              { family:'推荐默认', label:'砂绿',     mode:'light', swatchBg:'#EFEAE0', swatchAccent:'#CD6F47' },
+  'sage-dark':         { family:'推荐默认', label:'砂绿·夜',   mode:'dark',  swatchBg:'#1B1A16', swatchAccent:'#DD8359' },
+  'ocean-breeze':      { family:'业务冷静', label:'海洋清风',  mode:'light', swatchBg:'#F2F7FB', swatchAccent:'#E58A4A' },
+  'ocean-breeze-dark': { family:'业务冷静', label:'海洋·夜',   mode:'dark',  swatchBg:'#0E2027', swatchAccent:'#EE9E62' },
+  'sky-field':         { family:'复盘风险', label:'蓝天绿地',  mode:'light', swatchBg:'#F3F9FC', swatchAccent:'#DC7369' },
+  'sky-field-dark':    { family:'复盘风险', label:'蓝天·夜',   mode:'dark',  swatchBg:'#101E2A', swatchAccent:'#E08A80' },
+  'summer-coast':      { family:'活动指引', label:'夏日海滩',  mode:'light', swatchBg:'#FBF7F0', swatchAccent:'#F4775A' },
+  'summer-coast-dark': { family:'活动指引', label:'夏日·夜',   mode:'dark',  swatchBg:'#1A1714', swatchAccent:'#FB8E70' },
+  'fresh-holiday':     { family:'轻量友好', label:'清新假日',  mode:'light', swatchBg:'#F4F8F6', swatchAccent:'#F58A6E' },
+  'fresh-holiday-dark':{ family:'轻量友好', label:'清新·夜',   mode:'dark',  swatchBg:'#131A17', swatchAccent:'#FF9E84' },
+  'warm-sand':         { family:'暖中性',   label:'暖砂',     mode:'light', swatchBg:'#F4EFE8', swatchAccent:'#B56B7A' },
+  'obsidian-gold':     { family:'暖中性',   label:'墨金',     mode:'dark',  swatchBg:'#0A0A0F', swatchAccent:'#C2A458' },
+  'platinum-blue':     { family:'冷蓝灰',   label:'月白',     mode:'light', swatchBg:'#F4F5F6', swatchAccent:'#B27355' },
+  'deep-ocean':        { family:'冷蓝灰',   label:'深海',     mode:'dark',  swatchBg:'#04233F', swatchAccent:'#93BEE2' },
+};
+window.CCBGZZY_EXPERIMENTAL = [];  /* 试用阶段全部进 META；正式可在此回收非推荐主题 */
+
+window.CCBGZZY_DEFAULT_THEME = 'sage';
+window.CCBGZZY_VERSION = 'v1.0.0-rc.6';
+
+/* 给模板/外部页面统一取主题列表，避免手写固定主题导致"隐藏主题"再次出现。 */
+window.CCBGZZY_getThemeOptions = function () {
+  var themes = window.CCBGZZY_THEMES || {};
+  var meta = window.CCBGZZY_THEME_META || {};
+  var order = window.CCBGZZY_THEME_ORDER || Object.keys(meta);
+  return order.filter(function (key) { return themes[key] && meta[key]; }).map(function (key) {
+    var m = meta[key];
+    return {
+      key: key,
+      family: m.family || '',
+      label: m.label || key,
+      mode: m.mode || (themes[key] && themes[key].mode) || 'light',
+      swatchBg: m.swatchBg || themes[key]['--bg'],
+      swatchAccent: m.swatchAccent || themes[key]['--accent'],
+    };
+  });
+};
+
+/* 应用主题 */
+window.CCBGZZY_applyTheme = function (themeName) {
+  var themes = window.CCBGZZY_THEMES;
+  var name = themes[themeName] ? themeName : window.CCBGZZY_DEFAULT_THEME;
+  var theme = themes[name];
+  var root = document.documentElement;
+  Object.keys(theme).forEach(function (key) { if (key !== 'mode') root.style.setProperty(key, theme[key]); });
+  root.setAttribute('data-theme', name);
+  root.setAttribute('data-mode', theme.mode);
+  try { localStorage.setItem('ccbgzzy-theme', name); } catch (e) {}
+  try {
+    document.querySelectorAll('iframe').forEach(function (f) {
+      try { f.contentWindow.postMessage({ type:'ccbgzzyTheme', theme:name }, '*'); } catch (e) {}
+    });
+  } catch (e) {}
+};
+
+/* 同色相一键深↔浅（冷配冷、暖配暖） */
+window.CCBGZZY_toggleMode = function () {
+  var root = document.documentElement;
+  var cur = root.getAttribute('data-theme') || window.CCBGZZY_DEFAULT_THEME;
+  var pair = { 'sage':'sage-dark', 'sage-dark':'sage',
+               'ocean-breeze':'ocean-breeze-dark', 'ocean-breeze-dark':'ocean-breeze',
+               'sky-field':'sky-field-dark', 'sky-field-dark':'sky-field',
+               'summer-coast':'summer-coast-dark', 'summer-coast-dark':'summer-coast',
+               'fresh-holiday':'fresh-holiday-dark', 'fresh-holiday-dark':'fresh-holiday',
+               'obsidian-gold':'warm-sand', 'warm-sand':'obsidian-gold',
+               'deep-ocean':'platinum-blue', 'platinum-blue':'deep-ocean' };
+  var next = pair[cur] || window.CCBGZZY_DEFAULT_THEME;
+  window.CCBGZZY_applyTheme(next);
+  if (typeof window.CCBGZZY_syncSwitcher === 'function') window.CCBGZZY_syncSwitcher(next);
+};
+
+/* 三层水印（meta 署名 + 注释签名 + 可见角标） */
+window.CCBGZZY_initWatermark = function (opts) {
+  opts = opts || {};
+  var sig = 'CCBGZZY_DESIGN ' + window.CCBGZZY_VERSION;
+  if (!document.querySelector('meta[name="generator"][content^="CCBGZZY_DESIGN"]')) {
+    var m = document.createElement('meta');
+    m.setAttribute('name','generator'); m.setAttribute('content', sig);
+    document.head.appendChild(m);
+  }
+  document.head.appendChild(document.createComment(' Generated with ' + sig + ' · Unified Design System · CCBGZZY '));
+  if (opts.badge !== false && !document.getElementById('ccbgzzy-watermark')) {
+    var b = document.createElement('div');
+    b.id = 'ccbgzzy-watermark'; b.textContent = 'CCBGZZY_DESIGN'; b.title = sig;
+    b.setAttribute('aria-hidden','true');
+    b.style.cssText = ['position:fixed','right:10px','bottom:8px','z-index:2147483600',
+      'font-size:11px','letter-spacing:1px','font-family:inherit','color:var(--fg-muted)',
+      'opacity:.45','user-select:none','transition:opacity .25s'].join(';');
+    b.addEventListener('mouseenter', function(){ b.style.opacity='.85'; });
+    b.addEventListener('mouseleave', function(){ b.style.opacity='.45'; });
+    document.body.appendChild(b);
+  }
+};
+
+/* 启动 */
+(function () {
+  /* 渐进增强标记：JS 在场才启用 [data-reveal] 隐藏动画；
+     theme-config.js 在 <head> 同步执行，此类在 body 渲染前注入，无内容闪烁。
+     若无 JS，base.css 不隐藏 [data-reveal]，核心内容默认可见。 */
+  try { document.documentElement.classList.add('ccbgzzy-js'); } catch (e) {}
+  if (window !== window.top) {
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.type === 'ccbgzzyTheme') window.CCBGZZY_applyTheme(e.data.theme);
+    });
+  }
+  var saved = window.CCBGZZY_DEFAULT_THEME;
+  try { saved = localStorage.getItem('ccbgzzy-theme') || saved; } catch (e) {}
+  window.CCBGZZY_applyTheme(saved);
+})();
+
+</script>
+<style>
+  .topbar{ position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between;
+    padding:14px 0; background:var(--bg); border-bottom:1px solid var(--border); margin-bottom:var(--space-6); flex-wrap:wrap; gap:12px; }
+  .brand{ font-family:var(--font-display); font-weight:800; color:var(--title); letter-spacing:.5px; }
+  .brand span{ color:var(--fg-muted); font-weight:400; font-size:var(--text-sm); margin-left:10px; }
+  .summary{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px 24px; box-shadow:var(--shadow-sm); }
+  .summary p{ font-size:var(--text-lead); color:var(--fg); max-width:none; line-height:1.7; }
+  .notice{ display:flex; gap:14px; align-items:flex-start; background:var(--surface); border:1px solid var(--border);
+    border-left:4px solid var(--warning); border-radius:var(--radius); padding:15px 18px; box-shadow:var(--shadow-sm); font-size:var(--text-body); }
+  .notice + .notice{ margin-top:10px; } .notice.is-attention{ border-left-color:var(--attention); }
+  .notice b{ color:var(--title); } .notice span{ color:var(--fg-2); }
+  .rank-row{ display:grid; grid-template-columns:150px 1fr 56px; align-items:center; gap:18px; padding:13px 0; border-bottom:1px solid var(--border); }
+  .rank-row:last-child{ border-bottom:none; }
+  .rank-name{ color:var(--title); font-weight:600; } .rank-name span{ color:var(--fg-muted); font-weight:400; font-size:var(--text-sm); margin-left:8px; }
+  .rank-val{ text-align:right; font-variant-numeric:tabular-nums; color:var(--title); font-weight:600; }
+  footer{ padding:28px 0; text-align:center; color:var(--fg-muted); font-size:var(--text-sm); border-top:1px solid var(--border); margin-top:var(--space-6); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="topbar">
+    <div class="brand">月度经营报告<span>2026年5月 · 5 个区域 / 5 个渠道</span></div>
+    <div class="ccbgzzy-themebar">
+      <select class="ccbgzzy-theme-select" id="theme-select" aria-label="选择主题"></select>
+      <div class="ccbgzzy-switcher" id="switcher"></div>
+      <button class="btn btn-ghost" style="min-height:38px;padding:7px 14px;" onclick="CCBGZZY_toggleMode()">深/浅</button>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top:0;">
+    <span class="eyebrow">结论</span>
+    <h2 style="margin:14px 0 12px;">西南新客转化是本月主缺口</h2>
+    <div class="summary" data-reveal>
+      <p>5 月整体完成率 97%（营收 1,284 万）。华东(112%)、华南(104%) 超额完成；<span class="pop">西南是唯一明显未达区(79%)</span>，且其新客转化仅 2.1%（全区最低），是本月主缺口，建议优先补。东北环比回落需留意。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title">关键指标</h3>
+    <div class="grid grid-5">
+      <div class="kpi" data-reveal><div class="kpi-label">营收完成率</div><div class="kpi-value num">97%</div><div class="kpi-sub">营收 1,284 万</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">订单量</div><div class="kpi-value num">96,540</div><div class="kpi-sub">环比 +6.1%</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">新客数</div><div class="kpi-value num">8,210</div><div class="kpi-sub">环比 +3.0%</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">新客转化率</div><div class="kpi-value is-pop num">3.8%</div><div class="kpi-sub">环比 −0.4pt</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">客单价</div><div class="kpi-value num">133 元</div><div class="kpi-sub">环比 +1.9%</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title">需关注</h3>
+    <div class="notice" data-reveal><div><b>西南区新客转化 2.1%</b> <span>全区最低，且完成率仅 79%，建议排查投放与承接。</span></div></div>
+    <div class="notice is-attention" data-reveal><div><b>东北区营收环比 −3.4%</b> <span>连续两月走低，需结合季节因素复盘。</span></div></div>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title">各区域完成率</h3>
+    <p class="section-desc">按本月营收完成率排序。</p>
+    <div data-reveal>
+      <div class="rank-row"><div class="rank-name">华东<span>东部</span></div><div class="progress"><span style="width:100%"></span></div><div class="rank-val num">112%</div></div>
+      <div class="rank-row"><div class="rank-name">华南<span>南部</span></div><div class="progress"><span style="width:93%"></span></div><div class="rank-val num">104%</div></div>
+      <div class="rank-row"><div class="rank-name">华北<span>北部</span></div><div class="progress"><span style="width:88%"></span></div><div class="rank-val num">98%</div></div>
+      <div class="rank-row"><div class="rank-name">东北<span>东北</span></div><div class="progress"><span style="width:81%"></span></div><div class="rank-val num">91%</div></div>
+      <div class="rank-row"><div class="rank-name">西南<span>西南</span></div><div class="progress"><span style="width:71%"></span></div><div class="rank-val num">79%</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title">渠道明细</h3>
+    <div class="data-table tall" data-reveal>
+      <table class="table table-compact">
+        <thead><tr><th>渠道</th><th class="num">订单量</th><th class="num">营收(万)</th><th class="num">新客转化</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td>渠道 A</td><td class="num">38,210</td><td class="num">512</td><td class="num">5.2%</td><td><span class="badge is-success">正常</span></td></tr>
+          <tr><td>渠道 B</td><td class="num">27,640</td><td class="num">361</td><td class="num">4.6%</td><td><span class="badge is-success">正常</span></td></tr>
+          <tr><td>渠道 D</td><td class="num">18,330</td><td class="num">241</td><td class="num">4.1%</td><td><span class="badge is-attention">观察</span></td></tr>
+          <tr><td>渠道 E</td><td class="num">9,120</td><td class="num">128</td><td class="num">3.5%</td><td><span class="badge is-warning">待优化</span></td></tr>
+          <tr><td>渠道 C</td><td class="num">3,240</td><td class="num">42</td><td class="num">2.1%</td><td><span class="badge is-warning">待优化</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" style="border-bottom:none;">
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="btn btn-primary">导出经营报表</button>
+      <button class="btn btn-ghost">查看完整明细</button>
+    </div>
+  </section>
+
+  <footer>月度经营报告 · 本文件为 CCBGZZY_DESIGN report 类型示例，数据为示例数据</footer>
+</div>
+
+<script>
+  (function () {
+    var box = document.getElementById('switcher'); if (!box) return;
+    var select = document.getElementById('theme-select');
+    var options = typeof CCBGZZY_getThemeOptions === 'function'
+      ? CCBGZZY_getThemeOptions()
+      : Object.keys(window.CCBGZZY_THEME_META).map(function (key) {
+          var m = window.CCBGZZY_THEME_META[key]; m.key = key; return m;
+        });
+    options.forEach(function (m) {
+      var key = m.key;
+      if (select) {
+        var opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = (m.family ? m.family + ' · ' : '') + m.label + (m.mode === 'dark' ? '（深）' : '（浅）');
+        select.appendChild(opt);
+      }
+      var s = document.createElement('button');
+      var dot = document.createElement('span');
+      var label = document.createElement('span');
+      s.type = 'button';
+      s.className = 'ccbgzzy-swatch';
+      s.title = m.label + '（' + (m.mode === 'dark' ? '深' : '浅') + '）';
+      s.setAttribute('aria-label', s.title);
+      s.dataset.theme = key;
+      dot.className = 'ccbgzzy-swatch-dot';
+      dot.style.background = m.swatchAccent;
+      dot.style.borderColor = m.swatchBg;
+      label.className = 'ccbgzzy-swatch-label';
+      label.textContent = m.label;
+      s.appendChild(dot);
+      s.appendChild(label);
+      s.onclick = function () { CCBGZZY_applyTheme(key); CCBGZZY_syncSwitcher(key); };
+      box.appendChild(s);
+    });
+    if (select) select.onchange = function () { CCBGZZY_applyTheme(select.value); CCBGZZY_syncSwitcher(select.value); };
+    window.CCBGZZY_syncSwitcher = function (a) {
+      box.querySelectorAll('.ccbgzzy-swatch').forEach(function (el) { el.classList.toggle('active', el.dataset.theme === a); });
+      if (select) select.value = a;
+    };
+    CCBGZZY_syncSwitcher(document.documentElement.getAttribute('data-theme') || window.CCBGZZY_DEFAULT_THEME);
+  })();
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }); }, { threshold: .14 });
+  document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+  CCBGZZY_initWatermark();
+</script>
+</body>
+</html>

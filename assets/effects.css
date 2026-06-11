@@ -1,0 +1,35 @@
+/* ===================================================================
+ * CCBGZZY_DESIGN · effects.css (v1.0.0-rc.6)
+ * 精选动效——克制 + 全程 0 渐变（flat）。
+ * 规则：一屏一个"主角"动效；只用纯色/位移/透明度，禁止任何 gradient。
+ * 全部基于主题 token，自动适配深浅。reduce-motion 已在 base.css 处理。
+ * =================================================================== */
+
+/* ---------- 标题逐字入场（位移+透明度，无渐变）---------- */
+.fx-split .char{ display:inline-block; opacity:0; transform:translateY(40px);
+  animation:fx-char-in .6s var(--ease,cubic-bezier(.16,1,.3,1)) forwards; }
+@keyframes fx-char-in{ to{ opacity:1; transform:none; } }
+
+/* ---------- 强调文字（纯色，无扫光渐变）---------- */
+.fx-shine{ color:var(--primary); }
+
+/* ---------- 呼吸光点（box-shadow 扩散，非渐变）---------- */
+.fx-pulse{ position:relative; }
+.fx-pulse::after{ content:''; position:absolute; inset:0; border-radius:inherit;
+  box-shadow:0 0 0 0 var(--primary); animation:fx-pulse 2.2s var(--ease) infinite; }
+@keyframes fx-pulse{ 0%{ box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 45%,transparent);} 70%,100%{ box-shadow:0 0 0 10px transparent;} }
+
+/* ---------- 卡片 hover（纯色提示，无 spotlight 渐变）---------- */
+.fx-spotlight{ transition:background .3s var(--ease),border-color .3s; }
+.fx-spotlight:hover{ background:var(--surface-2); border-color:var(--border-strong); }
+
+/* ---------- 上浮入场 ---------- */
+.fx-rise{ opacity:0; transform:translateY(18px); animation:fx-rise .7s var(--ease) forwards; }
+@keyframes fx-rise{ to{ opacity:1; transform:none; } }
+
+/* ---------- 入场交错延迟 ---------- */
+.fx-delay-1{animation-delay:.1s;} .fx-delay-2{animation-delay:.2s;} .fx-delay-3{animation-delay:.3s;}
+.fx-delay-4{animation-delay:.4s;} .fx-delay-5{animation-delay:.5s;} .fx-delay-6{animation-delay:.6s;}
+
+/* 注：v1.1 的 fx-aurora / fx-grid（极光、网格渐变背景）已整体移除——
+ *    统一改为纯色平面，符合"无渐变"硬规则。Hero 背景请直接用 --bg。 */

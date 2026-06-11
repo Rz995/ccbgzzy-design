@@ -1,0 +1,269 @@
+/* ===================================================================
+ * CCBGZZY_DESIGN · base.css  (v1.0.0-rc.6)
+ * 统一基底：reset + 字体 + 等比字号(放大·硬性) + 语义 token + 标准组件
+ * 颜色由 theme-config.js 注入；默认值=砂绿 sage，避免 FOUC。
+ * =================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&family=Sora:wght@600;700;800&display=swap');
+
+:root {
+  /* —— 字体栈（标题 Sora/思源宋；正文 思源黑覆盖简繁日韩英法）—— */
+  --font-display:'Sora','Noto Serif SC','Songti SC','Noto Serif TC','Noto Serif JP','Nanum Myeongjo',Georgia,serif;
+  --font-body:'Noto Sans SC','Noto Sans TC','Noto Sans JP','Noto Sans KR','PingFang SC','Microsoft YaHei','Hiragino Sans GB','Malgun Gothic',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'JetBrains Mono','SF Mono','Cascadia Code','Menlo','Consolas',monospace;
+
+  /* —— 等比字号 v1.1（基准 17px · 比例 1.25）——
+     注意：下方组件已内置"硬性最小字号"，正文绝不低于 16px、表格不低于 15px。 */
+  --text-hero:4.0rem;     /* 68px 大数字/主视觉 */
+  --text-h1:3.0rem;       /* 51px 页面主标题 */
+  --text-h2:2.25rem;      /* 38px 栏目大标题 */
+  --text-h3:1.75rem;      /* 30px 模块标题 */
+  --text-h4:1.375rem;     /* 23px 卡片标题 */
+  --text-lead:1.25rem;    /* 21px 前言/突出 */
+  --text-body:1rem;       /* 17px 正文基准 */
+  --text-sm:0.9375rem;    /* 16px 辅助(硬性下限) */
+  --text-xs:0.8125rem;    /* 14px 最小(仅角标/水印，正文禁用) */
+
+  --leading-tight:1.2; --leading-normal:1.6; --leading-relaxed:1.75;
+
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+  --space-5:24px; --space-6:32px; --space-7:48px; --space-8:64px;
+
+  /* 圆角 14–16px（规矩）；阴影用 #1A1A1A 不用纯黑 */
+  --radius-sm:10px; --radius:14px; --radius-lg:16px; --radius-pill:999px;
+  --shadow-sm:0 1px 3px rgba(26,26,26,.08);
+  --shadow:0 8px 24px rgba(26,26,26,.10);
+  --shadow-lg:0 20px 48px rgba(26,26,26,.16);
+  --ease:cubic-bezier(.16,1,.3,1); --dur:.35s;
+
+  /* —— 语义色默认值（砂绿 Sage；theme-config.js 即时覆盖）—— */
+  --bg:#EFEAE0; --surface:#E5DFD2; --surface-2:#DBD4C5;
+  --title:#1A1A1A; --fg:#3A382F; --fg-2:#6A685B; --fg-muted:#908D7E;
+  --primary:#6B8A6F; --primary-strong:#56745B;
+  --accent:#CD6F47; --accent-soft:rgba(205,111,71,.14);
+  --border:rgba(26,26,26,.10); --border-strong:rgba(26,26,26,.20);
+  --success:#5E8B5A; --warning:#C0883C; --attention:#9C8A63; --danger:#B5503C; --info:#5E7E86;
+  --seq-1:#D7E1D7; --seq-2:#BDCEC0; --seq-3:#95B099; --seq-4:#6B8A6F; --seq-5:#4E6A52;
+}
+:root {
+  --primary-soft:color-mix(in srgb,var(--primary) 14%,transparent);
+  --primary-soft-2:color-mix(in srgb,var(--primary) 24%,transparent);
+  --primary-ghost:color-mix(in srgb,var(--primary) 6%,transparent);
+}
+
+/* ---------- Reset ---------- */
+*,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+html{ font-size:17px; scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  font-family:var(--font-body); font-size:var(--text-body); line-height:var(--leading-normal);
+  background:var(--bg); color:var(--fg); min-height:100vh;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+img,svg,video{ max-width:100%; display:block; }
+a{ color:var(--primary); text-decoration:none; transition:color .2s; }
+a:hover{ color:var(--primary-strong); }
+::selection{ background:var(--primary-soft-2); color:var(--title); }
+
+/* ---------- 文字层级（硬性最小字号）---------- */
+h1,h2,h3,h4{ font-family:var(--font-display); color:var(--title); line-height:var(--leading-tight); font-weight:700; text-wrap:balance; }
+h1{ font-size:var(--text-h1); } h2{ font-size:var(--text-h2); }
+h3{ font-size:var(--text-h3); } h4{ font-size:var(--text-h4); }
+p{ color:var(--fg); font-size:var(--text-body); max-width:74ch; text-wrap:pretty; }
+small,.text-sm{ font-size:var(--text-sm); }   /* 16px 下限 */
+.text-muted{ color:var(--fg-muted); }
+.text-2{ color:var(--fg-2); }
+.lead{ font-size:var(--text-lead); color:var(--fg-2); line-height:var(--leading-relaxed); }
+.em,strong.em,.accent{ color:var(--primary); font-weight:600; }
+.pop{ color:var(--accent); font-weight:600; }   /* 唯一暖色强调，慎用 */
+.num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
+
+/* ---------- 布局 ---------- */
+.container{ max-width:1320px; margin:0 auto; padding:0 var(--space-6); }
+.stack>*+*{ margin-top:var(--space-4); }
+.grid{ display:grid; gap:var(--space-5); }
+.grid-2{ grid-template-columns:repeat(2,1fr); }
+.grid-3{ grid-template-columns:repeat(3,1fr); }
+.grid-4{ grid-template-columns:repeat(4,1fr); }
+.grid-5{ grid-template-columns:repeat(5,1fr); }
+@media (max-width:1000px){ .grid-4,.grid-5{ grid-template-columns:repeat(2,1fr);} .grid-3{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:600px){ .grid-2,.grid-3,.grid-4,.grid-5{ grid-template-columns:1fr;} }
+
+/* ---------- Section ---------- */
+.section{ padding:var(--space-7) 0; border-bottom:1px solid var(--border); }
+.section-title{ font-family:var(--font-display); font-size:var(--text-h3); color:var(--title);
+  display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-2); }
+.section-title::before{ content:''; width:5px; height:1.05em; border-radius:3px;
+  background:var(--primary); }
+.section-desc{ color:var(--fg-2); font-size:var(--text-lead); max-width:66ch; margin-bottom:var(--space-6); }
+.eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:var(--text-sm);
+  letter-spacing:2px; text-transform:uppercase; color:var(--primary);
+  border:1px solid var(--border); border-radius:var(--radius-pill); padding:6px 14px; background:var(--primary-ghost); }
+.eyebrow::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--primary); }
+
+/* ---------- Card ---------- */
+.card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:var(--space-5); transition:transform var(--dur) var(--ease),border-color var(--dur),box-shadow var(--dur); }
+.card:hover{ transform:translateY(-3px); border-color:var(--border-strong); box-shadow:var(--shadow); }
+.card-title{ font-size:var(--text-h4); color:var(--title); margin-bottom:var(--space-2); }
+.card-desc{ color:var(--fg-2); font-size:var(--text-body); }
+.card.accent-top{ position:relative; overflow:hidden; }
+.card.accent-top::before{ content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--primary); }
+
+/* ---------- KPI（大数字，硬性大字号）---------- */
+.kpi{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:var(--space-5); position:relative; }
+.kpi-label{ font-size:var(--text-sm); color:var(--fg-muted); margin-bottom:var(--space-2); }
+.kpi-value{ font-family:var(--font-display); font-size:3rem; color:var(--title); line-height:1.05;
+  font-variant-numeric:tabular-nums; font-weight:700; }   /* 51px，绝不缩小 */
+.kpi-value.is-primary{ color:var(--primary); }
+.kpi-value.is-pop{ color:var(--accent); }   /* 整页最重要的那一个数字，唯一暖色 */
+.kpi-sub{ font-size:var(--text-sm); color:var(--fg-muted); margin-top:var(--space-1); }
+/* KPI 顶部用同色阶台阶区分类别（不是多种色相）*/
+.kpi[data-seq="1"]::after,.kpi[data-seq="2"]::after,.kpi[data-seq="3"]::after,
+.kpi[data-seq="4"]::after,.kpi[data-seq="5"]::after{ content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:var(--radius) var(--radius) 0 0; }
+.kpi[data-seq="1"]::after{ background:var(--seq-1);} .kpi[data-seq="2"]::after{ background:var(--seq-2);}
+.kpi[data-seq="3"]::after{ background:var(--seq-3);} .kpi[data-seq="4"]::after{ background:var(--seq-4);}
+.kpi[data-seq="5"]::after{ background:var(--seq-5);}
+
+/* ---------- Badge / 状态 ---------- */
+.badge{ display:inline-flex; align-items:center; gap:6px; font-size:var(--text-sm); font-weight:600;
+  padding:3px 11px; border-radius:var(--radius-pill); border:1px solid var(--border); color:var(--fg-2); }
+.badge::before{ content:''; width:7px; height:7px; border-radius:50%; background:currentColor; }
+.badge.is-success{ color:var(--success); border-color:color-mix(in srgb,var(--success) 38%,transparent); background:color-mix(in srgb,var(--success) 10%,transparent); }
+.badge.is-warning{ color:var(--warning); border-color:color-mix(in srgb,var(--warning) 38%,transparent); background:color-mix(in srgb,var(--warning) 10%,transparent); }
+.badge.is-danger{ color:var(--danger); border-color:color-mix(in srgb,var(--danger) 38%,transparent); background:color-mix(in srgb,var(--danger) 10%,transparent); }
+.badge.is-attention{ color:var(--attention); border-color:color-mix(in srgb,var(--attention) 38%,transparent); background:color-mix(in srgb,var(--attention) 10%,transparent); }
+.badge.is-info{ color:var(--info); border-color:color-mix(in srgb,var(--info) 38%,transparent); background:color-mix(in srgb,var(--info) 10%,transparent); }
+
+/* ---------- Button（≥44px 点击区）---------- */
+.btn{ display:inline-flex; align-items:center; gap:8px; font-family:inherit; font-size:var(--text-body); font-weight:600;
+  padding:11px 22px; min-height:44px; border-radius:var(--radius-sm); border:1px solid transparent; cursor:pointer; transition:all .2s var(--ease); }
+.btn-primary{ background:var(--primary); color:var(--bg); }
+.btn-primary:hover{ background:var(--primary-strong); transform:translateY(-1px); }
+.btn-ghost{ background:transparent; color:var(--primary); border-color:var(--border-strong); }
+.btn-ghost:hover{ background:var(--primary-soft); }
+
+/* ===================================================================
+ * Table —— 重做（依据头部规范：留白>边框、数字右对齐tabular、行高大）
+ * 原则：靠对齐+留白+分组建立秩序，少用竖线/重填充；颜色只在状态点。
+ * =================================================================== */
+.data-table{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+/* 长表（行多、需上下滚动的"Excel 式"明细）：限高+容器内滚动，表头自动吸顶。
+   注意：thead th 的 sticky 只有在"有自身滚动的容器"里才生效，所以长表必须用 .tall。 */
+.data-table.tall{ max-height:70vh; overflow:auto; border:1px solid var(--border); border-radius:var(--radius); }
+.data-table.tall .table thead th{ top:0; box-shadow:0 1px 0 var(--border-strong); }
+.table{ width:100%; border-collapse:collapse; font-size:var(--text-sm); }   /* 16px，不缩 */
+.table thead th{
+  text-align:left; padding:14px 16px; font-size:var(--text-sm); color:var(--fg-muted);
+  font-weight:600; letter-spacing:.3px; white-space:nowrap;
+  border-bottom:2px solid var(--border-strong); position:sticky; top:0; background:var(--surface); z-index:1;
+}
+.table tbody td{ padding:14px 16px; color:var(--fg); border-bottom:1px solid var(--border); vertical-align:middle; line-height:1.5; }
+.table tbody tr{ transition:background .15s; }
+.table tbody tr:hover td{ background:var(--surface-2); }
+/* 首列=主标识，加重 */
+.table tbody td:first-child{ color:var(--title); font-weight:600; }
+/* 数字列：右对齐 + 等宽数字 + 小数对齐 */
+.table th.num,.table td.num{ text-align:right; font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
+/* 大表可选斑马纹（低饱和，仅大数据量启用）*/
+.table.zebra tbody tr:nth-child(even) td{ background:color-mix(in srgb,var(--fg) 3%,transparent); }
+.table.zebra tbody tr:hover td{ background:var(--surface-2); }
+/* 分组小标题行 */
+.table tr.group-row td{ background:var(--surface-2); color:var(--fg-2); font-weight:600; font-size:var(--text-sm); }
+.table-info{ font-size:var(--text-sm); color:var(--fg-muted); margin-top:var(--space-3); }
+/* 密集模式：高密度明细页才显式启用，行距收紧但字号仍 ≥16px（--text-sm） */
+.table-compact thead th{ padding:9px 12px; }
+.table-compact tbody td{ padding:9px 12px; }
+
+/* ---------- 进度条（用同色阶，不用花色）---------- */
+.progress{ height:8px; border-radius:var(--radius-pill); background:var(--surface-2); overflow:hidden; }
+.progress>span{ display:block; height:100%; border-radius:inherit; background:var(--primary); }
+.progress.is-accent>span{ background:var(--accent); }
+
+/* ===================================================================
+ * Calendar / Schedule 组件（calendar 页面类型用，见 references/calendar-schedule.md）
+ * 三层展示：总览 / 月历(每格1–3条) / 详情折叠。无渐变、语义色边界照旧。
+ * =================================================================== */
+/* 关键日期横条 */
+.keydate-strip{ display:flex; flex-wrap:wrap; gap:10px; }
+.keydate{ display:inline-flex; align-items:center; gap:8px; background:var(--surface);
+  border:1px solid var(--border); border-left:3px solid var(--primary); border-radius:var(--radius-sm);
+  padding:8px 12px; font-size:var(--text-sm); color:var(--title); }
+.keydate.is-accent{ border-left-color:var(--accent); }
+.keydate b{ color:var(--title); } .keydate small{ color:var(--fg-muted); }
+/* 周节奏 */
+.week-row{ display:grid; grid-template-columns:90px 1fr; gap:14px; align-items:baseline;
+  padding:11px 0; border-bottom:1px solid var(--border); }
+.week-row:last-child{ border-bottom:none; }
+.week-row .wk{ color:var(--title); font-weight:600; }
+.week-row .wk-desc{ color:var(--fg-2); font-size:var(--text-body); }
+/* 月历网格 */
+.cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+.cal-head{ font-size:var(--text-sm); color:var(--fg-muted); text-align:center; padding:6px 0; font-weight:600; }
+.cal-day{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);
+  min-height:118px; padding:8px 9px; display:flex; flex-direction:column; gap:5px; }
+.cal-day.is-dim{ background:transparent; border-color:transparent; }
+.cal-day.is-dim .cal-date{ color:var(--fg-muted); opacity:.5; }
+.cal-day.is-key{ border-color:var(--accent); box-shadow:inset 0 2px 0 var(--accent); }
+.cal-date{ font-size:var(--text-sm); color:var(--title); font-weight:600; display:flex; justify-content:space-between; align-items:center; }
+.cal-date .mk{ font-size:var(--text-xs); color:var(--fg-muted); font-weight:400; }   /* 重复目标的简短标记 */
+.cal-task{ font-size:var(--text-sm); color:var(--fg); line-height:1.35; display:flex; align-items:center; gap:6px; }
+.cal-more{ font-size:var(--text-sm); color:var(--primary); font-weight:600; cursor:pointer; margin-top:auto; }
+/* 任务标签：每任务最多 2 个（主标签 + 状态标签）*/
+.cal-tag{ display:inline-block; font-size:var(--text-xs); padding:1px 7px; border-radius:var(--radius-pill); white-space:nowrap; }
+.cal-tag.tag-cat{ background:color-mix(in srgb,var(--primary) 14%,transparent); color:var(--primary-strong); }
+.cal-tag.tag-state{ background:var(--surface-2); color:var(--fg-2); border:1px solid var(--border); }
+.cal-tag.is-accent{ background:var(--accent-soft); color:var(--accent); }
+.cal-tag.is-warning{ background:color-mix(in srgb,var(--warning) 14%,transparent); color:var(--warning); }
+.cal-tag.is-info{ background:color-mix(in srgb,var(--info) 14%,transparent); color:var(--info); }
+@media (max-width:760px){ .cal-grid{ grid-template-columns:repeat(7,minmax(96px,1fr)); overflow-x:auto; } }
+
+/* ---------- 同色阶图例（多类别用台阶，不用多色相）---------- */
+.seq-legend{ display:flex; flex-wrap:wrap; gap:14px; font-size:var(--text-sm); color:var(--fg-2); }
+.seq-legend i{ width:13px; height:13px; border-radius:3px; display:inline-block; margin-right:6px; vertical-align:-1px; }
+.seq-1{ background:var(--seq-1);} .seq-2{ background:var(--seq-2);} .seq-3{ background:var(--seq-3);}
+.seq-4{ background:var(--seq-4);} .seq-5{ background:var(--seq-5);}
+
+/* ---------- 主题切换器 ---------- */
+.ccbgzzy-themebar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end; max-width:100%; }
+.ccbgzzy-theme-select{
+  min-height:38px; max-width:220px; padding:7px 12px; border-radius:var(--radius-sm);
+  border:1px solid var(--border-strong); background:var(--surface); color:var(--title);
+  font:inherit; font-size:var(--text-sm); cursor:pointer;
+}
+.ccbgzzy-switcher{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:flex-end; max-width:min(780px,100%); }
+.ccbgzzy-swatch{
+  appearance:none; display:inline-flex; align-items:center; gap:6px; min-height:30px; max-width:142px;
+  padding:5px 8px; border-radius:var(--radius-sm); cursor:pointer; border:1px solid var(--border);
+  background:var(--surface); color:var(--fg-2); font:inherit; font-size:var(--text-xs);
+  transition:transform .2s var(--ease),border-color .2s,background .2s,color .2s,box-shadow .2s;
+}
+.ccbgzzy-swatch-dot{ width:14px; height:14px; flex:0 0 14px; border-radius:50%; border:2px solid var(--surface); box-shadow:0 0 0 1px var(--border-strong); }
+.ccbgzzy-swatch-label{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ccbgzzy-swatch:hover{ transform:translateY(-1px); border-color:var(--border-strong); background:var(--surface-2); }
+.ccbgzzy-swatch.active{ color:var(--title); border-color:var(--primary); background:var(--surface-2); box-shadow:0 0 0 2px var(--primary-soft); }
+@media (max-width:760px){
+  .ccbgzzy-themebar{ justify-content:flex-start; width:100%; }
+  .ccbgzzy-theme-select{ order:1; flex:1 1 190px; min-width:0; max-width:none; width:auto; }
+  .ccbgzzy-themebar>.btn{ order:2; flex:0 0 auto; }
+  .ccbgzzy-switcher{ order:3; justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; width:100%; padding:2px 0 4px; }
+  .ccbgzzy-swatch{ flex:0 0 auto; max-width:150px; }
+}
+
+/* ---------- 滚动入场（渐进增强：无 JS 时核心内容默认可见）----------
+   关键：只有当 <html> 带 .ccbgzzy-js（由 theme-config.js 立即注入）时才启用隐藏动画。
+   QuickLook / 静态渲染 / 禁用 JS 时无此类 → [data-reveal] 完全可见，内容不丢。 */
+html.ccbgzzy-js [data-reveal]{ opacity:0; transform:translateY(22px); transition:opacity .6s var(--ease),transform .6s var(--ease); }
+html.ccbgzzy-js [data-reveal].is-visible{ opacity:1; transform:none; }
+
+/* ---------- 移动端：允许响应式缩放，但正文不得低于 15px ---------- */
+@media (max-width:600px){
+  html{ font-size:16px; }              /* 1rem=16px，正文仍 ≥15px 下限 */
+  .container{ padding:0 var(--space-4); }
+  .section{ padding:var(--space-6) 0; }
+}
+
+/* ---------- reduce-motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.01ms!important; transition-duration:.01ms!important; }
+  html.ccbgzzy-js [data-reveal]{ opacity:1!important; transform:none!important; }
+}
