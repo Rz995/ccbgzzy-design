@@ -2,6 +2,13 @@
 
 遵循语义化版本 `MAJOR.MINOR.PATCH`。
 
+## v1.0.0-rc.9 — 2026-06-12（主 Skill 减法 + calendar 验收闭环）
+- **主 SKILL.md 减法**：收敛为 4 个硬闸口（用途、密度、页面类型、交付），把 appbar/drawer/theme popover、组件 CSS、详细移动端实现、颜色哲学等细节留在 references。
+- **calendar 入口更硬**：主文件只保留核心句——月历格子是时间索引，不是内容容器；calendar 必须先分 `calendar-report` / `calendar-execution`。
+- **删除危险口径**：主 Skill 不再保留"每个日期 1-3 条核心任务"这种容易被 Agent 当作上限填满的规则。
+- **lint 增强 calendar 验收**：汇报型日历只要出现 `.cal-grid`，就必须有 `.cal-report` 或等价祖先容器；能拦住"CSS 写了 `.cal-report`，正文没挂 class"的问题。
+- **样例问题回灌**：针对两个 6 月营销日历产物暴露的问题，补强汇报版隐藏主题切换器、日期/节点不得随意改写、执行型日历不用 7×5 月历承载完整清单等规则。
+
 ## v1.0.0-rc.8 — 2026-06-12（政金蓝默认 + 字号/日历容量收敛）
 - **默认主题改为政金蓝**：`CCBGZZY_DEFAULT_THEME = 'gov-finance-blue'`，base 默认 token、SKILL、README、主题文档同步。政金蓝 `seq-1..5` 收敛为蓝色系明度台阶，金色只作为 `--accent`。
 - **主题 UI 收敛**：默认切换器只开放 3 套稳定主题：`gov-finance-blue` / `sage` / `warm-sand`；`gov-finance-blue-dark` / `sky-field(-dark)` / `summer-coast` 保留为 experimental，不进默认 UI。

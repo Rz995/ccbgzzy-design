@@ -31,6 +31,9 @@ const linkedCss = linkedCssHrefs.map(href => {
 }).join('\n');
 /* 规则可见范围 = 内联 HTML + 外链 CSS（single 模式 linkedCss 为空，行为不变） */
 const cssScope = html + '\n' + linkedCss;
+const markupNoAssets = html
+  .replace(/<style[\s\S]*?<\/style>/gi, '')
+  .replace(/<script[\s\S]*?<\/script>/gi, '');
 
 const errors = [];
 const warns = [];
@@ -139,9 +142,6 @@ if (bodyText.replace(/\s/g, '').length > 400 && !hasLead) {
 }
 
 /* 9.5) accent 使用预算：业务 HTML 中 accent 只能是少数焦点 */
-const markupNoAssets = html
-  .replace(/<style[\s\S]*?<\/style>/gi, '')
-  .replace(/<script[\s\S]*?<\/script>/gi, '');
 const accentHits =
   (markupNoAssets.match(/\bis-pop\b/g) || []).length +
   (markupNoAssets.match(/\bpop\b/g) || []).length +
@@ -177,8 +177,49 @@ if (/<table[\s>]/i.test(html) && !/overflow-x:\s*clip/i.test(cssScope)) {
   warns.push('未检测到 overflow-x:clip 横向溢出守卫（请用最新 base.css）');
 }
 
+function classesFromTag(raw) {
+  const m = raw.match(/\bclass\s*=\s*["']([^"']*)["']/i);
+  return m ? m[1].split(/\s+/).filter(Boolean) : [];
+}
+function hasAnyClass(classes, names) {
+  return classes.some(c => names.includes(c));
+}
+function countCalGridWithoutReportAncestor(markup) {
+  const stack = [];
+  let bad = 0;
+  const tagRe = /<\/?([a-zA-Z][\w:-]*)([^<>]*)>/g;
+  let m;
+  while ((m = tagRe.exec(markup))) {
+    const raw = m[0];
+    const tag = m[1].toLowerCase();
+    if (raw.startsWith('</')) {
+      for (let i = stack.length - 1; i >= 0; i--) {
+        const item = stack.pop();
+        if (item.tag === tag) break;
+      }
+      continue;
+    }
+    const classes = classesFromTag(raw);
+    if (classes.includes('cal-grid')) {
+      const inReport = hasAnyClass(classes, ['cal-report', 'calendar-report']) ||
+        stack.some(item => hasAnyClass(item.classes, ['cal-report', 'calendar-report']));
+      if (!inReport) bad++;
+    }
+    const selfClosing = /\/>$/.test(raw) || /^(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/i.test(tag);
+    if (!selfClosing) stack.push({ tag, classes });
+  }
+  return bad;
+}
+
 /* 13) calendar-report 容量与换行契约 */
-if (/\bcal-report\b/.test(html)) {
+const hasCalGridMarkup = /\bcal-grid\b/.test(markupNoAssets);
+const reportCalendarIntent = /calendar-report|汇报型日历|汇报版|领导|组长|运营负责人|关键节点|本月节奏|月度节奏/i.test(bodyText);
+if (hasCalGridMarkup && reportCalendarIntent) {
+  const badGrids = countCalGridWithoutReportAncestor(markupNoAssets);
+  if (badGrids) errors.push(`汇报型日历中发现 ${badGrids} 个 .cal-grid 没有 .cal-report 祖先容器（CSS 写了规则但正文未挂载也不合格）`);
+}
+
+if (/\bcal-report\b/.test(markupNoAssets)) {
   const calReportWrapRule = /\.cal-report\s+\.cal-task[^{]*\{[^}]*flex-wrap\s*:\s*wrap/i.test(cssScope);
   if (calReportWrapRule) errors.push('calendar-report 中禁止 .cal-task { flex-wrap: wrap }');
 
@@ -206,6 +247,8 @@ if (/\bcal-report\b/.test(html)) {
   if (/\b(data-ccbgzzy-theme-control|ccbgzzy-theme-control|ccbgzzy-switcher|ccbgzzy-themebar)\b/i.test(html)) {
     warns.push('汇报版 calendar-report 中出现主题切换器/主题工具层；汇报交付默认应隐藏');
   }
+} else if (hasCalGridMarkup && reportCalendarIntent && /\b(data-ccbgzzy-theme-control|ccbgzzy-theme-control|ccbgzzy-switcher|ccbgzzy-themebar)\b/i.test(markupNoAssets)) {
+  warns.push('汇报版日历中出现主题切换器/主题工具层；汇报交付默认应隐藏');
 }
 
 /* 输出 */
