@@ -2,6 +2,21 @@
 
 遵循语义化版本 `MAJOR.MINOR.PATCH`。
 
+## v1.0.0-rc.7 — 2026-06-12（无衬线 + 移动端工具层专项）
+- **全程无衬线字体**：`--font-display/--font-body` 全部改为思源黑体(Noto Sans SC)栈，离线回退苹方/微软雅黑/系统黑体；移除所有衬线/宋体与 Noto Serif 引入。
+- **移动端表格→卡片（GOVUK table-card）**：≤760px 表格不再横向拖拽，`thead` 视觉隐藏保留语义，`td` 用 `data-label` 生成字段名；列角色 `data-mobile-title/-hide/-actions`。新增 lint #11/#12（表格须含 table-card 规则、overflow-x:clip 守卫）。
+- **主题库收敛 + 政金蓝**：从 14 个 theme key 收敛为 **7 个 theme key**（删除 `sage-dark`/`ocean-breeze(-dark)`/`fresh-holiday(-dark)`/`summer-coast-dark`/`obsidian-gold`/`platinum-blue`/`deep-ocean` 等冗余浅色与多余深色，深色仅保留配对款），新增 `gov-finance-blue` / `gov-finance-blue-dark`（低饱和商务蓝 + 金强调，适配政务金融驾驶舱）。当前 7 key：`sage` / `gov-finance-blue` / `gov-finance-blue-dark` / `sky-field` / `sky-field-dark` / `summer-coast` / `warm-sand`。
+- **新增 `scripts/check-mobile.mjs`（Playwright 移动端验收）**：在 390/430/768/1280 四宽实测 `scrollWidth ≤ innerWidth`、标题单行高度、`.data-table` 无横向滚动——把验收落到脚本层，不再只靠静态 lint。
+- **修 lint package 误杀**：`lint.mjs` 的 table-card / overflow-x:clip 检查改为同时读外链 `base.css`，`--mode=package` 不再误报缺规则（现 0/0）。
+- **移动端标题栏 + 工具层专项（本次重点）**：
+  - 新增 `.ccbgzzy-appbar` / `.ccbgzzy-appbar-inner` / `.ccbgzzy-title-oneline`：移动端标题**强制单行**（nowrap+省略号+min-width:0），高度 PC 64 / 移动 48px。
+  - **headroom 让位**：滚动 >80px 自动加 `html.ccbgzzy-scrolled`，appbar 收缩（PC 48 / 移动 38px）、主题控件收 icon-only；向上滚/点工具按钮展开。theme-config.js 自动驱动，页面零额外 JS。
+  - **紧凑主题控件**（学 daisyUI Theme Controller 思路）：`.ccbgzzy-tool-pill.ccbgzzy-theme-trigger`（收起 pill / 移动端 40px 图标）+ `.ccbgzzy-theme-popover`（PC dropdown / 移动 bottom-sheet + scrim）。挂载点 `<div data-ccbgzzy-theme-control>` 自动构建，读 `CCBGZZY_getThemeOptions()`，当前主题显示色环。**移除正文上方横排 14 主题按钮。**
+  - 新增侧栏窄 rail `.ccbgzzy-sidebar-rail`、移动抽屉 `.ccbgzzy-mobile-drawer` + 遮罩 `.ccbgzzy-scrim`；API `CCBGZZY_toggleDrawer/closeAllOverlays`，ESC/点遮罩/点链接自动关闭。
+  - 工具层全部用 token、零渐变；template / example-report 改用 appbar；single-file 构建 lint 0/0。
+- **新增 examples/example-gallery.html**：页面类型与图表图鉴——覆盖 9 种页面类型结构（report/decision/monitor/lookup/analysis/notice/guide/prototype/calendar）+ 8 类纯 SVG 图表（柱状/条形排名/折线/环图/仪表盘/雷达/堆叠/进度），随主题换色、无渐变。
+- 文档同步：SKILL「五·补、移动端标题栏+工具层」、components.md「工具层」、information-density.md「移动端阅读优先」。
+
 ## v1.0.0-rc.6 — 2026-06-11（全量主题公开 + 可见切换）
 - **主题库全量公开**：当前 7 组配色 / 14 个 theme key 全部进入 `CCBGZZY_THEME_META`，默认仍为 `sage`。
 - **新增主题列表 API**：`CCBGZZY_THEME_ORDER` 固定展示顺序，`CCBGZZY_getThemeOptions()` 给模板/外部页面读取完整主题，避免新增主题后 UI 仍手写旧列表。

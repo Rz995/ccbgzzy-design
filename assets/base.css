@@ -1,14 +1,16 @@
 /* ===================================================================
- * CCBGZZY_DESIGN · base.css  (v1.0.0-rc.6)
+ * CCBGZZY_DESIGN · base.css  (v1.0.0-rc.7)
  * 统一基底：reset + 字体 + 等比字号(放大·硬性) + 语义 token + 标准组件
  * 颜色由 theme-config.js 注入；默认值=砂绿 sage，避免 FOUC。
  * =================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&family=Sora:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Sora:wght@500;600;700;800&display=swap');
 
 :root {
-  /* —— 字体栈（标题 Sora/思源宋；正文 思源黑覆盖简繁日韩英法）—— */
-  --font-display:'Sora','Noto Serif SC','Songti SC','Noto Serif TC','Noto Serif JP','Nanum Myeongjo',Georgia,serif;
+  /* —— 字体栈：全程无衬线（sans-serif，硬性）——
+     标题/正文 CJK 都用思源黑体(Noto Sans SC)；离线回退苹方/微软雅黑/系统黑体，仍是无衬线。
+     ❌ 不使用任何衬线/宋体字体。 */
+  --font-display:'Sora','Noto Sans SC','Noto Sans TC','Noto Sans JP','Noto Sans KR','PingFang SC','Microsoft YaHei','Hiragino Sans GB','Malgun Gothic',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --font-body:'Noto Sans SC','Noto Sans TC','Noto Sans JP','Noto Sans KR','PingFang SC','Microsoft YaHei','Hiragino Sans GB','Malgun Gothic',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --font-mono:'JetBrains Mono','SF Mono','Cascadia Code','Menlo','Consolas',monospace;
 
@@ -249,15 +251,204 @@ small,.text-sm{ font-size:var(--text-sm); }   /* 16px 下限 */
   .ccbgzzy-swatch{ flex:0 0 auto; max-width:150px; }
 }
 
+/* ===================================================================
+ * 工具层（appbar / 紧凑主题控件 / 侧栏 rail / 移动 drawer / scrim）
+ * 思路：① 顶部控件属于"工具层"，不参与正文排版流；
+ *       ② 阅读正文时让位（headroom）：滚动 >80px → html.ccbgzzy-scrolled → appbar 收缩、主题控件收 icon；
+ *       ③ 移动端标题栏强制单行；主题切换收成 pill + popover/bottom-sheet，不横铺。
+ * 颜色全部 token，禁止渐变。详见 references/components.md。
+ * =================================================================== */
+
+/* —— App Bar（全宽 sticky，内层居中限宽）—— */
+.ccbgzzy-appbar{
+  position:sticky; top:0; z-index:60;
+  background:var(--bg); border-bottom:1px solid var(--border);
+  transition:box-shadow .25s, border-color .25s;
+}
+.ccbgzzy-appbar-inner{
+  display:flex; align-items:center; gap:12px; height:64px;
+  max-width:1320px; margin:0 auto; padding:0 var(--space-6);
+  transition:height var(--dur) var(--ease);
+}
+.ccbgzzy-appbar-lead{ display:flex; align-items:center; gap:10px; min-width:0; flex:1 1 auto; }
+.ccbgzzy-appbar-tools{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
+.ccbgzzy-title-oneline{
+  font-family:var(--font-display); font-weight:800; color:var(--title); letter-spacing:.3px;
+  font-size:var(--text-h4); line-height:1.1;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; max-width:100%;
+  transition:font-size var(--dur) var(--ease);
+}
+.ccbgzzy-title-oneline .sub{ color:var(--fg-muted); font-weight:400; font-size:var(--text-sm); margin-left:10px; }
+/* headroom：滚动后收缩（PC + 移动通用） */
+html.ccbgzzy-scrolled .ccbgzzy-appbar{ box-shadow:var(--shadow-sm); border-bottom-color:transparent; }
+html.ccbgzzy-scrolled .ccbgzzy-appbar-inner{ height:48px; }
+html.ccbgzzy-scrolled .ccbgzzy-title-oneline{ font-size:var(--text-lead); }
+html.ccbgzzy-scrolled .ccbgzzy-title-oneline .sub{ display:none; }
+
+/* —— 图标按钮 / 工具 pill（≤40px 触达，绝不撑破）—— */
+.ccbgzzy-iconbtn{
+  flex:0 0 auto; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center;
+  border-radius:var(--radius-sm); border:1px solid var(--border-strong); background:var(--surface);
+  color:var(--title); cursor:pointer; font-size:var(--text-lead); line-height:1; padding:0;
+  transition:background .2s,border-color .2s;
+}
+.ccbgzzy-iconbtn:hover{ background:var(--surface-2); border-color:var(--primary); }
+.ccbgzzy-tool-pill{
+  display:inline-flex; align-items:center; gap:8px; min-height:38px; max-width:220px;
+  padding:6px 12px; border-radius:var(--radius-pill); border:1px solid var(--border-strong);
+  background:var(--surface); color:var(--title); font:inherit; font-size:var(--text-sm); cursor:pointer;
+  transition:background .2s,border-color .2s,box-shadow .2s,padding var(--dur) var(--ease);
+}
+.ccbgzzy-tool-pill:hover{ background:var(--surface-2); border-color:var(--primary); }
+
+/* —— 统一主题控件：收起=pill，展开=popover/bottom-sheet —— */
+.ccbgzzy-theme-control{ position:relative; flex:0 0 auto; }
+.ccbgzzy-theme-trigger{ /* 复用 tool-pill 外形 */ }
+.ccbgzzy-theme-ring{
+  width:16px; height:16px; flex:0 0 16px; border-radius:50%;
+  border:2px solid var(--surface); box-shadow:0 0 0 1px var(--border-strong); /* background 由 JS 注入当前主题色 */
+}
+.ccbgzzy-theme-trigger-text{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+.ccbgzzy-theme-caret{ flex:0 0 auto; color:var(--fg-muted); font-size:var(--text-xs); transition:transform .2s; }
+.ccbgzzy-theme-trigger[aria-expanded="true"] .ccbgzzy-theme-caret{ transform:rotate(180deg); }
+
+.ccbgzzy-theme-popover{
+  position:absolute; top:calc(100% + 8px); right:0; z-index:80;
+  width:268px; max-width:min(86vw,300px);
+  background:var(--surface); border:1px solid var(--border-strong); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:8px;
+}
+.ccbgzzy-theme-popover[hidden]{ display:none; }
+.ccbgzzy-theme-popover-title{ font-size:var(--text-sm); color:var(--fg-muted); padding:6px 10px 8px; }
+.ccbgzzy-theme-list{ list-style:none; display:flex; flex-direction:column; gap:2px; max-height:50vh; overflow:auto; }
+.ccbgzzy-theme-item{
+  width:100%; display:flex; align-items:center; gap:10px; text-align:left;
+  padding:9px 10px; border-radius:var(--radius-sm); border:1px solid transparent;
+  background:transparent; color:var(--title); font:inherit; font-size:var(--text-sm); cursor:pointer;
+}
+.ccbgzzy-theme-item:hover{ background:var(--surface-2); }
+.ccbgzzy-theme-item.active{ border-color:var(--primary); background:var(--primary-soft); }
+.ccbgzzy-theme-dot{ width:18px; height:18px; flex:0 0 18px; border-radius:50%;
+  border:2px solid var(--surface); box-shadow:0 0 0 1px var(--border-strong); /* background 由 JS 注入 */ }
+.ccbgzzy-theme-item-label{ flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ccbgzzy-theme-item-family{ flex:0 0 auto; font-size:var(--text-xs); color:var(--fg-muted); }
+.ccbgzzy-theme-check{ flex:0 0 auto; color:var(--primary); opacity:0; }
+.ccbgzzy-theme-item.active .ccbgzzy-theme-check{ opacity:1; }
+.ccbgzzy-theme-mode{
+  width:100%; margin-top:6px; padding:9px 10px; border-radius:var(--radius-sm);
+  border:1px solid var(--border-strong); background:transparent; color:var(--primary);
+  font:inherit; font-size:var(--text-sm); cursor:pointer;
+}
+.ccbgzzy-theme-mode:hover{ background:var(--primary-soft); }
+
+/* —— Scrim（drawer / 移动 bottom-sheet 共用遮罩）—— */
+.ccbgzzy-scrim{ position:fixed; inset:0; z-index:110; background:color-mix(in srgb,var(--title) 42%,transparent); border:0; cursor:pointer; }
+.ccbgzzy-scrim[hidden]{ display:none; }
+
+/* —— 侧栏窄 rail（PC：48–64px 纯图标；需要时展开）—— */
+.ccbgzzy-shell{ display:flex; gap:var(--space-5); align-items:flex-start; }
+.ccbgzzy-shell-main{ flex:1 1 auto; min-width:0; }
+.ccbgzzy-sidebar-rail{
+  position:sticky; top:80px; align-self:flex-start; flex:0 0 56px; width:56px;
+  display:flex; flex-direction:column; align-items:center; gap:6px; padding:10px 0;
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+}
+.ccbgzzy-rail-item{
+  width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+  border-radius:var(--radius-sm); color:var(--fg-2); cursor:pointer; border:1px solid transparent;
+  background:transparent; font-size:var(--text-lead);
+}
+.ccbgzzy-rail-item:hover{ background:var(--surface-2); color:var(--title); }
+.ccbgzzy-rail-item.active{ background:var(--primary-soft); color:var(--primary-strong); border-color:var(--primary); }
+
+/* —— 移动 drawer（手机默认隐藏，菜单按钮打开；覆盖正文，不占宽度）—— */
+.ccbgzzy-mobile-drawer{
+  position:fixed; top:0; left:0; bottom:0; z-index:120; width:min(80vw,300px);
+  background:var(--surface); border-right:1px solid var(--border-strong); box-shadow:var(--shadow-lg);
+  transform:translateX(-100%); transition:transform var(--dur) var(--ease);
+  display:flex; flex-direction:column; gap:6px; padding:16px 14px;
+}
+.ccbgzzy-mobile-drawer.is-open{ transform:none; }
+.ccbgzzy-drawer-title{ font-family:var(--font-display); font-weight:700; color:var(--title); font-size:var(--text-h4); margin-bottom:8px; }
+.ccbgzzy-drawer-link{
+  display:block; padding:11px 12px; border-radius:var(--radius-sm); color:var(--fg);
+  font-size:var(--text-body); border:1px solid transparent;
+}
+.ccbgzzy-drawer-link:hover{ background:var(--surface-2); color:var(--title); }
+
+/* PC：drawer 不存在；rail 显示。移动：rail 收起、drawer 可用 */
+@media (min-width:761px){
+  .ccbgzzy-mobile-drawer{ display:none; }
+  .ccbgzzy-menu-btn{ display:none; }   /* 菜单按钮仅移动端 */
+}
+@media (max-width:760px){
+  .ccbgzzy-appbar-inner{ height:48px; padding:0 var(--space-4); }
+  .ccbgzzy-title-oneline{ font-size:var(--text-body); }       /* ~16px，贴近正文 */
+  .ccbgzzy-title-oneline .sub{ display:none; }                /* 副标题不进移动标题栏 */
+  html.ccbgzzy-scrolled .ccbgzzy-appbar-inner{ height:38px; }
+  html.ccbgzzy-scrolled .ccbgzzy-title-oneline{ font-size:var(--text-sm); }
+  .ccbgzzy-sidebar-rail{ display:none; }                      /* 侧栏移动端隐藏，走 drawer */
+  .ccbgzzy-shell{ display:block; }
+  /* 主题控件移动端：默认 icon-only（≈40px），不横铺、不撑高 */
+  .ccbgzzy-theme-trigger-text{ display:none; }
+  .ccbgzzy-theme-trigger{ padding:6px; max-width:none; }
+  /* popover → 底部 sheet，不占正文流 */
+  .ccbgzzy-theme-popover{
+    position:fixed; left:0; right:0; bottom:0; top:auto; width:auto; max-width:none;
+    border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+    padding:12px 14px calc(14px + env(safe-area-inset-bottom)); box-shadow:var(--shadow-lg); z-index:130;
+  }
+  .ccbgzzy-theme-list{ max-height:54vh; }
+}
+/* 滚动后主题控件一律收成 icon-only（PC 也收） */
+html.ccbgzzy-scrolled .ccbgzzy-theme-trigger-text{ display:none; }
+html.ccbgzzy-scrolled .ccbgzzy-theme-trigger{ padding:6px; }
+
 /* ---------- 滚动入场（渐进增强：无 JS 时核心内容默认可见）----------
    关键：只有当 <html> 带 .ccbgzzy-js（由 theme-config.js 立即注入）时才启用隐藏动画。
    QuickLook / 静态渲染 / 禁用 JS 时无此类 → [data-reveal] 完全可见，内容不丢。 */
 html.ccbgzzy-js [data-reveal]{ opacity:0; transform:translateY(22px); transition:opacity .6s var(--ease),transform .6s var(--ease); }
 html.ccbgzzy-js [data-reveal].is-visible{ opacity:1; transform:none; }
 
-/* ---------- 移动端：允许响应式缩放，但正文不得低于 15px ---------- */
-@media (max-width:600px){
-  html{ font-size:16px; }              /* 1rem=16px，正文仍 ≥15px 下限 */
+/* ===================================================================
+ * 移动端强约束（≤760px）：① 页面零横向溢出 ② 标题单行 ③ 表格→卡片(不拖拽)
+ * 桌面端不受影响。详见 references/tables.md。
+ * =================================================================== */
+/* ① 页面级横向溢出保险（clip 不创建滚动容器，不破坏 sticky）*/
+html{ overflow-x:clip; }
+body{ overflow-x:clip; }
+*{ min-width:0; }   /* 防止 grid/flex 子项 min-content 撑破容器 */
+
+@media (max-width:760px){
+  /* ② 主标题强制单行 + 省略号，绝不换行、绝不撑出横向滚动 */
+  h1, .section-title, .mobile-single-line-title{
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
+  }
+  .brand{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:100%; }
+
+  /* ③ 表格 → 卡片（GOVUK table-card 模式）：保留 table 语义，视觉变纵向卡片 */
+  .data-table, .data-table.tall{ overflow:visible; max-height:none; border:none; border-radius:0; -webkit-overflow-scrolling:auto; }
+  .table thead{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }   /* 视觉隐藏，保留语义 */
+  .table, .table tbody, .table tr, .table td{ display:block; width:auto; }
+  .table tbody tr{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:8px 14px; margin-bottom:10px; }
+  .table tbody tr:hover td{ background:transparent; }
+  .table.zebra tbody tr:nth-child(even) td{ background:transparent; }
+  .table tbody td{ display:flex; justify-content:space-between; align-items:baseline; gap:14px;
+    padding:8px 0; border-bottom:1px solid var(--border); text-align:right; color:var(--fg); white-space:normal; }
+  .table tbody td:last-child{ border-bottom:none; }
+  /* 字段名：用 data-label 自动生成（aria 友好，桌面端不显示）；无 data-label 则不显标签 */
+  .table tbody td[data-label]::before{ content:attr(data-label); color:var(--fg-muted); font-weight:600; text-align:left; flex:0 0 auto; }
+  .table th.num, .table td.num{ text-align:right; }
+  /* 列角色（C）：data-mobile-title 作卡片标题；data-mobile-hide 隐藏；data-mobile-actions 置底 */
+  .table td[data-mobile-title]{ display:block; text-align:left; color:var(--title); font-weight:700;
+    font-size:var(--text-body); border-bottom:1px solid var(--border-strong); padding-bottom:8px; margin-bottom:2px; }
+  .table td[data-mobile-title]::before{ content:none; }
+  .table td[data-mobile-hide]{ display:none; }
+  .table td[data-mobile-actions]{ justify-content:flex-start; padding-top:10px; }
+  .table td[data-mobile-actions]::before{ content:none; }
+
+  /* 间距 + 字号下限 */
+  html{ font-size:16px; }
   .container{ padding:0 var(--space-4); }
   .section{ padding:var(--space-6) 0; }
 }

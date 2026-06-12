@@ -2,7 +2,7 @@
  * ===================================================================
  * CCBGZZY_DESIGN · 统一主题配置中心 (theme-config.js)
  * ===================================================================
- * 版本：v1.0.0-rc.6
+ * 版本：v1.0.0-rc.7
  * 作用：集中管理全部主题与语义色 token。一处定义，全站统一。
  *
  * ★ v1.1 配色哲学：「同色阶 + 单点强调」（科研期刊式）
@@ -30,225 +30,42 @@
 
 window.CCBGZZY_THEMES = {
 
-  /* ════════════════════════════════════════════════════════════
-   * ★ 推荐默认主题 · 砂绿 Sage
-   *   严格采用用户给定 6 色值：奶油底 + 鼠尾草绿(同色阶) + 标志橙(单点) + #1A1A1A 文字。
-   *   规矩：圆角 14–16px · 留白≥20% · 关键词只换 1–2 处色 · 用 #1A1A1A 不用 #000。
-   *   气质：organic / editorial · 可亲近的高级感。
-   * ════════════════════════════════════════════════════════════ */
-  'sage': {
-    mode: 'light',
-    '--bg':'#EFEAE0',         /* 主背景 */
-    '--surface':'#E5DFD2',    /* 浅卡片 */
-    '--surface-2':'#DBD4C5',  /* 次级/悬浮（同family推深一档）*/
-    '--title':'#1A1A1A',      /* 强调黑（标题）*/
-    '--fg':'#3A382F',         /* 正文（#1A1A1A 柔化一档）*/
-    '--fg-2':'#6A685B',       /* 次要文字 */
-    '--fg-muted':'#908D7E',   /* 辅助文字 */
-    '--primary':'#6B8A6F',    /* 深鼠尾草（主色/结构）*/
-    '--primary-strong':'#56745B',
-    '--accent':'#CD6F47',     /* 标志橙（唯一单点强调）*/
-    '--accent-soft':'rgba(205,111,71,0.14)',
-    '--border':'rgba(26,26,26,0.10)', '--border-strong':'rgba(26,26,26,0.20)',
-    '--success':'#5E8B5A', '--warning':'#C0883C', '--attention':'#9C8A63', '--danger':'#B5503C', '--info':'#5E7E86',
-    /* 同色阶：浅鼠尾草 → 深鼠尾草（seq-5 最显著）*/
-    '--seq-1':'#D7E1D7', '--seq-2':'#BDCEC0', '--seq-3':'#95B099', '--seq-4':'#6B8A6F', '--seq-5':'#4E6A52',
-  },
+  'sage': { mode:'light', '--bg':'#EFEAE0', '--surface':'#E5DFD2', '--surface-2':'#DBD4C5', '--title':'#1A1A1A', '--fg':'#3A382F', '--fg-2':'#6A685B', '--fg-muted':'#908D7E', '--primary':'#6B8A6F', '--primary-strong':'#56745B', '--accent':'#CD6F47', '--accent-soft':'rgba(205,111,71,0.14)', '--border':'rgba(26,26,26,0.10)', '--border-strong':'rgba(26,26,26,0.20)', '--success':'#5E8B5A', '--warning':'#C0883C', '--attention':'#9C8A63', '--danger':'#B5503C', '--info':'#5E7E86', '--seq-1':'#D7E1D7', '--seq-2':'#BDCEC0', '--seq-3':'#95B099', '--seq-4':'#6B8A6F', '--seq-5':'#4E6A52' },
 
-  /* ★ 稳定主题 · 砂绿 sage-dark（深色版，与 sage 配对）
-   *   暖炭底 + 鼠尾草 + 标志橙，文字暖白。深浅切换的另一半。 */
-  'sage-dark': {
-    mode: 'dark',
-    '--bg':'#1B1A16', '--surface':'#26241E', '--surface-2':'#322F27',
-    '--title':'#F0EBE0', '--fg':'#D8D2C4', '--fg-2':'#A7A192', '--fg-muted':'#7C7768',
-    '--primary':'#8FAE93', '--primary-strong':'#A9C2AC',
-    '--accent':'#DD8359', '--accent-soft':'rgba(221,131,89,0.18)',
-    '--border':'rgba(240,235,224,0.12)', '--border-strong':'rgba(240,235,224,0.24)',
-    '--success':'#6FA873', '--warning':'#C99A4A', '--attention':'#C9B27A', '--danger':'#C56B54', '--info':'#6E97A0',
-    /* 深色版：seq-5 最浅=最显著（在暗底上更亮更突出）*/
-    '--seq-1':'#3E5142', '--seq-2':'#4E6A52', '--seq-3':'#6B8A6F', '--seq-4':'#8FAE93', '--seq-5':'#B6CDB9',
-  },
+  'gov-finance-blue': { mode:'light', '--bg':'#EEF3F8', '--surface':'#FFFFFF', '--surface-2':'#F6F8FB', '--title':'#183153', '--fg':'#4B5D73', '--fg-2':'#718094', '--fg-muted':'#98A4B3', '--primary':'#2F73B8', '--primary-strong':'#1F5E9D', '--accent':'#D6A63A', '--accent-soft':'rgba(214,166,58,0.14)', '--border':'rgba(24,49,83,0.12)', '--border-strong':'rgba(24,49,83,0.24)', '--success':'#4FA66A', '--warning':'#D0882E', '--attention':'#C9B27A', '--danger':'#D45B4F', '--info':'#4A91C9', '--seq-1':'#2F73B8', '--seq-2':'#4A91C9', '--seq-3':'#62AFC0', '--seq-4':'#6BAE75', '--seq-5':'#D6A63A' },
 
-  /* ───────── 开放主题 · 墨金 Obsidian Gold ─────────
-   * 近黑底 + 暖金主色，蓝为单点强调。权威·金融质感。 */
-  'obsidian-gold': {
-    mode: 'dark',
-    '--bg':'#0A0A0F', '--surface':'#15151D', '--surface-2':'#20202C',
-    '--title':'#FBF7EC', '--fg':'#E2DCCC', '--fg-2':'#B0A892', '--fg-muted':'#7C745F',
-    '--primary':'#C2A458', '--primary-strong':'#DCC07E',
-    '--accent':'#6F94AD', '--accent-soft':'rgba(111,148,173,0.16)',
-    '--border':'rgba(201,168,76,0.16)', '--border-strong':'rgba(201,168,76,0.34)',
-    '--success':'#5FB87A', '--warning':'#E0A33E', '--danger':'#DC6B62', '--info':'#6FA8D0',
-    '--seq-1':'#E8D6A6', '--seq-2':'#D6BC72', '--seq-3':'#C9A84C', '--seq-4':'#9A7F33', '--seq-5':'#6E5A22',
-  },
+  'gov-finance-blue-dark': { mode:'dark', '--bg':'#0F2036', '--surface':'#16304F', '--surface-2':'#1E3C61', '--title':'#EAF1F8', '--fg':'#C6D3E2', '--fg-2':'#9DB0C6', '--fg-muted':'#74879E', '--primary':'#5C9BD6', '--primary-strong':'#7FB4E2', '--accent':'#E0B452', '--accent-soft':'rgba(224,180,82,0.18)', '--border':'rgba(234,241,248,0.12)', '--border-strong':'rgba(234,241,248,0.24)', '--success':'#5FB87C', '--warning':'#DDA445', '--attention':'#C9B27A', '--danger':'#DD6E62', '--info':'#6BA8DE', '--seq-1':'#2F73B8', '--seq-2':'#4A91C9', '--seq-3':'#62AFC0', '--seq-4':'#6BAE75', '--seq-5':'#E0B452' },
 
-  /* ───────── 开放主题 · 深海 Deep Ocean ─────────
-   * 取自 Maastricht/Columbia/Pale Cerulean/Blue Yonder 同色蓝阶，暖砂为单点强调。 */
-  'deep-ocean': {
-    mode: 'dark',
-    '--bg':'#04233F', '--surface':'#0A3454', '--surface-2':'#134267',
-    '--title':'#F2F7FC', '--fg':'#D4E2F0', '--fg-2':'#A9C4E0', '--fg-muted':'#88A2BE',
-    '--primary':'#93BEE2', '--primary-strong':'#B6D6EE',
-    '--accent':'#CC9D6E', '--accent-soft':'rgba(204,157,110,0.18)',
-    '--border':'rgba(154,188,224,0.16)', '--border-strong':'rgba(154,188,224,0.32)',
-    '--success':'#5BB98C', '--warning':'#E6B566', '--danger':'#E0707A', '--info':'#79B0E0',
-    '--seq-1':'#C4D4E6', '--seq-2':'#9ABCE0', '--seq-3':'#6F9FCC', '--seq-4':'#4474A3', '--seq-5':'#2A537E',
-  },
+  'sky-field': { mode:'light', '--bg':'#F3F9FC', '--surface':'#FFFFFF', '--surface-2':'#E1F3FA', '--title':'#1E2E3C', '--fg':'#38485A', '--fg-2':'#647686', '--fg-muted':'#93A0AB', '--primary':'#377EB8', '--primary-strong':'#2A608E', '--accent':'#DC7369', '--accent-soft':'rgba(220,115,105,0.14)', '--border':'rgba(30,46,60,0.12)', '--border-strong':'rgba(30,46,60,0.22)', '--success':'#5A9A55', '--warning':'#C99A2E', '--attention':'#B6A86A', '--danger':'#B23648', '--info':'#377EB8', '--seq-1':'#E1F3FA', '--seq-2':'#A9D2EA', '--seq-3':'#6FA9D0', '--seq-4':'#377EB8', '--seq-5':'#285C86' },
 
-  /* ───────── 开放主题 · 月白 Platinum Blue ─────────
-   * 取自 Platinum/Yankees/Dark Sky/B'dazzled/Charcoal 冷调蓝灰，陶土为单点强调。 */
-  'platinum-blue': {
-    mode: 'light',
-    '--bg':'#F4F5F6', '--surface':'#FFFFFF', '--surface-2':'#E8EBEF',
-    '--title':'#22303F', '--fg':'#394A56', '--fg-2':'#5E7081', '--fg-muted':'#8A98A4',
-    '--primary':'#3D6B89', '--primary-strong':'#2A506B',
-    '--accent':'#B27355', '--accent-soft':'rgba(178,115,85,0.14)',
-    '--border':'rgba(34,48,63,0.12)', '--border-strong':'rgba(34,48,63,0.24)',
-    '--success':'#2E8B6A', '--warning':'#B07A20', '--danger':'#BE4F49', '--info':'#2C6485',
-    '--seq-1':'#C9DCEA', '--seq-2':'#8FBFDA', '--seq-3':'#5E92B5', '--seq-4':'#2C6485', '--seq-5':'#1B3D54',
-  },
+  'sky-field-dark': { mode:'dark', '--bg':'#101E2A', '--surface':'#1A2D3D', '--surface-2':'#233A4D', '--title':'#EAF2F8', '--fg':'#C6D6E2', '--fg-2':'#9AAEBE', '--fg-muted':'#6F8294', '--primary':'#5E9FD0', '--primary-strong':'#7FB6E0', '--accent':'#E08A80', '--accent-soft':'rgba(224,138,128,0.18)', '--border':'rgba(234,242,248,0.12)', '--border-strong':'rgba(234,242,248,0.24)', '--success':'#6FB46A', '--warning':'#D8AE55', '--attention':'#C2B488', '--danger':'#C9505F', '--info':'#5E9FD0', '--seq-1':'#21425E', '--seq-2':'#2F6491', '--seq-3':'#377EB8', '--seq-4':'#6FA9D0', '--seq-5':'#A9D2EA' },
 
-  /* ───────── 开放主题 · 暖砂 Warm Sand ─────────
-   * 取自 Studio Vaia「Cold Sky」暖中性(羊毛/焦糖)+冷蓝，冷蓝为单点强调。 */
-  'warm-sand': {
-    mode: 'light',
-    '--bg':'#F4EFE8', '--surface':'#FBF8F3', '--surface-2':'#EAE1D5',
-    '--title':'#2E3A45', '--fg':'#574F45', '--fg-2':'#837868', '--fg-muted':'#A89C8B',
-    '--primary':'#4E7C93', '--primary-strong':'#3A6173',
-    '--accent':'#B56B7A', '--accent-soft':'rgba(181,107,122,0.12)',
-    '--border':'rgba(46,58,69,0.12)', '--border-strong':'rgba(46,58,69,0.22)',
-    '--success':'#5E8B5A', '--warning':'#C28A3E', '--danger':'#B5604A', '--info':'#4E7C93',
-    '--seq-1':'#CBD9DE', '--seq-2':'#9DBAC4', '--seq-3':'#6E97A5', '--seq-4':'#4E7C93', '--seq-5':'#355A68',
-  },
+  'summer-coast': { mode:'light', '--bg':'#FBF7F0', '--surface':'#FFFFFF', '--surface-2':'#F1EAE0', '--title':'#2A2622', '--fg':'#4A443D', '--fg-2':'#756D63', '--fg-muted':'#A39A8E', '--primary':'#3C9BC9', '--primary-strong':'#2C77A0', '--accent':'#F4775A', '--accent-soft':'rgba(244,119,90,0.14)', '--border':'rgba(42,38,34,0.12)', '--border-strong':'rgba(42,38,34,0.22)', '--success':'#6FAE63', '--warning':'#E6A23C', '--attention':'#E2B96A', '--danger':'#D8504F', '--info':'#3C9BC9', '--seq-1':'#CDEBEA', '--seq-2':'#8FD0CD', '--seq-3':'#65BDBA', '--seq-4':'#3C9BC9', '--seq-5':'#2C77A0' },
 
-  /* ═══════ 开放候选主题 · 4 套 × light/dark ═══════
-   * 规则：文字只用中性 title/fg/fg-2/fg-muted（不用色卡高饱和色）；
-   *       primary=主色、accent=唯一强调(每页1–2处)、seq=图表色阶；
-   *       danger 仅严重异常；全程无渐变。 */
-
-  /* A · 海洋清风 ocean-breeze（蓝绿主色 + 橙强调）*/
-  'ocean-breeze': {
-    mode:'light',
-    '--bg':'#F2F7FB','--surface':'#FFFFFF','--surface-2':'#E4EEF5',
-    '--title':'#16323A','--fg':'#33474E','--fg-2':'#5E737A','--fg-muted':'#8A9AA0',
-    '--primary':'#3E8C97','--primary-strong':'#2C6A74',
-    '--accent':'#E58A4A','--accent-soft':'rgba(229,138,74,0.14)',
-    '--border':'rgba(22,50,58,0.12)','--border-strong':'rgba(22,50,58,0.22)',
-    '--success':'#4F9E86','--warning':'#E0A23E','--attention':'#C7A86A','--danger':'#C8534A','--info':'#4198AC',
-    '--seq-1':'#BFDDF2','--seq-2':'#7BC0CD','--seq-3':'#51999F','--seq-4':'#3E8C97','--seq-5':'#2C6A74',
-  },
-  'ocean-breeze-dark': {
-    mode:'dark',
-    '--bg':'#0E2027','--surface':'#163039','--surface-2':'#1F404A',
-    '--title':'#EAF3F5','--fg':'#C9DCE0','--fg-2':'#9DB6BC','--fg-muted':'#748A90',
-    '--primary':'#6FB9C4','--primary-strong':'#8FCDD6',
-    '--accent':'#EE9E62','--accent-soft':'rgba(238,158,98,0.18)',
-    '--border':'rgba(234,243,245,0.12)','--border-strong':'rgba(234,243,245,0.24)',
-    '--success':'#6FBFA0','--warning':'#E6B566','--attention':'#CDB682','--danger':'#D77468','--info':'#6FB9C4',
-    '--seq-1':'#234A53','--seq-2':'#347078','--seq-3':'#4198AC','--seq-4':'#7BC0CD','--seq-5':'#BFDDF2',
-  },
-
-  /* B · 蓝天绿地 sky-field（蓝主色 + 珊瑚强调，深红仅严重异常）*/
-  'sky-field': {
-    mode:'light',
-    '--bg':'#F3F9FC','--surface':'#FFFFFF','--surface-2':'#E1F3FA',
-    '--title':'#1E2E3C','--fg':'#38485A','--fg-2':'#647686','--fg-muted':'#93A0AB',
-    '--primary':'#377EB8','--primary-strong':'#2A608E',
-    '--accent':'#DC7369','--accent-soft':'rgba(220,115,105,0.14)',
-    '--border':'rgba(30,46,60,0.12)','--border-strong':'rgba(30,46,60,0.22)',
-    '--success':'#5A9A55','--warning':'#C99A2E','--attention':'#B6A86A','--danger':'#B23648','--info':'#377EB8',
-    '--seq-1':'#E1F3FA','--seq-2':'#A9D2EA','--seq-3':'#6FA9D0','--seq-4':'#377EB8','--seq-5':'#285C86',
-  },
-  'sky-field-dark': {
-    mode:'dark',
-    '--bg':'#101E2A','--surface':'#1A2D3D','--surface-2':'#233A4D',
-    '--title':'#EAF2F8','--fg':'#C6D6E2','--fg-2':'#9AAEBE','--fg-muted':'#6F8294',
-    '--primary':'#5E9FD0','--primary-strong':'#7FB6E0',
-    '--accent':'#E08A80','--accent-soft':'rgba(224,138,128,0.18)',
-    '--border':'rgba(234,242,248,0.12)','--border-strong':'rgba(234,242,248,0.24)',
-    '--success':'#6FB46A','--warning':'#D8AE55','--attention':'#C2B488','--danger':'#C9505F','--info':'#5E9FD0',
-    '--seq-1':'#21425E','--seq-2':'#2F6491','--seq-3':'#377EB8','--seq-4':'#6FA9D0','--seq-5':'#A9D2EA',
-  },
-
-  /* C · 夏日海滩 summer-coast（蓝绿主色 + 珊瑚强调，活动/活泼）*/
-  'summer-coast': {
-    mode:'light',
-    '--bg':'#FBF7F0','--surface':'#FFFFFF','--surface-2':'#F1EAE0',
-    '--title':'#2A2622','--fg':'#4A443D','--fg-2':'#756D63','--fg-muted':'#A39A8E',
-    '--primary':'#3C9BC9','--primary-strong':'#2C77A0',
-    '--accent':'#F4775A','--accent-soft':'rgba(244,119,90,0.14)',
-    '--border':'rgba(42,38,34,0.12)','--border-strong':'rgba(42,38,34,0.22)',
-    '--success':'#6FAE63','--warning':'#E6A23C','--attention':'#E2B96A','--danger':'#D8504F','--info':'#3C9BC9',
-    '--seq-1':'#CDEBEA','--seq-2':'#8FD0CD','--seq-3':'#65BDBA','--seq-4':'#3C9BC9','--seq-5':'#2C77A0',
-  },
-  'summer-coast-dark': {
-    mode:'dark',
-    '--bg':'#1A1714','--surface':'#262019','--surface-2':'#322A20',
-    '--title':'#F4ECE0','--fg':'#DAD0C2','--fg-2':'#ABA08F','--fg-muted':'#7E7464',
-    '--primary':'#5BB6D4','--primary-strong':'#7FCBE2',
-    '--accent':'#FB8E70','--accent-soft':'rgba(251,142,112,0.18)',
-    '--border':'rgba(244,236,224,0.12)','--border-strong':'rgba(244,236,224,0.24)',
-    '--success':'#79B86C','--warning':'#E6B466','--attention':'#E8C57E','--danger':'#E06B66','--info':'#5BB6D4',
-    '--seq-1':'#1F5A78','--seq-2':'#2C77A0','--seq-3':'#3C9BC9','--seq-4':'#65BDBA','--seq-5':'#A7DAD7',
-  },
-
-  /* D · 清新假日 fresh-holiday（薄荷绿主色 + 珊瑚强调，轻量）*/
-  'fresh-holiday': {
-    mode:'light',
-    '--bg':'#F4F8F6','--surface':'#FFFFFF','--surface-2':'#E7EFEA',
-    '--title':'#1E2B27','--fg':'#3A4742','--fg-2':'#647069','--fg-muted':'#929EAB',
-    '--primary':'#38A87E','--primary-strong':'#2A8463',
-    '--accent':'#F58A6E','--accent-soft':'rgba(245,138,110,0.14)',
-    '--border':'rgba(30,43,39,0.12)','--border-strong':'rgba(30,43,39,0.22)',
-    '--success':'#4E9E63','--warning':'#D9A23A','--attention':'#C9A86A','--danger':'#D45F4F','--info':'#5A97C4',
-    '--seq-1':'#BFE8D5','--seq-2':'#8FD9BB','--seq-3':'#6AD1A3','--seq-4':'#3FA882','--seq-5':'#2C7D62',
-  },
-  'fresh-holiday-dark': {
-    mode:'dark',
-    '--bg':'#131A17','--surface':'#1D2723','--surface-2':'#27332E',
-    '--title':'#ECF3EF','--fg':'#CCDAD2','--fg-2':'#9DACA4','--fg-muted':'#748079',
-    '--primary':'#5FC79A','--primary-strong':'#7FD6B0',
-    '--accent':'#FF9E84','--accent-soft':'rgba(255,158,132,0.18)',
-    '--border':'rgba(236,243,239,0.12)','--border-strong':'rgba(236,243,239,0.24)',
-    '--success':'#5FB87F','--warning':'#E0B45A','--attention':'#C9B27A','--danger':'#DE6E5E','--info':'#7FB5DC',
-    '--seq-1':'#235543','--seq-2':'#2C7D62','--seq-3':'#3FA882','--seq-4':'#6AD1A3','--seq-5':'#A7E3CC',
-  },
+  'warm-sand': { mode:'light', '--bg':'#F4EFE8', '--surface':'#FBF8F3', '--surface-2':'#EAE1D5', '--title':'#2E3A45', '--fg':'#574F45', '--fg-2':'#837868', '--fg-muted':'#A89C8B', '--primary':'#4E7C93', '--primary-strong':'#3A6173', '--accent':'#B56B7A', '--accent-soft':'rgba(181,107,122,0.12)', '--border':'rgba(46,58,69,0.12)', '--border-strong':'rgba(46,58,69,0.22)', '--success':'#5E8B5A', '--warning':'#C28A3E', '--attention':'#A8916A', '--danger':'#B5604A', '--info':'#4E7C93', '--seq-1':'#CBD9DE', '--seq-2':'#9DBAC4', '--seq-3':'#6E97A5', '--seq-4':'#4E7C93', '--seq-5':'#355A68' },
 
 };
 
 /* 主题展示顺序（切换器 UI）。当前试用阶段：14 个 theme key 全部开放可切换。 */
 window.CCBGZZY_THEME_ORDER = [
-  'sage', 'sage-dark',
-  'ocean-breeze', 'ocean-breeze-dark',
-  'sky-field', 'sky-field-dark',
-  'summer-coast', 'summer-coast-dark',
-  'fresh-holiday', 'fresh-holiday-dark',
-  'warm-sand', 'obsidian-gold',
-  'platinum-blue', 'deep-ocean',
+  'sage', 'gov-finance-blue', 'gov-finance-blue-dark', 'sky-field', 'sky-field-dark', 'summer-coast', 'warm-sand',
 ];
 
 /* 主题元信息（切换器 UI）。
    family 用于分组/下拉展示；label 用于可见标签；swatch* 用于色卡。 */
 window.CCBGZZY_THEME_META = {
-  'sage':              { family:'推荐默认', label:'砂绿',     mode:'light', swatchBg:'#EFEAE0', swatchAccent:'#CD6F47' },
-  'sage-dark':         { family:'推荐默认', label:'砂绿·夜',   mode:'dark',  swatchBg:'#1B1A16', swatchAccent:'#DD8359' },
-  'ocean-breeze':      { family:'业务冷静', label:'海洋清风',  mode:'light', swatchBg:'#F2F7FB', swatchAccent:'#E58A4A' },
-  'ocean-breeze-dark': { family:'业务冷静', label:'海洋·夜',   mode:'dark',  swatchBg:'#0E2027', swatchAccent:'#EE9E62' },
-  'sky-field':         { family:'复盘风险', label:'蓝天绿地',  mode:'light', swatchBg:'#F3F9FC', swatchAccent:'#DC7369' },
-  'sky-field-dark':    { family:'复盘风险', label:'蓝天·夜',   mode:'dark',  swatchBg:'#101E2A', swatchAccent:'#E08A80' },
-  'summer-coast':      { family:'活动指引', label:'夏日海滩',  mode:'light', swatchBg:'#FBF7F0', swatchAccent:'#F4775A' },
-  'summer-coast-dark': { family:'活动指引', label:'夏日·夜',   mode:'dark',  swatchBg:'#1A1714', swatchAccent:'#FB8E70' },
-  'fresh-holiday':     { family:'轻量友好', label:'清新假日',  mode:'light', swatchBg:'#F4F8F6', swatchAccent:'#F58A6E' },
-  'fresh-holiday-dark':{ family:'轻量友好', label:'清新·夜',   mode:'dark',  swatchBg:'#131A17', swatchAccent:'#FF9E84' },
-  'warm-sand':         { family:'暖中性',   label:'暖砂',     mode:'light', swatchBg:'#F4EFE8', swatchAccent:'#B56B7A' },
-  'obsidian-gold':     { family:'暖中性',   label:'墨金',     mode:'dark',  swatchBg:'#0A0A0F', swatchAccent:'#C2A458' },
-  'platinum-blue':     { family:'冷蓝灰',   label:'月白',     mode:'light', swatchBg:'#F4F5F6', swatchAccent:'#B27355' },
-  'deep-ocean':        { family:'冷蓝灰',   label:'深海',     mode:'dark',  swatchBg:'#04233F', swatchAccent:'#93BEE2' },
+  'sage': { family:'推荐默认', label:'砂绿', mode:'light', swatchBg:'#EFEAE0', swatchAccent:'#CD6F47' },
+  'gov-finance-blue': { family:'政务金融', label:'政金蓝', mode:'light', swatchBg:'#EEF3F8', swatchAccent:'#D6A63A' },
+  'gov-finance-blue-dark': { family:'政务金融', label:'政金·夜', mode:'dark', swatchBg:'#0F2036', swatchAccent:'#E0B452' },
+  'sky-field': { family:'复盘风险', label:'蓝天绿地', mode:'light', swatchBg:'#F3F9FC', swatchAccent:'#DC7369' },
+  'sky-field-dark': { family:'复盘风险', label:'蓝天·夜', mode:'dark', swatchBg:'#101E2A', swatchAccent:'#E08A80' },
+  'summer-coast': { family:'活动指引', label:'夏日海滩', mode:'light', swatchBg:'#FBF7F0', swatchAccent:'#F4775A' },
+  'warm-sand': { family:'暖中性', label:'暖砂', mode:'light', swatchBg:'#F4EFE8', swatchAccent:'#B56B7A' },
 };
 window.CCBGZZY_EXPERIMENTAL = [];  /* 试用阶段全部进 META；正式可在此回收非推荐主题 */
 
 window.CCBGZZY_DEFAULT_THEME = 'sage';
-window.CCBGZZY_VERSION = 'v1.0.0-rc.6';
+window.CCBGZZY_VERSION = 'v1.0.0-rc.7';
 
 /* 给模板/外部页面统一取主题列表，避免手写固定主题导致"隐藏主题"再次出现。 */
 window.CCBGZZY_getThemeOptions = function () {
@@ -289,13 +106,8 @@ window.CCBGZZY_applyTheme = function (themeName) {
 window.CCBGZZY_toggleMode = function () {
   var root = document.documentElement;
   var cur = root.getAttribute('data-theme') || window.CCBGZZY_DEFAULT_THEME;
-  var pair = { 'sage':'sage-dark', 'sage-dark':'sage',
-               'ocean-breeze':'ocean-breeze-dark', 'ocean-breeze-dark':'ocean-breeze',
-               'sky-field':'sky-field-dark', 'sky-field-dark':'sky-field',
-               'summer-coast':'summer-coast-dark', 'summer-coast-dark':'summer-coast',
-               'fresh-holiday':'fresh-holiday-dark', 'fresh-holiday-dark':'fresh-holiday',
-               'obsidian-gold':'warm-sand', 'warm-sand':'obsidian-gold',
-               'deep-ocean':'platinum-blue', 'platinum-blue':'deep-ocean' };
+  var pair = { 'gov-finance-blue':'gov-finance-blue-dark', 'gov-finance-blue-dark':'gov-finance-blue',
+               'sky-field':'sky-field-dark', 'sky-field-dark':'sky-field' };
   var next = pair[cur] || window.CCBGZZY_DEFAULT_THEME;
   window.CCBGZZY_applyTheme(next);
   if (typeof window.CCBGZZY_syncSwitcher === 'function') window.CCBGZZY_syncSwitcher(next);
@@ -324,12 +136,176 @@ window.CCBGZZY_initWatermark = function (opts) {
   }
 };
 
+/* ===================================================================
+ * 工具层运行时：紧凑主题控件 + 共享 scrim + 移动 drawer + headroom 滚动
+ * 设计：控件由 JS 构建（色值用 .style 注入，避免成品里出现硬编码颜色）。
+ *       页面只需放挂载点 <div data-ccbgzzy-theme-control></div>，自动填充。
+ * =================================================================== */
+window.__ccbgzzyThemeControls = window.__ccbgzzyThemeControls || [];
+
+/* 共享遮罩：drawer 与移动端主题 sheet 共用一块 */
+window.CCBGZZY_getScrim = function () {
+  var s = document.getElementById('ccbgzzy-scrim');
+  if (!s) {
+    s = document.createElement('button');
+    s.id = 'ccbgzzy-scrim'; s.className = 'ccbgzzy-scrim'; s.type = 'button';
+    s.setAttribute('aria-label', '关闭'); s.hidden = true;
+    s.addEventListener('click', function () { window.CCBGZZY_closeAllOverlays(); });
+    document.body.appendChild(s);
+  }
+  return s;
+};
+window.CCBGZZY_showScrim = function () { var s = window.CCBGZZY_getScrim(); s.hidden = false; };
+window.CCBGZZY_hideScrim = function () { var s = document.getElementById('ccbgzzy-scrim'); if (s) s.hidden = true; };
+
+window.CCBGZZY_closeAllOverlays = function () {
+  window.__ccbgzzyThemeControls.forEach(function (c) { c.close && c.close(); });
+  document.querySelectorAll('.ccbgzzy-mobile-drawer.is-open').forEach(function (d) { d.classList.remove('is-open'); });
+  window.CCBGZZY_hideScrim();
+};
+
+/* 构建一个紧凑主题控件（trigger pill + popover/bottom-sheet） */
+window.CCBGZZY_mountThemeControl = function (host) {
+  if (!host || host.__ccbgzzyMounted) return; host.__ccbgzzyMounted = true;
+  host.classList.add('ccbgzzy-theme-control');
+  var options = (typeof CCBGZZY_getThemeOptions === 'function') ? CCBGZZY_getThemeOptions() : [];
+  var metaOf = {}; options.forEach(function (o) { metaOf[o.key] = o; });
+
+  var trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'ccbgzzy-tool-pill ccbgzzy-theme-trigger';
+  trigger.setAttribute('aria-haspopup', 'true');
+  trigger.setAttribute('aria-expanded', 'false');
+  var ring = document.createElement('span'); ring.className = 'ccbgzzy-theme-ring';
+  var txt = document.createElement('span'); txt.className = 'ccbgzzy-theme-trigger-text'; txt.textContent = '主题';
+  var caret = document.createElement('span'); caret.className = 'ccbgzzy-theme-caret'; caret.textContent = '▾';
+  trigger.appendChild(ring); trigger.appendChild(txt); trigger.appendChild(caret);
+
+  var pop = document.createElement('div');
+  pop.className = 'ccbgzzy-theme-popover'; pop.setAttribute('role', 'menu'); pop.hidden = true;
+  var ttl = document.createElement('div'); ttl.className = 'ccbgzzy-theme-popover-title'; ttl.textContent = '选择主题';
+  var list = document.createElement('ul'); list.className = 'ccbgzzy-theme-list';
+  var items = {};
+  options.forEach(function (o) {
+    var li = document.createElement('li');
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'ccbgzzy-theme-item'; b.setAttribute('role', 'menuitemradio'); b.dataset.theme = o.key;
+    var dot = document.createElement('span'); dot.className = 'ccbgzzy-theme-dot';
+    dot.style.background = o.swatchAccent; dot.style.borderColor = o.swatchBg;
+    var lab = document.createElement('span'); lab.className = 'ccbgzzy-theme-item-label'; lab.textContent = o.label;
+    var fam = document.createElement('span'); fam.className = 'ccbgzzy-theme-item-family';
+    fam.textContent = (o.family ? o.family + ' · ' : '') + (o.mode === 'dark' ? '深' : '浅');
+    var chk = document.createElement('span'); chk.className = 'ccbgzzy-theme-check'; chk.textContent = '✓'; chk.setAttribute('aria-hidden', 'true');
+    b.appendChild(dot); b.appendChild(lab); b.appendChild(fam); b.appendChild(chk);
+    b.onclick = function () { CCBGZZY_applyTheme(o.key); CCBGZZY_syncSwitcher(o.key); control.close(); };
+    items[o.key] = b; li.appendChild(b); list.appendChild(li);
+  });
+  var modeBtn = document.createElement('button');
+  modeBtn.type = 'button'; modeBtn.className = 'ccbgzzy-theme-mode'; modeBtn.textContent = '🌙 深 / 浅切换';
+  modeBtn.onclick = function () { CCBGZZY_toggleMode(); };
+  pop.appendChild(ttl); pop.appendChild(list); pop.appendChild(modeBtn);
+
+  host.appendChild(trigger); host.appendChild(pop);
+
+  function isMobile() { return window.matchMedia && window.matchMedia('(max-width:760px)').matches; }
+  var control = {
+    open: function () {
+      window.CCBGZZY_closeAllOverlays();
+      pop.hidden = false; trigger.setAttribute('aria-expanded', 'true');
+      document.documentElement.classList.remove('ccbgzzy-scrolled'); /* 点工具→展开让位 */
+      if (isMobile()) window.CCBGZZY_showScrim();
+    },
+    close: function () { pop.hidden = true; trigger.setAttribute('aria-expanded', 'false'); },
+    sync: function (active) {
+      var m = metaOf[active];
+      if (m) { ring.style.background = m.swatchAccent; ring.style.borderColor = m.swatchBg; txt.textContent = '主题 · ' + m.label; trigger.title = '主题：' + m.label; }
+      Object.keys(items).forEach(function (k) { items[k].classList.toggle('active', k === active); items[k].setAttribute('aria-checked', k === active ? 'true' : 'false'); });
+    }
+  };
+  trigger.onclick = function (e) { e.stopPropagation(); if (pop.hidden) control.open(); else control.close(); };
+  pop.addEventListener('click', function (e) { e.stopPropagation(); });
+  window.__ccbgzzyThemeControls.push(control);
+  control.sync(document.documentElement.getAttribute('data-theme') || window.CCBGZZY_DEFAULT_THEME);
+  return control;
+};
+
+/* 统一同步：主题切换时刷新所有控件 + 兼容旧 switcher/select */
+(function () {
+  var legacy = window.CCBGZZY_syncSwitcher;
+  window.CCBGZZY_syncSwitcher = function (active) {
+    window.__ccbgzzyThemeControls.forEach(function (c) { c.sync && c.sync(active); });
+    try {
+      document.querySelectorAll('.ccbgzzy-swatch').forEach(function (el) { el.classList.toggle('active', el.dataset.theme === active); });
+      document.querySelectorAll('select.ccbgzzy-theme-select, #theme-select').forEach(function (s) { s.value = active; });
+    } catch (e) {}
+    if (typeof legacy === 'function') { try { legacy(active); } catch (e) {} }
+  };
+})();
+
+/* 移动 drawer：菜单按钮 [data-ccbgzzy-drawer="#id"] 打开；scrim/ESC 关闭 */
+window.CCBGZZY_toggleDrawer = function (sel) {
+  var d = typeof sel === 'string' ? document.querySelector(sel) : sel; if (!d) return;
+  var open = d.classList.contains('is-open');
+  window.CCBGZZY_closeAllOverlays();
+  if (!open) { d.classList.add('is-open'); window.CCBGZZY_showScrim(); }
+};
+
+/* headroom：阅读正文时工具层让位（>80px compact，向上滚展开） */
+window.CCBGZZY_initHeadroom = function () {
+  var root = document.documentElement, lastY = 0, ticking = false;
+  var COMPACT = 80, TOP = 8;
+  function update() {
+    var y = window.pageYOffset || root.scrollTop || 0;
+    if (y <= TOP) root.classList.remove('ccbgzzy-scrolled');
+    else if (y > COMPACT) {
+      if (y > lastY + 4) root.classList.add('ccbgzzy-scrolled');     /* 向下→收缩 */
+      else if (y < lastY - 4) root.classList.remove('ccbgzzy-scrolled'); /* 向上→展开 */
+    }
+    lastY = y; ticking = false;
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; window.requestAnimationFrame(update); } }, { passive: true });
+  update();
+};
+
 /* 启动 */
 (function () {
   /* 渐进增强标记：JS 在场才启用 [data-reveal] 隐藏动画；
      theme-config.js 在 <head> 同步执行，此类在 body 渲染前注入，无内容闪烁。
      若无 JS，base.css 不隐藏 [data-reveal]，核心内容默认可见。 */
   try { document.documentElement.classList.add('ccbgzzy-js'); } catch (e) {}
+  window.CCBGZZY_initMobileTitles = function () {
+    try {
+      if (!(window.matchMedia && window.matchMedia('(max-width:760px)').matches)) return;
+      document.querySelectorAll('[data-mobile-title]').forEach(function (el) {
+        if (el.tagName === 'TD' || el.tagName === 'TH') return;
+        var short = el.getAttribute('data-mobile-title'); if (!short) return;
+        var full = (el.getAttribute('aria-label') || el.textContent || '').trim();
+        if (!el.getAttribute('title')) el.setAttribute('title', full);
+        if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', full);
+        el.textContent = short;
+      });
+    } catch (e) {}
+  };
+  function CCBGZZY_initToolLayer() {
+    try {
+      window.CCBGZZY_initMobileTitles();
+      /* 自动挂载所有紧凑主题控件 */
+      document.querySelectorAll('[data-ccbgzzy-theme-control]').forEach(function (h) { window.CCBGZZY_mountThemeControl(h); });
+      /* 绑定移动菜单按钮 → drawer */
+      document.querySelectorAll('[data-ccbgzzy-drawer]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) { e.preventDefault(); window.CCBGZZY_toggleDrawer(btn.getAttribute('data-ccbgzzy-drawer')); });
+      });
+      /* drawer 内链接点击后自动关闭 */
+      document.querySelectorAll('.ccbgzzy-mobile-drawer a').forEach(function (a) {
+        a.addEventListener('click', function () { window.CCBGZZY_closeAllOverlays(); });
+      });
+      /* 点击空白 / ESC 关闭浮层 */
+      document.addEventListener('click', function () { window.CCBGZZY_closeAllOverlays(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') window.CCBGZZY_closeAllOverlays(); });
+      window.CCBGZZY_initHeadroom();
+    } catch (e) {}
+  }
+  try { if (document.readyState !== 'loading') CCBGZZY_initToolLayer(); else document.addEventListener('DOMContentLoaded', CCBGZZY_initToolLayer); } catch (e) {}
   if (window !== window.top) {
     window.addEventListener('message', function (e) {
       if (e.data && e.data.type === 'ccbgzzyTheme') window.CCBGZZY_applyTheme(e.data.theme);

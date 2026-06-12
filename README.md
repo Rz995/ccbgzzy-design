@@ -8,11 +8,11 @@
 
 ---
 
-当前版本：**v1.0.0-rc.6**（以下面向维护者）
+当前版本：**v1.0.0-rc.7**（以下面向维护者）
 
-让HTML **风格统一、展示逻辑正确**。
+让 HTML **风格统一、展示逻辑正确**。
 内核逻辑链：**内容 → 信息密度 → 页面类型(Agent 内部判断) → 展示结构 → 组件 → 颜色语义 → 交付格式**。
-通用型——不绑定任何业务字段；稳定主题 `sage`(light)/`sage-dark`(dark)；产物自带 `CCBGZZY_DESIGN` 三层水印。
+通用型——不绑定任何业务字段；默认主题 `sage`（共 7 套配色，含政金蓝）；产物自带 `CCBGZZY_DESIGN` 三层水印。
 
 ## 仓库结构
 ```
@@ -25,7 +25,7 @@ ccbgzzy-design/
 │   ├── typography.md           # 字号/字体
 │   ├── tables.md  data-viz.md  i18n-fonts.md  components.md  motion.md  watermark.md
 ├── assets/
-│   ├── theme-config.js      # 7组/14个主题 + 切换 + 水印
+│   ├── theme-config.js      # 7 个主题 + 切换 + 水印
 │   ├── base.css             # reset + token + 字号 + 组件
 │   ├── effects.css          # 精选动效（纯色·无渐变）
 │   └── template.html        # 起手模板
@@ -59,8 +59,14 @@ node scripts/build-single-file.mjs assets/template.html example.html
 # 构建 single-file（把外链 css/js 内联进一个 html，复制即用）
 node scripts/build-single-file.mjs my-page/index.html my-page.single.html
 
-# 交付前自检（gradient/硬编码色/水印/版本/小字/!important/首屏裸表格）
+# 交付前自检（gradient/硬编码色/水印/版本/小字/!important/首屏裸表格/移动 table-card）
+# package 模式会连外链 base.css 一起查，不再误杀
 node scripts/lint.mjs my-page.single.html
+node scripts/lint.mjs my-page/index.html --mode=package
+
+# 移动端真·验收（Playwright 四宽实测：无横向滚动/标题单行/表格不横滚/headroom）
+#   首次：npm i -D playwright && npx playwright install chromium
+node scripts/check-mobile.mjs            # 默认测 package template + examples + single-file template
 ```
 
 ## 输出模式
@@ -68,10 +74,11 @@ node scripts/lint.mjs my-page.single.html
 - **package**：HTML 外链 `assets/base.css`、`effects.css`、`theme-config.js`，适合多页共享/统一升级。
 
 ## 主题
-当前共有 **7 组配色 / 14 个 theme key**，全部进 `CCBGZZY_THEME_META`、默认 UI 可切换；默认仍 `sage`。
-推荐稳定：`sage` / `sage-dark`（奶油底 + 鼠尾草同色阶 + 标志橙强调 + #1A1A1A）。
-模板通过 `CCBGZZY_getThemeOptions()` 渲染完整主题列表；换肤/扩主题只改 `theme-config.js` 一处。
-正式上线若要收敛，可把非推荐主题从 META 移回 `CCBGZZY_EXPERIMENTAL`（见 references/experimental-themes.md）。
+当前共有 **7 个 theme key**，全部进 `CCBGZZY_THEME_META`、默认 UI 可切换；默认 `sage`。
+完整名单：`sage`（默认）/ `gov-finance-blue` / `gov-finance-blue-dark` / `sky-field` / `sky-field-dark` / `summer-coast` / `warm-sand`。
+配对深浅（`CCBGZZY_toggleMode()` 有效）的是 `gov-finance-blue` 与 `sky-field`；`sage`/`summer-coast`/`warm-sand` 仅 light。
+推荐稳定：`sage`（奶油底 + 鼠尾草同色阶 + 标志橙强调 + #1A1A1A）。
+模板通过 `CCBGZZY_getThemeOptions()` 渲染完整主题列表；增删/换主题只改 `theme-config.js` 一处（见 references/experimental-themes.md）。
 
 ## 版本
-v1.0.0-rc.6，详见 CHANGELOG.md。
+v1.0.0-rc.7，详见 CHANGELOG.md。

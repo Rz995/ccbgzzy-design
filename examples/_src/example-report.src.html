@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>月度经营报告 · 2026年5月 · CCBGZZY_DESIGN</title>
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="effects.css">
+<script src="theme-config.js"></script>
+<style>
+  .summary{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px 24px; box-shadow:var(--shadow-sm); }
+  .summary p{ font-size:var(--text-lead); color:var(--fg); max-width:none; line-height:1.7; }
+  .notice{ display:flex; gap:14px; align-items:flex-start; background:var(--surface); border:1px solid var(--border);
+    border-left:4px solid var(--warning); border-radius:var(--radius); padding:15px 18px; box-shadow:var(--shadow-sm); font-size:var(--text-body); }
+  .notice + .notice{ margin-top:10px; } .notice.is-attention{ border-left-color:var(--attention); }
+  .notice b{ color:var(--title); } .notice span{ color:var(--fg-2); }
+  .rank-row{ display:grid; grid-template-columns:150px 1fr 56px; align-items:center; gap:18px; padding:13px 0; border-bottom:1px solid var(--border); }
+  .rank-row:last-child{ border-bottom:none; }
+  .rank-name{ color:var(--title); font-weight:600; } .rank-name span{ color:var(--fg-muted); font-weight:400; font-size:var(--text-sm); margin-left:8px; }
+  .rank-val{ text-align:right; font-variant-numeric:tabular-nums; color:var(--title); font-weight:600; }
+  footer{ padding:28px 0; text-align:center; color:var(--fg-muted); font-size:var(--text-sm); border-top:1px solid var(--border); margin-top:var(--space-6); }
+</style>
+</head>
+<body>
+
+<header class="ccbgzzy-appbar">
+  <div class="ccbgzzy-appbar-inner">
+    <div class="ccbgzzy-appbar-lead">
+      <button class="ccbgzzy-iconbtn ccbgzzy-menu-btn" data-ccbgzzy-drawer="#nav-drawer" aria-label="打开菜单">☰</button>
+      <div class="ccbgzzy-title-oneline" data-mobile-title="月度经营报告">月度经营报告<span class="sub">2026年5月 · 5 个区域 / 5 个渠道</span></div>
+    </div>
+    <div class="ccbgzzy-appbar-tools">
+      <div data-ccbgzzy-theme-control></div>
+    </div>
+  </div>
+</header>
+
+<nav class="ccbgzzy-mobile-drawer" id="nav-drawer" aria-label="页内导航">
+  <div class="ccbgzzy-drawer-title">本页导航</div>
+  <a class="ccbgzzy-drawer-link" href="#sec-conclusion">结论</a>
+  <a class="ccbgzzy-drawer-link" href="#sec-kpi">关键指标</a>
+  <a class="ccbgzzy-drawer-link" href="#sec-attention">需关注</a>
+  <a class="ccbgzzy-drawer-link" href="#sec-region">各区域完成率</a>
+  <a class="ccbgzzy-drawer-link" href="#sec-channel">渠道明细</a>
+</nav>
+
+<div class="container" style="padding-top:var(--space-5);">
+
+  <section class="section" id="sec-conclusion" style="padding-top:0;">
+    <span class="eyebrow">结论</span>
+    <h2 class="section-title" data-mobile-title="主缺口：西南转化">西南新客转化是本月主缺口</h2>
+    <div class="summary" data-reveal>
+      <p>5 月整体完成率 97%（营收 1,284 万）。华东(112%)、华南(104%) 超额完成；<span class="pop">西南是唯一明显未达区(79%)</span>，且其新客转化仅 2.1%（全区最低），是本月主缺口，建议优先补。东北环比回落需留意。</p>
+    </div>
+  </section>
+
+  <section class="section" id="sec-kpi">
+    <h3 class="section-title">关键指标</h3>
+    <div class="grid grid-5">
+      <div class="kpi" data-reveal><div class="kpi-label">营收完成率</div><div class="kpi-value num">97%</div><div class="kpi-sub">营收 1,284 万</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">订单量</div><div class="kpi-value num">96,540</div><div class="kpi-sub">环比 +6.1%</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">新客数</div><div class="kpi-value num">8,210</div><div class="kpi-sub">环比 +3.0%</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">新客转化率</div><div class="kpi-value is-pop num">3.8%</div><div class="kpi-sub">环比 −0.4pt</div></div>
+      <div class="kpi" data-reveal><div class="kpi-label">客单价</div><div class="kpi-value num">133 元</div><div class="kpi-sub">环比 +1.9%</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="sec-attention">
+    <h3 class="section-title">需关注</h3>
+    <div class="notice" data-reveal><div><b>西南区新客转化 2.1%</b> <span>全区最低，且完成率仅 79%，建议排查投放与承接。</span></div></div>
+    <div class="notice is-attention" data-reveal><div><b>东北区营收环比 −3.4%</b> <span>连续两月走低，需结合季节因素复盘。</span></div></div>
+  </section>
+
+  <section class="section" id="sec-region">
+    <h3 class="section-title">各区域完成率</h3>
+    <p class="section-desc">按本月营收完成率排序。</p>
+    <div data-reveal>
+      <div class="rank-row"><div class="rank-name">华东<span>东部</span></div><div class="progress"><span style="width:100%"></span></div><div class="rank-val num">112%</div></div>
+      <div class="rank-row"><div class="rank-name">华南<span>南部</span></div><div class="progress"><span style="width:93%"></span></div><div class="rank-val num">104%</div></div>
+      <div class="rank-row"><div class="rank-name">华北<span>北部</span></div><div class="progress"><span style="width:88%"></span></div><div class="rank-val num">98%</div></div>
+      <div class="rank-row"><div class="rank-name">东北<span>东北</span></div><div class="progress"><span style="width:81%"></span></div><div class="rank-val num">91%</div></div>
+      <div class="rank-row"><div class="rank-name">西南<span>西南</span></div><div class="progress"><span style="width:71%"></span></div><div class="rank-val num">79%</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="sec-channel">
+    <h3 class="section-title">渠道明细</h3>
+    <div class="data-table tall" data-reveal>
+      <table class="table table-compact">
+        <thead><tr><th>渠道</th><th class="num">订单量</th><th class="num">营收(万)</th><th class="num">新客转化</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td data-mobile-title>渠道 A</td><td class="num" data-label="订单量">38,210</td><td class="num" data-label="营收(万)">512</td><td class="num" data-label="新客转化">5.2%</td><td data-label="状态"><span class="badge is-success">正常</span></td></tr>
+          <tr><td data-mobile-title>渠道 B</td><td class="num" data-label="订单量">27,640</td><td class="num" data-label="营收(万)">361</td><td class="num" data-label="新客转化">4.6%</td><td data-label="状态"><span class="badge is-success">正常</span></td></tr>
+          <tr><td data-mobile-title>渠道 D</td><td class="num" data-label="订单量">18,330</td><td class="num" data-label="营收(万)">241</td><td class="num" data-label="新客转化">4.1%</td><td data-label="状态"><span class="badge is-attention">观察</span></td></tr>
+          <tr><td data-mobile-title>渠道 E</td><td class="num" data-label="订单量">9,120</td><td class="num" data-label="营收(万)">128</td><td class="num" data-label="新客转化">3.5%</td><td data-label="状态"><span class="badge is-warning">待优化</span></td></tr>
+          <tr><td data-mobile-title>渠道 C</td><td class="num" data-label="订单量">3,240</td><td class="num" data-label="营收(万)">42</td><td class="num" data-label="新客转化">2.1%</td><td data-label="状态"><span class="badge is-warning">待优化</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" style="border-bottom:none;">
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="btn btn-primary">导出经营报表</button>
+      <button class="btn btn-ghost">查看完整明细</button>
+    </div>
+  </section>
+
+  <footer>月度经营报告 · 本文件为 CCBGZZY_DESIGN report 类型示例，数据为示例数据</footer>
+</div>
+
+<script>
+  // 主题控件 / appbar / drawer / headroom 由 theme-config.js 自动初始化。
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }); }, { threshold: .14 });
+  document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+  CCBGZZY_initWatermark();
+</script>
+</body>
+</html>

@@ -30,7 +30,7 @@
 4. **三层文字 + 主色。** 文字不超过 `--title/--fg/--fg-2(--fg-muted)`；重点 `--primary`，唯一焦点 `--accent`。
 5. **状态色不做装饰。** `--success/--warning/--danger/--info` 只表达状态；类别区分交给 `--seq-*`。
 6. **同色阶取值要拉开。** 多类别从 `--seq-*` 选时优先选间隔大的（如 seq-1/seq-3/seq-5），相邻台阶对比太弱。
-7. **对比度达标。** 正文/标题对背景 ≥ 4.5:1，大字 ≥ 3:1；当前 14 个 theme key 已校准。
+7. **对比度达标。** 正文/标题对背景 ≥ 4.5:1，大字 ≥ 3:1；当前 7 个 theme key 已校准。
 8. **禁止任何渐变。** 全站 0 渐变——背景、文字、按钮、卡片、进度条、图表一律纯色。
    `linear-gradient`/`radial-gradient`/`conic-gradient`/背景扫光一概不用。要纵深用"纯色台阶"
    （bg→surface→surface-2）和边框，不要用渐变。
@@ -46,10 +46,10 @@
 
 ## 四、主题（同色阶 + 单点强调）
 
-**默认 `sage`（砂绿）** — 奶油底 + 鼠尾草同色阶 + 标志橙强调 + #1A1A1A 文字；配对深色版 `sage-dark`。
-当前 7 组配色 / 14 个 theme key 全部开放可切换：
-`sage/sage-dark`、`ocean-breeze/-dark`、`sky-field/-dark`、`summer-coast/-dark`、`fresh-holiday/-dark`、
-`warm-sand/obsidian-gold`、`platinum-blue/deep-ocean`。
+**默认 `sage`（砂绿）** — 奶油底 + 鼠尾草同色阶 + 标志橙强调 + #1A1A1A 文字（仅 light，无深色配对）。
+当前 **7 个 theme key** 全部开放可切换：
+`sage`（默认）、`gov-finance-blue`/`gov-finance-blue-dark`、`sky-field`/`sky-field-dark`、`summer-coast`、`warm-sand`。
+配对深浅（`CCBGZZY_toggleMode()`）的是 `gov-finance-blue` 与 `sky-field`；其余仅 light。
 各主题完整 token、适合/不适合场景、注意事项见 [experimental-themes.md](experimental-themes.md)。
 新增/修改主题见下节。
 

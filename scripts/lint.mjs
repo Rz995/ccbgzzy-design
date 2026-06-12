@@ -14,12 +14,23 @@
  *  7) 第一屏不得是裸表格（table 前必须有结论区）
  */
 import fs from 'node:fs';
+import path from 'node:path';
 
 const args = process.argv.slice(2);
 const mode = (args.find(a => a.startsWith('--mode=')) || '--mode=single').split('=')[1]; // single | package
 const file = args.find(a => !a.startsWith('--'));
 if (!file) { console.error('用法: node scripts/lint.mjs <file.html> [--mode=single|package]'); process.exit(2); }
 const html = fs.readFileSync(file, 'utf8');
+
+/* 收集外链样式表内容：package 模式 CSS 在外链 base.css 里，质量门也要能看到它，
+   否则会把"规则其实在 base.css"误判成缺规则。href 相对被检查文件目录解析。 */
+const linkedCssHrefs = [...html.matchAll(/<link[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+\.css)["'][^>]*>/gi)].map(m => m[1]);
+const linkedCss = linkedCssHrefs.map(href => {
+  if (/^https?:|^\/\//i.test(href)) return '';                 // 远程样式表不读
+  try { return fs.readFileSync(path.resolve(path.dirname(file), href), 'utf8'); } catch { return ''; }
+}).join('\n');
+/* 规则可见范围 = 内联 HTML + 外链 CSS（single 模式 linkedCss 为空，行为不变） */
+const cssScope = html + '\n' + linkedCss;
 
 const errors = [];
 const warns = [];
@@ -117,6 +128,25 @@ const revealHide = styleAll.match(/(^|[}\s,])\s*\[data-reveal\][^{]*\{[^}]*opaci
 const scopedOK = /html\.ccbgzzy-js\s+\[data-reveal\][^{]*\{[^}]*opacity\s*:\s*0/i.test(styleAll);
 if (revealHide.length && !scopedOK) {
   errors.push('[data-reveal] 的隐藏(opacity:0)未挂在 html.ccbgzzy-js 作用域下——无 JS 时核心内容会空白（疑似陈旧构建，请用最新 assets 重建）');
+}
+
+/* 11) 移动端表格必须转卡片（防 ≤760px 横向拖拽）：有 <table> 就必须含 mobile table-card 规则
+      规则可能在内联 <style> 或外链 base.css 里——两处都查（package 模式 CSS 在外链）。 */
+if (/<table[\s>]/i.test(html)) {
+  const hasMobileCard = /\.table tbody td\[data-label\]::before/i.test(cssScope);
+  if (!hasMobileCard) errors.push('含 <table> 但缺移动端 table-card 规则（≤760px 会横向拖拽）——请用最新 base.css 重建');
+  // 软检查：表格 td 是否有 data-label（移动端卡片字段名）
+  const tdAll = (html.match(/<td(\s|>)/gi) || []).length;
+  const tdLabeled = (html.match(/<td[^>]*\bdata-label=/gi) || []).length;
+  const tdRole = (html.match(/<td[^>]*\bdata-mobile-(title|actions|hide)/gi) || []).length;
+  if (tdAll > 0 && (tdLabeled + tdRole) < tdAll * 0.5) {
+    warns.push('过半 <td> 缺 data-label / data-mobile-*（移动端卡片将没有字段名，建议补充）');
+  }
+}
+
+/* 12) 移动端横向溢出保险：含 <table>/.data-table 的页面应含 overflow-x:clip 守卫（内联或外链 base.css 均可） */
+if (/<table[\s>]/i.test(html) && !/overflow-x:\s*clip/i.test(cssScope)) {
+  warns.push('未检测到 overflow-x:clip 横向溢出守卫（请用最新 base.css）');
 }
 
 /* 输出 */
