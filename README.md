@@ -8,7 +8,7 @@
 
 ---
 
-当前版本：**v1.0.0-rc.9**（以下面向维护者）
+当前版本：**v1.0.0-rc.10**（以下面向维护者）
 
 让 HTML **风格统一、展示逻辑正确**。
 内核逻辑链：**内容 → 信息密度 → 页面类型(Agent 内部判断) → 展示结构 → 组件 → 颜色语义 → 交付格式**。
@@ -17,7 +17,7 @@
 ## 仓库结构
 ```
 ccbgzzy-design/
-├── SKILL.md                 # 执行入口：用途/密度/页面类型/交付 4 个硬闸口
+├── SKILL.md                 # 执行入口：页面蓝图 + 用途/密度/页面类型/交付硬闸口
 ├── references/              # 解释·例子·细节（按需加载）
 │   ├── information-density.md  # 信息密度→展示形式
 │   ├── aesthetic.md            # 审美定调（莫兰迪/卡片/可亲近高级感）
@@ -86,4 +86,4 @@ node scripts/check-mobile.mjs            # 默认测 package template + examples
 业务页面只使用固定语义字号角色：Display/KPI 44px、Page Title 32px、Section Title 24/28px、Card Title 20px、Body/Table 16px、Meta/Tag/Footnote 13/14px。页面局部不要随手写 `font-size`，优先使用变量或组件类。
 
 ## 版本
-v1.0.0-rc.9，详见 CHANGELOG.md。
+v1.0.0-rc.10，详见 CHANGELOG.md。
