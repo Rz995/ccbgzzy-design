@@ -2,6 +2,12 @@
 
 遵循语义化版本 `MAJOR.MINOR.PATCH`。
 
+## v1.0.0-rc.12 — 2026-06-12（原生动态组件）
+- **新增 `assets/interactive.js`**：纯原生 JS、自初始化、零依赖，覆盖 Tab 选项卡、筛选分段、可排序表格、单开手风琴。
+- **新增动态组件样式与文档**：`base.css` 增加 `.ccbgzzy-tabs`、`.ccbgzzy-segmented`、sortable table、`.ccbgzzy-accordion`；新增 `references/interactive.md`，并在 `components.md` 接入。
+- **渐进增强契约**：Tab 面板默认保留在 HTML 中，JS 初始化后才收起非当前面板；筛选/排序失效时内容仍完整；手风琴基于原生 `details/summary`。
+- **模板与构建接入**：`assets/template.html` 在 `theme-config.js` 后引用 `interactive.js`，`init.mjs` 会复制运行时，single-file 构建自动内联。
+
 ## v1.0.0-rc.11 — 2026-06-12（页面蓝图强制闸口 + STOP）
 - **页面蓝图从机制升级为强制闸口**：复杂页面即使信息清楚，也必须先输出蓝图并等待用户确认；不再使用"可先输出结构方案"这种弱约束。
 - **补齐触发条件**：汇报页、看板、营销日历、排期、后台原型、管理页、运营页、复杂通知、综合分析页，以及中高/高密度、多类信息、桌面与手机双端、管理者和执行者双受众、需要结构转换的场景，全部先出蓝图。

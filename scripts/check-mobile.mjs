@@ -6,7 +6,8 @@
  * 用法：
  *   node scripts/check-mobile.mjs [file1.html file2.html ...]
  *   不传文件 → 默认测 assets/template.html、examples/example-report.html、
- *             examples/example-gallery.html，以及用 assets/template.html 现场构建的 single-file。
+ *             examples/example-gallery.html、examples/interactive-demo.html，
+ *             以及用 assets/template.html 现场构建的 single-file。
  *
  * 验收项（对应 SKILL.md「五·补」第 6 条）：
  *   ① 零横向滚动：document.documentElement.scrollWidth ≤ window.innerWidth
@@ -43,6 +44,7 @@ if (!files.length) {
     path.join(repo, 'assets/template.html'),
     path.join(repo, 'examples/example-report.html'),
     path.join(repo, 'examples/example-gallery.html'),
+    path.join(repo, 'examples/interactive-demo.html'),
   ].filter(fs.existsSync);
   // 现场用 template 构建一个 single-file 一并测
   try {

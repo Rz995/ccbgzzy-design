@@ -13,7 +13,7 @@ if (!target) { console.error('用法: node scripts/init.mjs <target-dir>'); proc
 const assetsDir = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'assets');
 fs.mkdirSync(target, { recursive: true });
 
-for (const f of ['base.css', 'effects.css', 'theme-config.js']) {
+for (const f of ['base.css', 'effects.css', 'theme-config.js', 'interactive.js']) {
   fs.copyFileSync(path.join(assetsDir, f), path.join(target, f));
 }
 fs.copyFileSync(path.join(assetsDir, 'template.html'), path.join(target, 'index.html'));

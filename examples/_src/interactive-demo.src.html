@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCBGZZY_DESIGN · 动态组件演示</title>
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="effects.css">
+<script src="theme-config.js"></script>
+<script src="interactive.js" defer></script>
+<style>
+  .demo-lead{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px 24px; box-shadow:var(--shadow-sm); }
+  .demo-lead p{ margin:0; color:var(--fg); font-size:var(--text-body); line-height:1.8; }
+  .demo-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+  .demo-item{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; }
+  .demo-item h4{ margin:0 0 8px; font-size:var(--text-card-title); }
+  .demo-item p{ margin:0; color:var(--fg-2); font-size:var(--text-body); }
+  @media (max-width:860px){ .demo-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body data-ccbgzzy-showcase>
+
+<header class="ccbgzzy-appbar">
+  <div class="ccbgzzy-appbar-inner">
+    <div class="ccbgzzy-appbar-lead">
+      <button class="ccbgzzy-iconbtn ccbgzzy-menu-btn" data-ccbgzzy-drawer="#nav-drawer" aria-label="打开菜单">☰</button>
+      <div class="ccbgzzy-title-oneline" data-mobile-title="动态组件">动态组件演示<span class="sub">Tab / 筛选 / 排序 / 手风琴</span></div>
+    </div>
+    <div class="ccbgzzy-appbar-tools"><div data-ccbgzzy-theme-control></div></div>
+  </div>
+</header>
+
+<nav class="ccbgzzy-mobile-drawer" id="nav-drawer" aria-label="页内导航">
+  <div class="ccbgzzy-drawer-title">本页导航</div>
+  <a class="ccbgzzy-drawer-link" href="#tabs">Tab</a>
+  <a class="ccbgzzy-drawer-link" href="#filter">筛选</a>
+  <a class="ccbgzzy-drawer-link" href="#table">排序表格</a>
+  <a class="ccbgzzy-drawer-link" href="#accordion">手风琴</a>
+</nav>
+
+<main class="container" style="padding-top:var(--space-5);">
+  <section class="section" style="padding-top:0;">
+    <span class="eyebrow">组件演示</span>
+    <h2 style="margin:14px 0 12px;">常用动态组件，默认内容可读</h2>
+    <div class="demo-lead" data-reveal>
+      <p>本页演示四类原生交互：Tab 切换、分段筛选、表格排序、单开手风琴。运行时不依赖框架；关闭脚本后，页面仍保留完整内容和原生展开能力。</p>
+    </div>
+  </section>
+
+  <section class="section" id="tabs">
+    <h3 class="section-title">Tab 选项卡</h3>
+    <div class="ccbgzzy-tabs" data-ccbgzzy-tabs data-reveal>
+      <div class="ccbgzzy-tablist" role="tablist" aria-label="经营视图">
+        <button class="ccbgzzy-tab" role="tab" aria-selected="true" data-tab-target="#tab-overview">总览</button>
+        <button class="ccbgzzy-tab" role="tab" data-tab-target="#tab-rhythm">节奏</button>
+        <button class="ccbgzzy-tab" role="tab" data-tab-target="#tab-detail">明细</button>
+      </div>
+      <section class="ccbgzzy-tab-panel" id="tab-overview" role="tabpanel">
+        <h4>总览先给结论</h4>
+        <p class="text-2">适合放本页关键判断、核心数字和少量提醒。</p>
+      </section>
+      <section class="ccbgzzy-tab-panel" id="tab-rhythm" role="tabpanel">
+        <h4>节奏承接中段</h4>
+        <p class="text-2">适合展示周节奏、阶段目标、关键节点。</p>
+      </section>
+      <section class="ccbgzzy-tab-panel" id="tab-detail" role="tabpanel">
+        <h4>明细留在后层</h4>
+        <p class="text-2">适合承载完整任务、列表和补充说明。</p>
+      </section>
+    </div>
+  </section>
+
+  <section class="section" id="filter">
+    <h3 class="section-title">筛选分段</h3>
+    <div class="ccbgzzy-segmented" data-ccbgzzy-segmented data-filter-target="[data-demo-item]" data-reveal>
+      <button class="ccbgzzy-segment is-active" data-filter="all">全部</button>
+      <button class="ccbgzzy-segment" data-filter="todo">待处理</button>
+      <button class="ccbgzzy-segment" data-filter="done">已完成</button>
+      <button class="ccbgzzy-segment" data-filter="risk">需关注</button>
+    </div>
+    <div class="demo-grid" style="margin-top:16px;" data-reveal>
+      <article class="demo-item" data-demo-item data-filter-value="todo risk"><h4>客户跟进</h4><p>状态：待处理，需要今天确认。</p></article>
+      <article class="demo-item" data-demo-item data-filter-value="done"><h4>材料归档</h4><p>状态：已完成，可作为样例。</p></article>
+      <article class="demo-item" data-demo-item data-filter-value="todo"><h4>名单复核</h4><p>状态：待处理，负责人已明确。</p></article>
+    </div>
+  </section>
+
+  <section class="section" id="table">
+    <h3 class="section-title">可排序表格</h3>
+    <div class="data-table" data-reveal>
+      <table class="table table-compact" data-ccbgzzy-sortable>
+        <thead>
+          <tr>
+            <th data-sort="string">名称</th>
+            <th class="num" data-sort="number">数量</th>
+            <th class="num" data-sort="number">完成率</th>
+            <th data-sort="string">状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-mobile-title>客户跟进</td><td class="num" data-label="数量">42</td><td class="num" data-label="完成率">68%</td><td data-label="状态"><span class="badge is-warning">待处理</span></td></tr>
+          <tr><td data-mobile-title>材料归档</td><td class="num" data-label="数量">18</td><td class="num" data-label="完成率">100%</td><td data-label="状态"><span class="badge is-success">已完成</span></td></tr>
+          <tr><td data-mobile-title>名单复核</td><td class="num" data-label="数量">27</td><td class="num" data-label="完成率">82%</td><td data-label="状态"><span class="badge is-info">推进中</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="accordion" style="border-bottom:none;">
+    <h3 class="section-title">单开手风琴</h3>
+    <div class="ccbgzzy-accordion" data-ccbgzzy-accordion data-reveal>
+      <details open>
+        <summary>什么时候使用 Tab？</summary>
+        <div class="ccbgzzy-accordion-body">同一组内容存在并列视图时使用，例如总览、节奏、明细。</div>
+      </details>
+      <details>
+        <summary>什么时候使用筛选？</summary>
+        <div class="ccbgzzy-accordion-body">列表条目较多，但用户只需要按状态或类型快速缩小时使用。</div>
+      </details>
+      <details>
+        <summary>什么时候使用排序表格？</summary>
+        <div class="ccbgzzy-accordion-body">查询型或执行型明细需要按数量、完成率、日期重新排序时使用。</div>
+      </details>
+    </div>
+  </section>
+
+  <footer>CCBGZZY_DESIGN · interactive demo</footer>
+</main>
+
+<script>
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }); }, { threshold: .14 });
+  document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+  CCBGZZY_initWatermark();
+</script>
+</body>
+</html>

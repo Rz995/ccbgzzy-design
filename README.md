@@ -8,7 +8,7 @@
 
 ---
 
-当前版本：**v1.0.0-rc.11**（以下面向维护者）
+当前版本：**v1.0.0-rc.12**（以下面向维护者）
 
 让 HTML **风格统一、展示逻辑正确**。
 内核逻辑链：**内容 → 信息密度 → 页面类型(Agent 内部判断) → 展示结构 → 组件 → 颜色语义 → 交付格式**。
@@ -26,6 +26,7 @@ ccbgzzy-design/
 │   ├── tables.md  data-viz.md  i18n-fonts.md  components.md  motion.md  watermark.md
 ├── assets/
 │   ├── theme-config.js      # 默认主题 + 稳定/实验主题 + 切换 + 水印
+│   ├── interactive.js       # 原生动态组件：tabs/filter/sort/accordion
 │   ├── base.css             # reset + token + 语义字号角色 + 组件
 │   ├── effects.css          # 精选动效（纯色·无渐变）
 │   └── template.html        # 起手模板
@@ -71,7 +72,7 @@ node scripts/check-mobile.mjs            # 默认测 package template + examples
 
 ## 输出模式
 - **single-file（默认）**：CSS/JS 内联在一个 .html，复制即用、单文件可发。用户没特别说明就产出这个。
-- **package**：HTML 外链 `assets/base.css`、`effects.css`、`theme-config.js`，适合多页共享/统一升级。
+- **package**：HTML 外链 `assets/base.css`、`effects.css`、`theme-config.js`、`interactive.js`，适合多页共享/统一升级。
 
 ## 主题
 默认主题：`gov-finance-blue`（政金蓝）。**当前 7 个 theme key 全部进 `CCBGZZY_THEME_ORDER`、默认 UI 可切换**（`CCBGZZY_EXPERIMENTAL` 为空）。
@@ -85,4 +86,4 @@ node scripts/check-mobile.mjs            # 默认测 package template + examples
 业务页面只使用固定语义字号角色：Display/KPI 44px、Page Title 32px、Section Title 24/28px、Card Title 20px、Body/Table 16px、Meta/Tag/Footnote 13/14px。页面局部不要随手写 `font-size`，优先使用变量或组件类。
 
 ## 版本
-v1.0.0-rc.11，详见 CHANGELOG.md。
+v1.0.0-rc.12，详见 CHANGELOG.md。

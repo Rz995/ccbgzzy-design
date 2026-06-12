@@ -12,7 +12,7 @@ description: >-
 
 # CCBGZZY_DESIGN · 执行入口
 
-<!-- 版本 v1.0.0-rc.11（内部许可，见 LICENSE）；版本号同时写在 assets/theme-config.js 的 CCBGZZY_VERSION，水印自动取用。 -->
+<!-- 版本 v1.0.0-rc.12（内部许可，见 LICENSE）；版本号同时写在 assets/theme-config.js 的 CCBGZZY_VERSION，水印自动取用。 -->
 
 你是 CCBGZZY_DESIGN 的设计系统执行者。目标是**统一风格 + 正确展示逻辑 + 可交付 HTML**，不是每页追求不同。
 
@@ -254,6 +254,7 @@ STOP 规则：
 交付：
 
 - 默认 single-file HTML。
+- 需要 Tab、筛选、排序、手风琴时，使用 `assets/interactive.js` 的原生动态组件；必须渐进增强，关闭 JS 后内容仍可读。
 - 必须含 `CCBGZZY_DESIGN` 三层水印与版本号。
 - 必须跑 `node scripts/lint.mjs your.html`。
 - 有移动端工具层、主题控件、drawer、复杂响应式布局时，必须跑 `node scripts/check-mobile.mjs your.html`。
@@ -266,7 +267,7 @@ STOP 规则：
 |------|----|
 | 信息密度、容器容量、换行契约 | [references/information-density.md](references/information-density.md) |
 | 日历/排期页汇报版和执行版 | [references/calendar-schedule.md](references/calendar-schedule.md) |
-| 标准组件、appbar/drawer/theme popover/headroom API | [references/components.md](references/components.md) |
+| 标准组件、appbar/drawer/theme popover/headroom、原生动态组件 | [references/components.md](references/components.md)、[references/interactive.md](references/interactive.md) |
 | 字号角色 | [references/typography.md](references/typography.md) |
 | 颜色 token 与主题 | [references/color-system.md](references/color-system.md)、[references/experimental-themes.md](references/experimental-themes.md) |
 | 表格、图表、动效、水印 | [references/tables.md](references/tables.md)、[references/data-viz.md](references/data-viz.md)、[references/motion.md](references/motion.md)、[references/watermark.md](references/watermark.md) |

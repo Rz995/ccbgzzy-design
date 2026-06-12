@@ -2,7 +2,7 @@
  * ===================================================================
  * CCBGZZY_DESIGN · 统一主题配置中心 (theme-config.js)
  * ===================================================================
- * 版本：v1.0.0-rc.11
+ * 版本：v1.0.0-rc.12
  * 作用：集中管理全部主题与语义色 token。一处定义，全站统一。
  *
  * ★ v1.1 配色哲学：「同色阶 + 单点强调」（科研期刊式）
@@ -66,7 +66,7 @@ window.CCBGZZY_THEME_META = {
 window.CCBGZZY_EXPERIMENTAL = [];  /* 全部 7 个 theme key 进 ORDER、默认 UI 可切换；默认 gov-finance-blue */
 
 window.CCBGZZY_DEFAULT_THEME = 'gov-finance-blue';
-window.CCBGZZY_VERSION = 'v1.0.0-rc.11';
+window.CCBGZZY_VERSION = 'v1.0.0-rc.12';
 
 /* 给模板/外部页面统一取主题列表，避免手写固定主题导致"隐藏主题"再次出现。 */
 window.CCBGZZY_getThemeOptions = function () {

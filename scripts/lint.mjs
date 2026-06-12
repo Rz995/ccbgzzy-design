@@ -21,13 +21,17 @@ const mode = (args.find(a => a.startsWith('--mode=')) || '--mode=single').split(
 const file = args.find(a => !a.startsWith('--'));
 if (!file) { console.error('用法: node scripts/lint.mjs <file.html> [--mode=single|package]'); process.exit(2); }
 const html = fs.readFileSync(file, 'utf8');
+const repoAssetsDir = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'assets');
 
 /* 收集外链样式表内容：package 模式 CSS 在外链 base.css 里，质量门也要能看到它，
    否则会把"规则其实在 base.css"误判成缺规则。href 相对被检查文件目录解析。 */
 const linkedCssHrefs = [...html.matchAll(/<link[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+\.css)["'][^>]*>/gi)].map(m => m[1]);
 const linkedCss = linkedCssHrefs.map(href => {
   if (/^https?:|^\/\//i.test(href)) return '';                 // 远程样式表不读
-  try { return fs.readFileSync(path.resolve(path.dirname(file), href), 'utf8'); } catch { return ''; }
+  for (const candidate of [path.resolve(path.dirname(file), href), path.join(repoAssetsDir, path.basename(href))]) {
+    try { return fs.readFileSync(candidate, 'utf8'); } catch {}
+  }
+  return '';
 }).join('\n');
 /* 规则可见范围 = 内联 HTML + 外链 CSS（single 模式 linkedCss 为空，行为不变） */
 const cssScope = html + '\n' + linkedCss;
@@ -157,6 +161,13 @@ if (!isShowcase) {
     (markupNoAssets.match(/\bis-accent\b/g) || []).length +
     (markupNoAssets.match(/var\(--accent\)/g) || []).length;
   if (accentHits > 8) warns.push(`accent 使用 ${accentHits} 处，疑似超过"整页 1-2 个焦点"预算`);
+}
+
+/* 9.6) 动态组件运行时守卫：有交互标记就必须引用/内联 interactive.js */
+const usesInteractive = /data-ccbgzzy-(tabs|segmented|sortable|accordion)|data-tab-target|data-filter-target/i.test(html);
+if (usesInteractive) {
+  const hasRuntime = /interactive\.js/i.test(html) || /CCBGZZY_initInteractive/i.test(html);
+  if (!hasRuntime) errors.push('页面使用了 CCBGZZY 动态组件，但未引用/内联 assets/interactive.js');
 }
 
 /* 10) 防陈旧 reveal：[data-reveal] 的 opacity:0 必须挂在 html.ccbgzzy-js 作用域下，

@@ -76,6 +76,17 @@
 ### headroom 让位（阅读优先）
 - theme-config.js 自动监听 scroll：>80px 向下滚 → `html.ccbgzzy-scrolled`（appbar 收缩、主题控件收 icon-only）；向上滚或点工具按钮 → 展开。无需页面写 JS。
 
+## 原生动态组件（tabs / filter / sortable / accordion）
+
+动态组件由 `assets/interactive.js` 自初始化，纯原生 JS、无依赖、渐进增强。只在需要切换视图、筛选、排序、展开收起时使用；不要用交互掩盖信息密度过载。
+
+- Tab：`.ccbgzzy-tabs` + `[data-ccbgzzy-tabs]`，按钮用 `role="tab"` 和 `data-tab-target="#panel-id"`。
+- 筛选分段：`.ccbgzzy-segmented[data-ccbgzzy-segmented][data-filter-target="..."]`，按钮写 `data-filter`，条目写 `data-filter-value`。
+- 排序表格：`table[data-ccbgzzy-sortable]`，可排序表头写 `data-sort="string|number|date"`。
+- 单开手风琴：`.ccbgzzy-accordion[data-ccbgzzy-accordion]`，内部使用原生 `details/summary`。
+
+完整契约见 [interactive.md](interactive.md)。
+
 ## 扩展原则
 需要新组件时：用现有 token 拼，遵守语义角色；优先组合已有类而不是新写样式。
 若多页复用，沉淀进 base.css 而不是散落在各 HTML 内联里。

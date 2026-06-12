@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>页面类型与图表图鉴 · CCBGZZY_DESIGN</title>
+<title>CCBGZZY_DESIGN · 动态组件演示</title>
 <style>
 /* ===================================================================
  * CCBGZZY_DESIGN · base.css  (v1.0.0-rc.12)
@@ -952,38 +952,189 @@ window.CCBGZZY_initHeadroom = function () {
 })();
 
 </script>
+<script>
+/**
+ * ===================================================================
+ * CCBGZZY_DESIGN · interactive.js
+ * ===================================================================
+ * Native progressive interactions: tabs, segmented filters, sortable
+ * tables, and single-open accordions. No dependencies.
+ * ===================================================================
+ */
+(function () {
+  'use strict';
+
+  function $all(root, selector) {
+    return Array.prototype.slice.call((root || document).querySelectorAll(selector));
+  }
+
+  function onReady(fn) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+
+  function activateTab(root, tab, focus) {
+    var tabs = $all(root, '[role="tab"]');
+    tabs.forEach(function (t) {
+      var active = t === tab;
+      var panel = document.getElementById(t.getAttribute('aria-controls') || '');
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+      t.tabIndex = active ? 0 : -1;
+      if (panel) panel.hidden = !active;
+    });
+    if (focus) tab.focus();
+  }
+
+  function initTabs(root) {
+    $all(root, '[data-ccbgzzy-tabs]').forEach(function (group) {
+      var tabs = $all(group, '[role="tab"]');
+      if (!tabs.length) return;
+      tabs.forEach(function (tab, i) {
+        var target = tab.getAttribute('data-tab-target') || tab.getAttribute('aria-controls');
+        if (target && target.charAt(0) === '#') target = target.slice(1);
+        if (!target) {
+          var panel = $all(group, '[role="tabpanel"]')[i];
+          if (panel && panel.id) target = panel.id;
+        }
+        if (!target) return;
+        tab.setAttribute('aria-controls', target);
+        tab.addEventListener('click', function () { activateTab(group, tab, false); });
+        tab.addEventListener('keydown', function (event) {
+          var idx = tabs.indexOf(tab);
+          var next = null;
+          if (event.key === 'ArrowRight') next = tabs[(idx + 1) % tabs.length];
+          if (event.key === 'ArrowLeft') next = tabs[(idx - 1 + tabs.length) % tabs.length];
+          if (event.key === 'Home') next = tabs[0];
+          if (event.key === 'End') next = tabs[tabs.length - 1];
+          if (next) {
+            event.preventDefault();
+            activateTab(group, next, true);
+          }
+        });
+      });
+      var selected = tabs.find(function (t) { return t.getAttribute('aria-selected') === 'true'; }) || tabs[0];
+      activateTab(group, selected, false);
+    });
+  }
+
+  function initSegmented(root) {
+    $all(root, '[data-ccbgzzy-segmented]').forEach(function (seg) {
+      var targetSelector = seg.getAttribute('data-filter-target');
+      if (!targetSelector) return;
+      var buttons = $all(seg, '[data-filter]');
+      var items = $all(document, targetSelector);
+      function apply(value, activeButton) {
+        buttons.forEach(function (b) {
+          var active = b === activeButton;
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        items.forEach(function (item) {
+          var raw = item.getAttribute('data-filter-value') || '';
+          var values = raw.split(/\s+/);
+          item.hidden = !(value === 'all' || values.indexOf(value) !== -1);
+        });
+      }
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () { apply(button.getAttribute('data-filter'), button); });
+      });
+      var initial = buttons.find(function (b) { return b.classList.contains('is-active'); }) || buttons[0];
+      if (initial) apply(initial.getAttribute('data-filter'), initial);
+    });
+  }
+
+  function cellValue(row, index, type) {
+    var cell = row.children[index];
+    var text = cell ? cell.textContent.trim() : '';
+    if (type === 'number') {
+      var num = Number(text.replace(/[^0-9.-]/g, ''));
+      return Number.isNaN(num) ? -Infinity : num;
+    }
+    if (type === 'date') {
+      var time = Date.parse(text.replace(/\./g, '-').replace(/\//g, '-'));
+      return Number.isNaN(time) ? 0 : time;
+    }
+    return text;
+  }
+
+  function initSortableTables(root) {
+    $all(root, 'table[data-ccbgzzy-sortable]').forEach(function (table) {
+      var headers = $all(table, 'thead th');
+      headers.forEach(function (th, index) {
+        var type = th.getAttribute('data-sort');
+        if (!type) return;
+        th.tabIndex = 0;
+        th.classList.add('is-sortable');
+        th.setAttribute('aria-sort', 'none');
+        if (!th.querySelector('.sort-indicator')) {
+          var indicator = document.createElement('span');
+          indicator.className = 'sort-indicator';
+          indicator.setAttribute('aria-hidden', 'true');
+          indicator.textContent = '↕';
+          th.appendChild(indicator);
+        }
+        function sort() {
+          var tbody = table.tBodies[0];
+          if (!tbody) return;
+          var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
+          headers.forEach(function (h) { h.setAttribute('aria-sort', 'none'); });
+          th.setAttribute('aria-sort', dir);
+          var rows = $all(tbody, 'tr');
+          rows.sort(function (a, b) {
+            var av = cellValue(a, index, type);
+            var bv = cellValue(b, index, type);
+            var cmp = typeof av === 'number' && typeof bv === 'number' ? av - bv : String(av).localeCompare(String(bv), 'zh-Hans-CN');
+            return dir === 'ascending' ? cmp : -cmp;
+          });
+          rows.forEach(function (row) { tbody.appendChild(row); });
+        }
+        th.addEventListener('click', sort);
+        th.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            sort();
+          }
+        });
+      });
+    });
+  }
+
+  function initAccordions(root) {
+    $all(root, '[data-ccbgzzy-accordion]').forEach(function (acc) {
+      var items = $all(acc, 'details');
+      items.forEach(function (item) {
+        item.addEventListener('toggle', function () {
+          if (!item.open) return;
+          items.forEach(function (other) {
+            if (other !== item) other.open = false;
+          });
+        });
+      });
+    });
+  }
+
+  window.CCBGZZY_initInteractive = function (root) {
+    root = root || document;
+    initTabs(root);
+    initSegmented(root);
+    initSortableTables(root);
+    initAccordions(root);
+  };
+
+  onReady(function () {
+    window.CCBGZZY_initInteractive(document);
+  });
+})();
+
+</script>
 <style>
-  .summary{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px 24px; box-shadow:var(--shadow-sm); }
-  .summary p{ font-size:var(--text-lead); color:var(--fg); max-width:none; line-height:1.7; }
-  .demo{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow-sm); }
-  .demo .tag{ display:inline-flex; align-items:center; gap:7px; font-size:var(--text-sm); color:var(--primary); font-weight:600; margin-bottom:4px; }
-  .demo .tag code{ font-family:var(--font-mono); font-size:var(--text-xs); color:var(--fg-muted); }
-  .demo h4{ font-size:var(--text-h4); color:var(--title); margin:2px 0 10px; }
-  .demo .struct{ font-size:var(--text-sm); color:var(--fg-2); margin-bottom:12px; }
-  .mini{ border:1px dashed var(--border-strong); border-radius:var(--radius-sm); padding:12px; background:var(--bg); }
-  .mini .row{ display:flex; gap:8px; align-items:center; }
-  .mini .ph{ background:var(--surface-2); border-radius:6px; height:14px; }
-  .opt{ border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; background:var(--bg); }
-  .opt.rec{ border:2px solid var(--accent); }
-  .step{ display:flex; gap:12px; align-items:flex-start; padding:8px 0; }
-  .step .n{ width:26px; height:26px; border-radius:50%; background:var(--primary-soft); color:var(--primary-strong); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:var(--text-sm); flex:0 0 auto; }
-  .tl{ position:relative; padding-left:22px; }
-  .tl::before{ content:''; position:absolute; left:6px; top:4px; bottom:4px; width:2px; background:var(--border-strong); }
-  .tl .ev{ position:relative; padding:6px 0; font-size:var(--text-body); color:var(--fg); }
-  .tl .ev::before{ content:''; position:absolute; left:-22px; top:11px; width:10px; height:10px; border-radius:50%; background:var(--primary); border:2px solid var(--surface); }
-  .chartcard{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow-sm); }
-  .chartcard .ct{ font-size:var(--text-h4); color:var(--title); margin-bottom:2px; }
-  .chartcard .cs{ font-size:var(--text-sm); color:var(--fg-muted); margin-bottom:12px; }
-  .filterbar{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
-  .filterbar .f{ font-size:var(--text-sm); color:var(--fg-2); border:1px solid var(--border-strong); border-radius:var(--radius-pill); padding:5px 12px; background:var(--surface); }
-  .pager{ display:flex; gap:6px; justify-content:flex-end; margin-top:10px; }
-  .pager .p{ min-width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:var(--text-sm); color:var(--fg-2); }
-  .pager .p.on{ background:var(--primary); color:var(--bg); border-color:var(--primary); }
-  .cal4{ display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
-  .cal4 .d{ border:1px solid var(--border); border-radius:7px; min-height:46px; padding:5px; font-size:var(--text-sm); color:var(--title); font-weight:600; }
-  .cal4 .d.key{ border-color:var(--accent); box-shadow:inset 0 2px 0 var(--accent); }
-  .cal4 .d .t{ font-size:var(--text-xs); color:var(--fg-2); font-weight:400; }
-  footer{ padding:28px 0; text-align:center; color:var(--fg-muted); font-size:var(--text-sm); border-top:1px solid var(--border); margin-top:var(--space-6); }
+  .demo-lead{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px 24px; box-shadow:var(--shadow-sm); }
+  .demo-lead p{ margin:0; color:var(--fg); font-size:var(--text-body); line-height:1.8; }
+  .demo-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+  .demo-item{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; }
+  .demo-item h4{ margin:0 0 8px; font-size:var(--text-card-title); }
+  .demo-item p{ margin:0; color:var(--fg-2); font-size:var(--text-body); }
+  @media (max-width:860px){ .demo-grid{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body data-ccbgzzy-showcase>
@@ -992,218 +1143,111 @@ window.CCBGZZY_initHeadroom = function () {
   <div class="ccbgzzy-appbar-inner">
     <div class="ccbgzzy-appbar-lead">
       <button class="ccbgzzy-iconbtn ccbgzzy-menu-btn" data-ccbgzzy-drawer="#nav-drawer" aria-label="打开菜单">☰</button>
-      <div class="ccbgzzy-title-oneline" data-mobile-title="图鉴">页面类型与图表图鉴<span class="sub">本页即由该系统生成</span></div>
+      <div class="ccbgzzy-title-oneline" data-mobile-title="动态组件">动态组件演示<span class="sub">Tab / 筛选 / 排序 / 手风琴</span></div>
     </div>
-    <div class="ccbgzzy-appbar-tools">
-      <div data-ccbgzzy-theme-control></div>
-    </div>
+    <div class="ccbgzzy-appbar-tools"><div data-ccbgzzy-theme-control></div></div>
   </div>
 </header>
 
 <nav class="ccbgzzy-mobile-drawer" id="nav-drawer" aria-label="页内导航">
   <div class="ccbgzzy-drawer-title">本页导航</div>
-  <a class="ccbgzzy-drawer-link" href="#sec-types">页面类型结构</a>
-  <a class="ccbgzzy-drawer-link" href="#sec-charts">图表类型</a>
+  <a class="ccbgzzy-drawer-link" href="#tabs">Tab</a>
+  <a class="ccbgzzy-drawer-link" href="#filter">筛选</a>
+  <a class="ccbgzzy-drawer-link" href="#table">排序表格</a>
+  <a class="ccbgzzy-drawer-link" href="#accordion">手风琴</a>
 </nav>
 
-<div class="container" style="padding-top:var(--space-5);">
-
+<main class="container" style="padding-top:var(--space-5);">
   <section class="section" style="padding-top:0;">
-    <span class="eyebrow">总览</span>
-    <h2 class="section-title">9 种页面类型 + 8 种图表，一页看全</h2>
-    <div class="summary" data-reveal>
-      <p>同一套 token、同一种克制审美，按内容自动选结构与图表。下面分两部分：<span class="pop">页面类型的主结构</span>，以及可直接套用的图表样式（纯 SVG、随主题换色、无渐变）。</p>
+    <span class="eyebrow">组件演示</span>
+    <h2 style="margin:14px 0 12px;">常用动态组件，默认内容可读</h2>
+    <div class="demo-lead" data-reveal>
+      <p>本页演示四类原生交互：Tab 切换、分段筛选、表格排序、单开手风琴。运行时不依赖框架；关闭脚本后，页面仍保留完整内容和原生展开能力。</p>
     </div>
   </section>
 
-  <!-- ============ Part 1 · 页面类型结构 ============ -->
-  <section class="section" id="sec-types">
-    <h3 class="section-title">一、页面类型的主结构</h3>
-    <div class="grid grid-3">
-
-      <div class="demo" data-reveal>
-        <div class="tag">report <code>汇报型</code></div><h4>摘要 + KPI + 图表，详情列在末尾</h4>
-        <div class="mini">
-          <div class="ph" style="width:70%;height:18px;margin-bottom:8px"></div>
-          <div class="row" style="margin-bottom:8px"><div class="ph" style="flex:1;height:34px"></div><div class="ph" style="flex:1;height:34px"></div><div class="ph" style="flex:1;height:34px"></div></div>
-          <div class="ph" style="width:100%;height:26px"></div>
-        </div>
+  <section class="section" id="tabs">
+    <h3 class="section-title">Tab 选项卡</h3>
+    <div class="ccbgzzy-tabs" data-ccbgzzy-tabs data-reveal>
+      <div class="ccbgzzy-tablist" role="tablist" aria-label="经营视图">
+        <button class="ccbgzzy-tab" role="tab" aria-selected="true" data-tab-target="#tab-overview">总览</button>
+        <button class="ccbgzzy-tab" role="tab" data-tab-target="#tab-rhythm">节奏</button>
+        <button class="ccbgzzy-tab" role="tab" data-tab-target="#tab-detail">明细</button>
       </div>
-
-      <div class="demo" data-reveal>
-        <div class="tag">decision <code>决策型</code></div><h4>推荐结论 + 方案对比 + 依据</h4>
-        <div style="display:flex;gap:8px">
-          <div class="opt rec" style="flex:1"><div style="font-size:var(--text-sm);color:var(--accent);font-weight:600">推荐 · 方案A</div><div style="font-size:var(--text-sm);color:var(--fg-2);margin-top:4px">成本低 · 见效快</div></div>
-          <div class="opt" style="flex:1"><div style="font-size:var(--text-sm);color:var(--title);font-weight:600">方案B</div><div style="font-size:var(--text-sm);color:var(--fg-2);margin-top:4px">稳但慢</div></div>
-        </div>
-      </div>
-
-      <div class="demo" data-reveal>
-        <div class="tag">monitor <code>监控型</code></div><h4>KPI 组 + 异常高亮</h4>
-        <div class="row" style="gap:8px">
-          <div class="kpi" style="flex:1;padding:10px"><div class="kpi-label">在线率</div><div class="kpi-value num" style="font-size:var(--text-h4)">99.2%</div></div>
-          <div class="kpi" style="flex:1;padding:10px"><div class="kpi-label">异常</div><div class="kpi-value is-pop num" style="font-size:var(--text-h4)">3</div></div>
-        </div>
-        <div style="margin-top:8px"><span class="badge is-danger">节点 X 离线</span></div>
-      </div>
-
-      <div class="demo" data-reveal>
-        <div class="tag">lookup <code>查询型</code></div><h4>Filter + Table + 分页</h4>
-        <div class="filterbar"><span class="f">区域 ▾</span><span class="f">状态 ▾</span><span class="f">搜索…</span></div>
-        <div class="data-table"><table class="table table-compact" style="font-size:var(--text-sm)">
-          <thead><tr><th>名称</th><th class="num">值</th><th>状态</th></tr></thead>
-          <tbody>
-            <tr><td data-mobile-title>条目一</td><td class="num" data-label="值">128</td><td data-label="状态"><span class="badge is-success">正常</span></td></tr>
-            <tr><td data-mobile-title>条目二</td><td class="num" data-label="值">86</td><td data-label="状态"><span class="badge is-warning">待办</span></td></tr>
-          </tbody></table></div>
-        <div class="pager"><span class="p">‹</span><span class="p on">1</span><span class="p">2</span><span class="p">3</span><span class="p">›</span></div>
-      </div>
-
-      <div class="demo" data-reveal>
-        <div class="tag">analysis <code>分析型</code></div><h4>图表 + 结论标注 + 对比</h4>
-        <svg viewBox="0 0 200 70" width="100%" height="64" role="img" aria-label="趋势折线，近半年走高">
-          <polyline points="6,52 38,46 70,48 102,34 134,28 166,30 196,16" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linejoin="round"/>
-          <circle cx="196" cy="16" r="3.5" fill="var(--accent)"/>
-        </svg>
-        <div style="font-size:var(--text-sm);color:var(--fg-2)">近半年走高，<span class="pop">5 月转正</span>。</div>
-      </div>
-
-      <div class="demo" data-reveal>
-        <div class="tag">notice <code>通知型</code></div><h4>一屏一核心</h4>
-        <div style="border:1px solid var(--border);border-left:4px solid var(--info);border-radius:var(--radius-sm);padding:14px 16px;background:var(--bg)">
-          <div style="font-size:var(--text-body);color:var(--title);font-weight:600">系统将于本周六 02:00 维护</div>
-          <div style="font-size:var(--text-sm);color:var(--fg-2);margin-top:4px">预计 1 小时，期间暂停查询。</div>
-        </div>
-      </div>
-
-      <div class="demo" data-reveal>
-        <div class="tag">guide <code>指引型</code></div><h4>步骤条 / 时间线</h4>
-        <div class="step"><span class="n">1</span><div><div style="color:var(--title);font-weight:600;font-size:var(--text-body)">贴内容</div></div></div>
-        <div class="step"><span class="n">2</span><div><div style="color:var(--title);font-weight:600;font-size:var(--text-body)">说一句话</div></div></div>
-        <div class="step"><span class="n">3</span><div><div style="color:var(--title);font-weight:600;font-size:var(--text-body)">拿成品</div></div></div>
-      </div>
-
-      <div class="demo" data-reveal>
-        <div class="tag">prototype <code>原型型</code></div><h4>线框 + 占位</h4>
-        <div class="mini" style="border-style:dashed">
-          <div class="row" style="margin-bottom:8px"><div class="ph" style="width:30%;height:14px"></div><div style="flex:1"></div><div class="ph" style="width:18%;height:14px"></div></div>
-          <div class="ph" style="width:100%;height:40px;margin-bottom:8px"></div>
-          <div class="row"><div class="ph" style="flex:1;height:24px"></div><div class="ph" style="flex:1;height:24px"></div></div>
-        </div>
-      </div>
-
-      <div class="demo" data-reveal>
-        <div class="tag">calendar <code>日历排期型</code></div><h4>总览 → 月历 → 详情</h4>
-        <div class="cal4">
-          <div class="d">8</div><div class="d">9</div><div class="d key">10<div class="t">发薪</div></div><div class="d">11</div>
-          <div class="d">12</div><div class="d">13</div><div class="d">14</div>
-        </div>
-      </div>
-
+      <section class="ccbgzzy-tab-panel" id="tab-overview" role="tabpanel">
+        <h4>总览先给结论</h4>
+        <p class="text-2">适合放本页关键判断、核心数字和少量提醒。</p>
+      </section>
+      <section class="ccbgzzy-tab-panel" id="tab-rhythm" role="tabpanel">
+        <h4>节奏承接中段</h4>
+        <p class="text-2">适合展示周节奏、阶段目标、关键节点。</p>
+      </section>
+      <section class="ccbgzzy-tab-panel" id="tab-detail" role="tabpanel">
+        <h4>明细留在后层</h4>
+        <p class="text-2">适合承载完整任务、列表和补充说明。</p>
+      </section>
     </div>
   </section>
 
-  <!-- ============ Part 2 · 图表类型 ============ -->
-  <section class="section" id="sec-charts" style="border-bottom:none;">
-    <h3 class="section-title">二、图表类型（纯 SVG · 随主题换色 · 无渐变）</h3>
-    <div class="grid grid-3">
-
-      <div class="chartcard" data-reveal>
-        <div class="ct">柱状图</div><div class="cs">分类对比</div>
-        <svg viewBox="0 0 210 96" width="100%" height="100" role="img" aria-label="柱状图，6 项对比">
-          <line x1="6" y1="84" x2="204" y2="84" stroke="var(--border-strong)"/>
-          <rect x="10" y="24" width="22" height="60" rx="2" fill="var(--seq-2)"/>
-          <rect x="42" y="33" width="22" height="51" rx="2" fill="var(--seq-2)"/>
-          <rect x="74" y="39" width="22" height="45" rx="2" fill="var(--seq-3)"/>
-          <rect x="106" y="48" width="22" height="36" rx="2" fill="var(--seq-3)"/>
-          <rect x="138" y="54" width="22" height="30" rx="2" fill="var(--seq-4)"/>
-          <rect x="170" y="63" width="22" height="21" rx="2" fill="var(--seq-4)"/>
-        </svg>
-      </div>
-
-      <div class="chartcard" data-reveal>
-        <div class="ct">条形排名</div><div class="cs">排序看强弱</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:grid;grid-template-columns:42px 1fr 30px;align-items:center;gap:8px"><span style="font-size:var(--text-sm);color:var(--title);font-weight:600">A</span><span style="height:9px;background:var(--surface-2);border-radius:999px;overflow:hidden"><i style="display:block;height:100%;width:100%;background:var(--seq-3)"></i></span><span style="text-align:right;font-size:var(--text-sm);color:var(--title)">271</span></div>
-          <div style="display:grid;grid-template-columns:42px 1fr 30px;align-items:center;gap:8px"><span style="font-size:var(--text-sm);color:var(--title);font-weight:600">B</span><span style="height:9px;background:var(--surface-2);border-radius:999px;overflow:hidden"><i style="display:block;height:100%;width:64%;background:var(--seq-3)"></i></span><span style="text-align:right;font-size:var(--text-sm);color:var(--title)">173</span></div>
-          <div style="display:grid;grid-template-columns:42px 1fr 30px;align-items:center;gap:8px"><span style="font-size:var(--text-sm);color:var(--title);font-weight:600">C</span><span style="height:9px;background:var(--surface-2);border-radius:999px;overflow:hidden"><i style="display:block;height:100%;width:39%;background:var(--seq-3)"></i></span><span style="text-align:right;font-size:var(--text-sm);color:var(--title)">106</span></div>
-        </div>
-      </div>
-
-      <div class="chartcard" data-reveal>
-        <div class="ct">折线图</div><div class="cs">趋势对比（双线）</div>
-        <svg viewBox="0 0 210 96" width="100%" height="100" role="img" aria-label="折线图，两条序列趋势">
-          <line x1="6" y1="84" x2="204" y2="84" stroke="var(--border-strong)"/>
-          <polyline points="8,60 41,52 74,56 107,40 140,34 173,36 198,22" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linejoin="round"/>
-          <polyline points="8,72 41,70 74,66 107,68 140,60 173,58 198,52" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="4 4" stroke-linejoin="round"/>
-          <circle cx="198" cy="22" r="3" fill="var(--primary)"/><circle cx="198" cy="52" r="3" fill="var(--accent)"/>
-        </svg>
-      </div>
-
-      <div class="chartcard" data-reveal>
-        <div class="ct">环图</div><div class="cs">构成占比（≤5 类）</div>
-        <div style="display:flex;align-items:center;gap:14px">
-          <svg viewBox="0 0 100 100" width="92" height="92" role="img" aria-label="环图，4 部分构成">
-            <g transform="rotate(-90 50 50)">
-              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--surface-2)" stroke-width="15"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--seq-2)" stroke-width="15" stroke-dasharray="83.6 155.2" stroke-dashoffset="0"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--seq-3)" stroke-width="15" stroke-dasharray="59.7 179.1" stroke-dashoffset="-83.6"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--seq-4)" stroke-width="15" stroke-dasharray="52.5 186.3" stroke-dashoffset="-143.3"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="var(--accent)" stroke-width="15" stroke-dasharray="43 195.8" stroke-dashoffset="-195.8"/>
-            </g>
-          </svg>
-          <div class="seq-legend" style="flex-direction:column;gap:6px;font-size:var(--text-sm)">
-            <span><i class="seq-2"></i>消费贷 35%</span><span><i class="seq-3"></i>普惠 25%</span>
-            <span><i class="seq-4"></i>绿色 22%</span><span><i style="background:var(--accent)"></i>其他 18%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="chartcard" data-reveal>
-        <div class="ct">仪表盘</div><div class="cs">完成率</div>
-        <svg viewBox="0 0 120 78" width="100%" height="92" role="img" aria-label="仪表盘，完成率 78%">
-          <path d="M12,64 A48,48 0 0 1 108,64" fill="none" stroke="var(--surface-2)" stroke-width="12" stroke-linecap="round"/>
-          <path d="M12,64 A48,48 0 0 1 108,64" fill="none" stroke="var(--primary)" stroke-width="12" stroke-linecap="round" stroke-dasharray="117.6 150.8"/>
-          <text x="60" y="60" text-anchor="middle" font-size="22" font-weight="700" fill="var(--title)" font-family="var(--font-display)">78%</text>
-        </svg>
-      </div>
-
-      <div class="chartcard" data-reveal>
-        <div class="ct">雷达图</div><div class="cs">多维能力评价</div>
-        <svg viewBox="0 0 120 100" width="100%" height="104" role="img" aria-label="雷达图，五维能力">
-          <polygon points="60,12 98,40 83.5,84 36.5,84 22,40" fill="none" stroke="var(--border-strong)"/>
-          <polygon points="60,32 79,46 72,68 48,68 41,46" fill="none" stroke="var(--border)"/>
-          <polygon points="60,18 82.8,44.6 81.2,81.1 48.25,68.2 33.4,43.35" fill="var(--primary-soft)" stroke="var(--primary)" stroke-width="2"/>
-        </svg>
-      </div>
-
-      <div class="chartcard" data-reveal>
-        <div class="ct">堆叠条</div><div class="cs">结构占比（一条）</div>
-        <div style="display:flex;height:30px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);font-size:var(--text-sm);font-weight:600">
-          <div style="width:40%;background:var(--seq-2);color:var(--bg);display:flex;align-items:center;justify-content:center">40%</div>
-          <div style="width:32%;background:var(--seq-3);color:var(--bg);display:flex;align-items:center;justify-content:center">32%</div>
-          <div style="width:28%;background:var(--seq-4);color:var(--bg);display:flex;align-items:center;justify-content:center">28%</div>
-        </div>
-        <div class="seq-legend" style="margin-top:8px;font-size:var(--text-sm)"><span><i class="seq-2"></i>标杆</span><span><i class="seq-3"></i>资深</span><span><i class="seq-4"></i>萌新</span></div>
-      </div>
-
-      <div class="chartcard" data-reveal>
-        <div class="ct">进度条</div><div class="cs">单指标完成度</div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div><div style="display:flex;justify-content:space-between;font-size:var(--text-sm);color:var(--fg-2);margin-bottom:4px"><span>存款</span><span class="num">88%</span></div><div class="progress"><span style="width:88%"></span></div></div>
-          <div><div style="display:flex;justify-content:space-between;font-size:var(--text-sm);color:var(--fg-2);margin-bottom:4px"><span>不良率（焦点）</span><span class="num">2.5%</span></div><div class="progress is-accent"><span style="width:25%"></span></div></div>
-        </div>
-      </div>
-
+  <section class="section" id="filter">
+    <h3 class="section-title">筛选分段</h3>
+    <div class="ccbgzzy-segmented" data-ccbgzzy-segmented data-filter-target="[data-demo-item]" data-reveal>
+      <button class="ccbgzzy-segment is-active" data-filter="all">全部</button>
+      <button class="ccbgzzy-segment" data-filter="todo">待处理</button>
+      <button class="ccbgzzy-segment" data-filter="done">已完成</button>
+      <button class="ccbgzzy-segment" data-filter="risk">需关注</button>
+    </div>
+    <div class="demo-grid" style="margin-top:16px;" data-reveal>
+      <article class="demo-item" data-demo-item data-filter-value="todo risk"><h4>客户跟进</h4><p>状态：待处理，需要今天确认。</p></article>
+      <article class="demo-item" data-demo-item data-filter-value="done"><h4>材料归档</h4><p>状态：已完成，可作为样例。</p></article>
+      <article class="demo-item" data-demo-item data-filter-value="todo"><h4>名单复核</h4><p>状态：待处理，负责人已明确。</p></article>
     </div>
   </section>
 
-  <footer>页面类型与图表图鉴 · 数据为示例 · 切换主题/深浅，图表会随之换色</footer>
-</div>
+  <section class="section" id="table">
+    <h3 class="section-title">可排序表格</h3>
+    <div class="data-table" data-reveal>
+      <table class="table table-compact" data-ccbgzzy-sortable>
+        <thead>
+          <tr>
+            <th data-sort="string">名称</th>
+            <th class="num" data-sort="number">数量</th>
+            <th class="num" data-sort="number">完成率</th>
+            <th data-sort="string">状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-mobile-title>客户跟进</td><td class="num" data-label="数量">42</td><td class="num" data-label="完成率">68%</td><td data-label="状态"><span class="badge is-warning">待处理</span></td></tr>
+          <tr><td data-mobile-title>材料归档</td><td class="num" data-label="数量">18</td><td class="num" data-label="完成率">100%</td><td data-label="状态"><span class="badge is-success">已完成</span></td></tr>
+          <tr><td data-mobile-title>名单复核</td><td class="num" data-label="数量">27</td><td class="num" data-label="完成率">82%</td><td data-label="状态"><span class="badge is-info">推进中</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="accordion" style="border-bottom:none;">
+    <h3 class="section-title">单开手风琴</h3>
+    <div class="ccbgzzy-accordion" data-ccbgzzy-accordion data-reveal>
+      <details open>
+        <summary>什么时候使用 Tab？</summary>
+        <div class="ccbgzzy-accordion-body">同一组内容存在并列视图时使用，例如总览、节奏、明细。</div>
+      </details>
+      <details>
+        <summary>什么时候使用筛选？</summary>
+        <div class="ccbgzzy-accordion-body">列表条目较多，但用户只需要按状态或类型快速缩小时使用。</div>
+      </details>
+      <details>
+        <summary>什么时候使用排序表格？</summary>
+        <div class="ccbgzzy-accordion-body">查询型或执行型明细需要按数量、完成率、日期重新排序时使用。</div>
+      </details>
+    </div>
+  </section>
+
+  <footer>CCBGZZY_DESIGN · interactive demo</footer>
+</main>
 
 <script>
-  // 主题控件 / appbar / drawer / headroom 由 theme-config.js 自动初始化。
-  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }); }, { threshold: .1 });
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }); }, { threshold: .14 });
   document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
   CCBGZZY_initWatermark();
 </script>
