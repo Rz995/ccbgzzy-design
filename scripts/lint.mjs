@@ -96,11 +96,17 @@ for (const m of fontHits) {
 }
 if (smallBad) warns.push(`发现 ${smallBad} 处 <16px 字号且非(图例/脚注/水印/版本号)语境（正文/表格须 ≥16px）`);
 
-const styleFontDecls = [...styleBlocks.matchAll(/font-size\s*:\s*([^;}\n]+)/gi)];
+/* 只审"业务 CSS"（页面作者写的 <style>），跳过内联进来的框架资源 base.css/effects.css——
+   框架里 html{font-size:17px} / .kpi-value{3rem} 是系统定义，不该被业务字号闸误杀。 */
+const FRAMEWORK_BLOCK = /·\s*base\.css|·\s*effects\.css|theme-config\.js|统一基底/i;
+const businessStyleBlocks = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)]
+  .map(m => m[1]).filter(b => !FRAMEWORK_BLOCK.test(b))
+  .join('\n').replace(/\/\*[\s\S]*?\*\//g, '');
+const styleFontDecls = [...businessStyleBlocks.matchAll(/font-size\s*:\s*([^;}\n]+)/gi)];
 let unauthFont = 0;
 for (const m of styleFontDecls) {
   const value = m[1].trim();
-  const ctx = styleBlocks.slice(Math.max(0, m.index - 180), m.index + 120);
+  const ctx = businessStyleBlocks.slice(Math.max(0, m.index - 180), m.index + 120);
   if (AUTH_FONT_VALUE.test(value)) continue;
   if (/svg|chart|watermark|version|theme|icon|ccbgzzy-watermark/i.test(ctx)) continue;
   unauthFont++;
@@ -141,13 +147,17 @@ if (bodyText.replace(/\s/g, '').length > 400 && !hasLead) {
   warns.push('首屏未见结论 / 关键指标区（应先给结论或 KPI，再放明细）');
 }
 
-/* 9.5) accent 使用预算：业务 HTML 中 accent 只能是少数焦点 */
-const accentHits =
-  (markupNoAssets.match(/\bis-pop\b/g) || []).length +
-  (markupNoAssets.match(/\bpop\b/g) || []).length +
-  (markupNoAssets.match(/\bis-accent\b/g) || []).length +
-  (markupNoAssets.match(/var\(--accent\)/g) || []).length;
-if (accentHits > 8) warns.push(`accent 使用 ${accentHits} 处，疑似超过"整页 1-2 个焦点"预算`);
+/* 9.5) accent 使用预算：业务 HTML 中 accent 只能是少数焦点。
+   组件图鉴/showcase 页（<body data-ccbgzzy-showcase>）会刻意演示多种 accent 用法，豁免本项。 */
+const isShowcase = /data-ccbgzzy-showcase/i.test(html);
+if (!isShowcase) {
+  const accentHits =
+    (markupNoAssets.match(/\bis-pop\b/g) || []).length +
+    (markupNoAssets.match(/\bpop\b/g) || []).length +
+    (markupNoAssets.match(/\bis-accent\b/g) || []).length +
+    (markupNoAssets.match(/var\(--accent\)/g) || []).length;
+  if (accentHits > 8) warns.push(`accent 使用 ${accentHits} 处，疑似超过"整页 1-2 个焦点"预算`);
+}
 
 /* 10) 防陈旧 reveal：[data-reveal] 的 opacity:0 必须挂在 html.ccbgzzy-js 作用域下，
       否则无 JS / 静态渲染时核心内容会空白（渐进增强失效，多为陈旧构建）。 */

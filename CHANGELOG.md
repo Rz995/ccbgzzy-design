@@ -7,6 +7,10 @@
 - **补齐触发条件**：汇报页、看板、营销日历、排期、后台原型、管理页、运营页、复杂通知、综合分析页，以及中高/高密度、多类信息、桌面与手机双端、管理者和执行者双受众、需要结构转换的场景，全部先出蓝图。
 - **新增 STOP 规则**：触发蓝图闸口时只能输出蓝图和最多 1-3 个确认问题，不得继续生成 HTML、写 CSS、跑 lint、保存文件或打包。
 - **约束蓝图表达**：蓝图必须面向普通同事，禁止把 `report/lookup/calendar`、`calendar-report`、信息密度、组件名或四闸口分诊过程当成用户选项。
+- **默认主题改为 `gov-finance-blue`**（政金蓝），`base.css :root` 默认值同步切换避免 FOUC；修正 gov-finance-blue 的 `seq` 为纯蓝明度台阶 `#E6F0FA→#1F5E9D`（不再混绿/金，符合"seq 不混色相"）。
+- **保留 7 个 theme key 全量可切换**：`CCBGZZY_THEME_ORDER` 含全部 7 key、`CCBGZZY_EXPERIMENTAL` 为空（按需求"颜色全部放出来支持切换"）；README/SKILL/color-system/experimental-themes 口径统一为"7 全开放 · 默认政金蓝"。
+- **lint 升级**：新增"语义字号闸"（业务 CSS 必须用 `var(--text-*)`/组件类，不许裸 px/rem）与"accent 预算"（>8 处告警）；并把字号闸作用域收敛到**业务 CSS**（跳过内联进来的框架 base.css/effects.css，避免 `html{17px}`/`.kpi-value{3rem}` 被误杀），组件图鉴页可用 `<body data-ccbgzzy-showcase>` 豁免 accent 预算。
+- **examples 全部用最新 assets 重建**：example-report / example-gallery 现默认政金蓝、7 主题可切、纯蓝 seq；template(single+package) / example-report / example-gallery 四项 lint 均 0/0。
 
 ## v1.0.0-rc.10 — 2026-06-12（页面蓝图机制 + 不适配密度保底协议）
 - **新增页面蓝图机制**：复杂页面先确认叙事结构和承载方式，再进入 HTML 生成；小任务仍直接做，保持低打扰。

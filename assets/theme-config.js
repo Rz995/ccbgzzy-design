@@ -46,24 +46,24 @@ window.CCBGZZY_THEMES = {
 
 };
 
-/* 默认主题展示顺序（切换器 UI）：只开放 3 套稳定主题。
-   其他主题保留 token 与 meta，但标记 experimental，不进入默认 UI。 */
+/* 默认主题展示顺序（切换器 UI）：当前 7 个 theme key 全量可切换。
+   若后续要临时收起某主题，从 ORDER 移除并放入 CCBGZZY_EXPERIMENTAL。 */
 window.CCBGZZY_THEME_ORDER = [
-  'gov-finance-blue', 'sage', 'warm-sand',
+  'gov-finance-blue', 'gov-finance-blue-dark', 'sage', 'sky-field', 'sky-field-dark', 'summer-coast', 'warm-sand',
 ];
 
 /* 主题元信息（切换器 UI）。
    family 用于分组/下拉展示；label 用于可见标签；swatch* 用于色卡。 */
 window.CCBGZZY_THEME_META = {
-  'gov-finance-blue': { family:'稳定默认', label:'政金蓝', mode:'light', swatchBg:'#EEF3F8', swatchAccent:'#D6A63A', stable:true },
-  'sage': { family:'稳定', label:'砂绿', mode:'light', swatchBg:'#EFEAE0', swatchAccent:'#CD6F47', stable:true },
-  'warm-sand': { family:'稳定', label:'暖砂', mode:'light', swatchBg:'#F4EFE8', swatchAccent:'#B56B7A', stable:true },
-  'gov-finance-blue-dark': { family:'实验', label:'政金·夜', mode:'dark', swatchBg:'#0F2036', swatchAccent:'#E0B452', experimental:true },
-  'sky-field': { family:'实验', label:'蓝天绿地', mode:'light', swatchBg:'#F3F9FC', swatchAccent:'#DC7369', experimental:true },
-  'sky-field-dark': { family:'实验', label:'蓝天·夜', mode:'dark', swatchBg:'#101E2A', swatchAccent:'#E08A80', experimental:true },
-  'summer-coast': { family:'实验', label:'夏日海滩', mode:'light', swatchBg:'#FBF7F0', swatchAccent:'#F4775A', experimental:true },
+  'gov-finance-blue': { family:'政务金融', label:'政金蓝', mode:'light', swatchBg:'#EEF3F8', swatchAccent:'#D6A63A' },
+  'gov-finance-blue-dark': { family:'政务金融', label:'政金·夜', mode:'dark', swatchBg:'#0F2036', swatchAccent:'#E0B452' },
+  'sage': { family:'通用默认', label:'砂绿', mode:'light', swatchBg:'#EFEAE0', swatchAccent:'#CD6F47' },
+  'sky-field': { family:'复盘风险', label:'蓝天绿地', mode:'light', swatchBg:'#F3F9FC', swatchAccent:'#DC7369' },
+  'sky-field-dark': { family:'复盘风险', label:'蓝天·夜', mode:'dark', swatchBg:'#101E2A', swatchAccent:'#E08A80' },
+  'summer-coast': { family:'活动指引', label:'夏日海滩', mode:'light', swatchBg:'#FBF7F0', swatchAccent:'#F4775A' },
+  'warm-sand': { family:'暖中性', label:'暖砂', mode:'light', swatchBg:'#F4EFE8', swatchAccent:'#B56B7A' },
 };
-window.CCBGZZY_EXPERIMENTAL = ['gov-finance-blue-dark', 'sky-field', 'sky-field-dark', 'summer-coast'];
+window.CCBGZZY_EXPERIMENTAL = [];  /* 全部 7 个 theme key 进 ORDER、默认 UI 可切换；默认 gov-finance-blue */
 
 window.CCBGZZY_DEFAULT_THEME = 'gov-finance-blue';
 window.CCBGZZY_VERSION = 'v1.0.0-rc.11';

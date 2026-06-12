@@ -241,9 +241,9 @@ STOP 规则：
 
 主题与颜色：
 
-- 默认主题 `gov-finance-blue`。
-- 默认 UI 只开放 `gov-finance-blue`、`sage`、`warm-sand` 3 套稳定主题；其他主题保留为 experimental，不进默认 UI。
-- `primary` 用蓝色；`accent` 用金色，整页 1-2 处；`success/warning/danger/info` 只用于状态；`seq-1..5` 用蓝色系明度台阶。
+- 默认主题 `gov-finance-blue`；当前 7 个 theme key 全部进 `CCBGZZY_THEME_ORDER`、默认 UI 可切换（`CCBGZZY_EXPERIMENTAL` 为空）。完整名单：`gov-finance-blue`/`gov-finance-blue-dark`/`sage`/`sky-field`/`sky-field-dark`/`summer-coast`/`warm-sand`。
+- 配对深浅（`CCBGZZY_toggleMode()`）的是 `gov-finance-blue` 与 `sky-field`。主题 UI 一律读 `CCBGZZY_getThemeOptions()`，不手写固定列表。
+- 政金蓝语义：`primary` 用蓝色；`accent` 用金色，整页 1-2 处；`success/warning/danger/info` 只用于状态；`seq-1..5` 用蓝色系明度台阶。
 - 业务 CSS 不硬编码颜色，只用 `var(--token)`；全站禁止渐变。
 
 字号：
