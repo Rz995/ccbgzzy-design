@@ -2,6 +2,13 @@
 
 遵循语义化版本 `MAJOR.MINOR.PATCH`。
 
+## v1.0.0-rc.8 — 2026-06-12（政金蓝默认 + 字号/日历容量收敛）
+- **默认主题改为政金蓝**：`CCBGZZY_DEFAULT_THEME = 'gov-finance-blue'`，base 默认 token、SKILL、README、主题文档同步。政金蓝 `seq-1..5` 收敛为蓝色系明度台阶，金色只作为 `--accent`。
+- **主题 UI 收敛**：默认切换器只开放 3 套稳定主题：`gov-finance-blue` / `sage` / `warm-sand`；`gov-finance-blue-dark` / `sky-field(-dark)` / `summer-coast` 保留为 experimental，不进默认 UI。
+- **字号系统改为语义角色**：新增 `--text-display/page-title/section-title/section-title-sm/card-title/body/table/meta/tag/footnote`；旧字号变量保留为兼容别名。lint 新增未授权 `font-size` 检查。
+- **calendar-report 容量规则**：新增月历主视图禁用条件、换行契约、颜色预算、`calendar-report` / `calendar-execution` 分型；base.css 新增 `.cal-report` 专用样式，月历格子只做时间索引。
+- **lint 增强**：业务 CSS 硬编码颜色升级为 error；新增 accent 使用预算、calendar-report flex-wrap/标签数/任务数/长文本/状态色/主题切换器检查。
+
 ## v1.0.0-rc.7 — 2026-06-12（无衬线 + 移动端工具层专项）
 - **全程无衬线字体**：`--font-display/--font-body` 全部改为思源黑体(Noto Sans SC)栈，离线回退苹方/微软雅黑/系统黑体；移除所有衬线/宋体与 Noto Serif 引入。
 - **移动端表格→卡片（GOVUK table-card）**：≤760px 表格不再横向拖拽，`thead` 视觉隐藏保留语义，`td` 用 `data-label` 生成字段名；列角色 `data-mobile-title/-hide/-actions`。新增 lint #11/#12（表格须含 table-card 规则、overflow-x:clip 守卫）。

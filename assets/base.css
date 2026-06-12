@@ -1,7 +1,7 @@
 /* ===================================================================
- * CCBGZZY_DESIGN · base.css  (v1.0.0-rc.7)
- * 统一基底：reset + 字体 + 等比字号(放大·硬性) + 语义 token + 标准组件
- * 颜色由 theme-config.js 注入；默认值=砂绿 sage，避免 FOUC。
+ * CCBGZZY_DESIGN · base.css  (v1.0.0-rc.8)
+ * 统一基底：reset + 字体 + 语义字号角色 + 语义 token + 标准组件
+ * 颜色由 theme-config.js 注入；默认值=政金蓝 gov-finance-blue，避免 FOUC。
  * =================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Sora:wght@500;600;700;800&display=swap');
@@ -14,17 +14,28 @@
   --font-body:'Noto Sans SC','Noto Sans TC','Noto Sans JP','Noto Sans KR','PingFang SC','Microsoft YaHei','Hiragino Sans GB','Malgun Gothic',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --font-mono:'JetBrains Mono','SF Mono','Cascadia Code','Menlo','Consolas',monospace;
 
-  /* —— 等比字号 v1.1（基准 17px · 比例 1.25）——
-     注意：下方组件已内置"硬性最小字号"，正文绝不低于 16px、表格不低于 15px。 */
-  --text-hero:4.0rem;     /* 68px 大数字/主视觉 */
-  --text-h1:3.0rem;       /* 51px 页面主标题 */
-  --text-h2:2.25rem;      /* 38px 栏目大标题 */
-  --text-h3:1.75rem;      /* 30px 模块标题 */
-  --text-h4:1.375rem;     /* 23px 卡片标题 */
-  --text-lead:1.25rem;    /* 21px 前言/突出 */
-  --text-body:1rem;       /* 17px 正文基准 */
-  --text-sm:0.9375rem;    /* 16px 辅助(硬性下限) */
-  --text-xs:0.8125rem;    /* 14px 最小(仅角标/水印，正文禁用) */
+  /* —— 语义字号角色 v1.2（业务页面只用这些角色）——
+     Display/KPI 44px；Page Title 32px；Section Title 28/24px；Card Title 20px；
+     Body/Table 16px；Meta/Tag/Footnote 14/13px。 */
+  --text-display:44px;
+  --text-page-title:32px;
+  --text-section-title:28px;
+  --text-section-title-sm:24px;
+  --text-card-title:20px;
+  --text-body:16px;
+  --text-table:16px;
+  --text-meta:14px;
+  --text-tag:13px;
+  --text-footnote:13px;
+  /* 旧变量兼容别名：保留以避免旧模板断裂，新页面不要直接新增这些别名用法。 */
+  --text-hero:var(--text-display);
+  --text-h1:var(--text-page-title);
+  --text-h2:var(--text-section-title);
+  --text-h3:var(--text-section-title);
+  --text-h4:var(--text-card-title);
+  --text-lead:var(--text-section-title-sm);
+  --text-sm:var(--text-body);
+  --text-xs:var(--text-meta);
 
   --leading-tight:1.2; --leading-normal:1.6; --leading-relaxed:1.75;
 
@@ -38,14 +49,14 @@
   --shadow-lg:0 20px 48px rgba(26,26,26,.16);
   --ease:cubic-bezier(.16,1,.3,1); --dur:.35s;
 
-  /* —— 语义色默认值（砂绿 Sage；theme-config.js 即时覆盖）—— */
-  --bg:#EFEAE0; --surface:#E5DFD2; --surface-2:#DBD4C5;
-  --title:#1A1A1A; --fg:#3A382F; --fg-2:#6A685B; --fg-muted:#908D7E;
-  --primary:#6B8A6F; --primary-strong:#56745B;
-  --accent:#CD6F47; --accent-soft:rgba(205,111,71,.14);
-  --border:rgba(26,26,26,.10); --border-strong:rgba(26,26,26,.20);
-  --success:#5E8B5A; --warning:#C0883C; --attention:#9C8A63; --danger:#B5503C; --info:#5E7E86;
-  --seq-1:#D7E1D7; --seq-2:#BDCEC0; --seq-3:#95B099; --seq-4:#6B8A6F; --seq-5:#4E6A52;
+  /* —— 语义色默认值（政金蓝 gov-finance-blue；theme-config.js 即时覆盖）—— */
+  --bg:#EEF3F8; --surface:#FFFFFF; --surface-2:#F6F8FB;
+  --title:#183153; --fg:#4B5D73; --fg-2:#718094; --fg-muted:#98A4B3;
+  --primary:#2F73B8; --primary-strong:#1F5E9D;
+  --accent:#D6A63A; --accent-soft:rgba(214,166,58,.14);
+  --border:rgba(24,49,83,.12); --border-strong:rgba(24,49,83,.24);
+  --success:#4FA66A; --warning:#D0882E; --attention:#8A96A6; --danger:#D45B4F; --info:#4A91C9;
+  --seq-1:#E6F0FA; --seq-2:#C7DDF2; --seq-3:#8FB9E2; --seq-4:#4F8DCC; --seq-5:#1F5E9D;
 }
 :root {
   --primary-soft:color-mix(in srgb,var(--primary) 14%,transparent);
@@ -55,7 +66,7 @@
 
 /* ---------- Reset ---------- */
 *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
-html{ font-size:17px; scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+html{ font-size:16px; scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 body{
   font-family:var(--font-body); font-size:var(--text-body); line-height:var(--leading-normal);
   background:var(--bg); color:var(--fg); min-height:100vh;
@@ -66,15 +77,15 @@ a{ color:var(--primary); text-decoration:none; transition:color .2s; }
 a:hover{ color:var(--primary-strong); }
 ::selection{ background:var(--primary-soft-2); color:var(--title); }
 
-/* ---------- 文字层级（硬性最小字号）---------- */
+/* ---------- 文字层级（语义字号角色）---------- */
 h1,h2,h3,h4{ font-family:var(--font-display); color:var(--title); line-height:var(--leading-tight); font-weight:700; text-wrap:balance; }
-h1{ font-size:var(--text-h1); } h2{ font-size:var(--text-h2); }
-h3{ font-size:var(--text-h3); } h4{ font-size:var(--text-h4); }
+h1{ font-size:var(--text-page-title); } h2{ font-size:var(--text-page-title); }
+h3{ font-size:var(--text-section-title); } h4{ font-size:var(--text-card-title); }
 p{ color:var(--fg); font-size:var(--text-body); max-width:74ch; text-wrap:pretty; }
-small,.text-sm{ font-size:var(--text-sm); }   /* 16px 下限 */
+small,.text-sm{ font-size:var(--text-meta); }   /* 仅辅助信息 */
 .text-muted{ color:var(--fg-muted); }
 .text-2{ color:var(--fg-2); }
-.lead{ font-size:var(--text-lead); color:var(--fg-2); line-height:var(--leading-relaxed); }
+.lead{ font-size:var(--text-section-title-sm); color:var(--fg-2); line-height:var(--leading-relaxed); }
 .em,strong.em,.accent{ color:var(--primary); font-weight:600; }
 .pop{ color:var(--accent); font-weight:600; }   /* 唯一暖色强调，慎用 */
 .num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
@@ -96,8 +107,8 @@ small,.text-sm{ font-size:var(--text-sm); }   /* 16px 下限 */
   display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-2); }
 .section-title::before{ content:''; width:5px; height:1.05em; border-radius:3px;
   background:var(--primary); }
-.section-desc{ color:var(--fg-2); font-size:var(--text-lead); max-width:66ch; margin-bottom:var(--space-6); }
-.eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:var(--text-sm);
+.section-desc{ color:var(--fg-2); font-size:var(--text-body); max-width:66ch; margin-bottom:var(--space-6); }
+.eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:var(--text-meta);
   letter-spacing:2px; text-transform:uppercase; color:var(--primary);
   border:1px solid var(--border); border-radius:var(--radius-pill); padding:6px 14px; background:var(--primary-ghost); }
 .eyebrow::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--primary); }
@@ -113,12 +124,12 @@ small,.text-sm{ font-size:var(--text-sm); }   /* 16px 下限 */
 
 /* ---------- KPI（大数字，硬性大字号）---------- */
 .kpi{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:var(--space-5); position:relative; }
-.kpi-label{ font-size:var(--text-sm); color:var(--fg-muted); margin-bottom:var(--space-2); }
-.kpi-value{ font-family:var(--font-display); font-size:3rem; color:var(--title); line-height:1.05;
-  font-variant-numeric:tabular-nums; font-weight:700; }   /* 51px，绝不缩小 */
+.kpi-label{ font-size:var(--text-meta); color:var(--fg-muted); margin-bottom:var(--space-2); }
+.kpi-value{ font-family:var(--font-display); font-size:var(--text-display); color:var(--title); line-height:1.05;
+  font-variant-numeric:tabular-nums; font-weight:700; }
 .kpi-value.is-primary{ color:var(--primary); }
 .kpi-value.is-pop{ color:var(--accent); }   /* 整页最重要的那一个数字，唯一暖色 */
-.kpi-sub{ font-size:var(--text-sm); color:var(--fg-muted); margin-top:var(--space-1); }
+.kpi-sub{ font-size:var(--text-meta); color:var(--fg-muted); margin-top:var(--space-1); }
 /* KPI 顶部用同色阶台阶区分类别（不是多种色相）*/
 .kpi[data-seq="1"]::after,.kpi[data-seq="2"]::after,.kpi[data-seq="3"]::after,
 .kpi[data-seq="4"]::after,.kpi[data-seq="5"]::after{ content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:var(--radius) var(--radius) 0 0; }
@@ -127,7 +138,7 @@ small,.text-sm{ font-size:var(--text-sm); }   /* 16px 下限 */
 .kpi[data-seq="5"]::after{ background:var(--seq-5);}
 
 /* ---------- Badge / 状态 ---------- */
-.badge{ display:inline-flex; align-items:center; gap:6px; font-size:var(--text-sm); font-weight:600;
+.badge{ display:inline-flex; align-items:center; gap:6px; font-size:var(--text-tag); font-weight:600;
   padding:3px 11px; border-radius:var(--radius-pill); border:1px solid var(--border); color:var(--fg-2); }
 .badge::before{ content:''; width:7px; height:7px; border-radius:50%; background:currentColor; }
 .badge.is-success{ color:var(--success); border-color:color-mix(in srgb,var(--success) 38%,transparent); background:color-mix(in srgb,var(--success) 10%,transparent); }
@@ -183,7 +194,8 @@ small,.text-sm{ font-size:var(--text-sm); }   /* 16px 下限 */
 
 /* ===================================================================
  * Calendar / Schedule 组件（calendar 页面类型用，见 references/calendar-schedule.md）
- * 三层展示：总览 / 月历(每格1–3条) / 详情折叠。无渐变、语义色边界照旧。
+ * 月历是时间索引，不是明细容器。汇报版用 .cal-report 收紧容量；
+ * 执行版改用周视图/日期列表/筛选表，不让 7×5 格子承载完整清单。
  * =================================================================== */
 /* 关键日期横条 */
 .keydate-strip{ display:flex; flex-wrap:wrap; gap:10px; }
@@ -200,24 +212,68 @@ small,.text-sm{ font-size:var(--text-sm); }   /* 16px 下限 */
 .week-row .wk-desc{ color:var(--fg-2); font-size:var(--text-body); }
 /* 月历网格 */
 .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
-.cal-head{ font-size:var(--text-sm); color:var(--fg-muted); text-align:center; padding:6px 0; font-weight:600; }
+.cal-head{ font-size:var(--text-meta); color:var(--fg-muted); text-align:center; padding:6px 0; font-weight:600; }
 .cal-day{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);
   min-height:118px; padding:8px 9px; display:flex; flex-direction:column; gap:5px; }
 .cal-day.is-dim{ background:transparent; border-color:transparent; }
 .cal-day.is-dim .cal-date{ color:var(--fg-muted); opacity:.5; }
 .cal-day.is-key{ border-color:var(--accent); box-shadow:inset 0 2px 0 var(--accent); }
-.cal-date{ font-size:var(--text-sm); color:var(--title); font-weight:600; display:flex; justify-content:space-between; align-items:center; }
-.cal-date .mk{ font-size:var(--text-xs); color:var(--fg-muted); font-weight:400; }   /* 重复目标的简短标记 */
+.cal-date{ font-size:var(--text-meta); color:var(--title); font-weight:600; display:flex; justify-content:space-between; align-items:center; }
+.cal-date .mk{ font-size:var(--text-tag); color:var(--fg-muted); font-weight:400; }   /* 重复目标的简短标记 */
 .cal-task{ font-size:var(--text-sm); color:var(--fg); line-height:1.35; display:flex; align-items:center; gap:6px; }
-.cal-more{ font-size:var(--text-sm); color:var(--primary); font-weight:600; cursor:pointer; margin-top:auto; }
+.cal-more{ font-size:var(--text-meta); color:var(--primary); font-weight:600; cursor:pointer; margin-top:auto; }
 /* 任务标签：每任务最多 2 个（主标签 + 状态标签）*/
-.cal-tag{ display:inline-block; font-size:var(--text-xs); padding:1px 7px; border-radius:var(--radius-pill); white-space:nowrap; }
+.cal-tag{ display:inline-block; font-size:var(--text-tag); padding:1px 7px; border-radius:var(--radius-pill); white-space:nowrap; }
 .cal-tag.tag-cat{ background:color-mix(in srgb,var(--primary) 14%,transparent); color:var(--primary-strong); }
 .cal-tag.tag-state{ background:var(--surface-2); color:var(--fg-2); border:1px solid var(--border); }
 .cal-tag.is-accent{ background:var(--accent-soft); color:var(--accent); }
 .cal-tag.is-warning{ background:color-mix(in srgb,var(--warning) 14%,transparent); color:var(--warning); }
 .cal-tag.is-info{ background:color-mix(in srgb,var(--info) 14%,transparent); color:var(--info); }
 @media (max-width:760px){ .cal-grid{ grid-template-columns:repeat(7,minmax(96px,1fr)); overflow-x:auto; } }
+
+/* 汇报型日历：月历只做节奏索引，不展示完整执行清单。 */
+.cal-report .cal-grid{ gap:6px; }
+.cal-report .cal-day{
+  min-height:86px; max-height:96px; overflow:hidden; gap:4px;
+  border-color:color-mix(in srgb,var(--border) 72%,transparent);
+}
+.cal-report .cal-day:not(.is-key){ box-shadow:none; }
+.cal-report .cal-day.is-weekend,
+.cal-report .cal-day.is-dim{
+  background:color-mix(in srgb,var(--surface-2) 48%,transparent);
+  opacity:.68;
+}
+.cal-report .cal-day.is-key{
+  border-color:var(--primary);
+  box-shadow:inset 0 2px 0 var(--primary);
+}
+.cal-report .cal-day.is-accent{
+  border-color:var(--accent);
+  box-shadow:inset 0 2px 0 var(--accent);
+}
+.cal-report .cal-task{
+  flex-wrap:nowrap; min-width:0; font-size:var(--text-meta); line-height:1.25;
+}
+.cal-report .cal-task-title{
+  display:block; min-width:0; max-width:100%;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.cal-report .cal-tag{
+  flex:0 0 auto; max-width:4.5em;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  background:color-mix(in srgb,var(--primary) 12%,transparent);
+  color:var(--primary-strong);
+}
+.cal-report .cal-more{
+  margin-top:auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.cal-report .cal-tag.is-warning,
+.cal-report .cal-tag.is-danger,
+.cal-report .cal-tag.is-success,
+.cal-report .cal-tag.is-info{
+  background:color-mix(in srgb,var(--primary) 12%,transparent);
+  color:var(--primary-strong);
+}
 
 /* ---------- 同色阶图例（多类别用台阶，不用多色相）---------- */
 .seq-legend{ display:flex; flex-wrap:wrap; gap:14px; font-size:var(--text-sm); color:var(--fg-2); }
@@ -447,7 +503,7 @@ body{ overflow-x:clip; }
   .table td[data-mobile-actions]{ justify-content:flex-start; padding-top:10px; }
   .table td[data-mobile-actions]::before{ content:none; }
 
-  /* 间距 + 字号下限 */
+  /* 间距 + 移动端基准 */
   html{ font-size:16px; }
   .container{ padding:0 var(--space-4); }
   .section{ padding:var(--space-6) 0; }

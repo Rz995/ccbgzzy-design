@@ -30,7 +30,7 @@
 4. **三层文字 + 主色。** 文字不超过 `--title/--fg/--fg-2(--fg-muted)`；重点 `--primary`，唯一焦点 `--accent`。
 5. **状态色不做装饰。** `--success/--warning/--danger/--info` 只表达状态；类别区分交给 `--seq-*`。
 6. **同色阶取值要拉开。** 多类别从 `--seq-*` 选时优先选间隔大的（如 seq-1/seq-3/seq-5），相邻台阶对比太弱。
-7. **对比度达标。** 正文/标题对背景 ≥ 4.5:1，大字 ≥ 3:1；当前 7 个 theme key 已校准。
+7. **对比度达标。** 正文/标题对背景 ≥ 4.5:1，大字 ≥ 3:1；默认开放的 3 套稳定主题必须优先校准。
 8. **禁止任何渐变。** 全站 0 渐变——背景、文字、按钮、卡片、进度条、图表一律纯色。
    `linear-gradient`/`radial-gradient`/`conic-gradient`/背景扫光一概不用。要纵深用"纯色台阶"
    （bg→surface→surface-2）和边框，不要用渐变。
@@ -46,15 +46,14 @@
 
 ## 四、主题（同色阶 + 单点强调）
 
-**默认 `sage`（砂绿）** — 奶油底 + 鼠尾草同色阶 + 标志橙强调 + #1A1A1A 文字（仅 light，无深色配对）。
-当前 **7 个 theme key** 全部开放可切换：
-`sage`（默认）、`gov-finance-blue`/`gov-finance-blue-dark`、`sky-field`/`sky-field-dark`、`summer-coast`、`warm-sand`。
-配对深浅（`CCBGZZY_toggleMode()`）的是 `gov-finance-blue` 与 `sky-field`；其余仅 light。
+**默认 `gov-finance-blue`（政金蓝）** — 政务金融蓝为主色、金色为唯一强调、seq 为蓝色系明度台阶。
+默认 UI 只开放 3 套稳定主题：`gov-finance-blue`、`sage`、`warm-sand`。
+其他主题可保留在 `theme-config.js` 中，但必须标记为 experimental，不进入默认 UI。
 各主题完整 token、适合/不适合场景、注意事项见 [experimental-themes.md](experimental-themes.md)。
 新增/修改主题见下节。
 
 ## 五、新增/修改主题
 
 只改 `theme-config.js`：① `CCBGZZY_THEMES` 加 key，填满全部 token（含 `--seq-1..5`、`--accent`）并标 `mode`；
-② `CCBGZZY_THEME_META` 加显示信息，`CCBGZZY_THEME_ORDER` 排序；③ 如需深浅配对，在 `CCBGZZY_toggleMode` 的 `pair` 登记。
+② 稳定开放主题进 `CCBGZZY_THEME_ORDER`；实验主题只保留 meta 并加入 `CCBGZZY_EXPERIMENTAL`；③ 如需深浅配对，在 `CCBGZZY_toggleMode` 的 `pair` 登记。
 模板/页面读取 `CCBGZZY_getThemeOptions()`，不要手写主题列表。

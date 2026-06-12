@@ -64,8 +64,8 @@
 ### 紧凑主题控件（替代旧的横排色卡）
 - 在 appbar 工具区放一个挂载点：`<div data-ccbgzzy-theme-control></div>`，theme-config.js 自动构建：
   - 收起态 = `.ccbgzzy-tool-pill.ccbgzzy-theme-trigger`（PC ≤220px pill，显示当前主题**色环** + “主题 · 名称” + ▾；移动端收成 ~40px 图标）。
-  - 展开态 = `.ccbgzzy-theme-popover`（PC 右上 dropdown；移动端底部 bottom-sheet + scrim），列出**全部**主题，含色点 + 当前 ✓，底部「深/浅切换」。
-- 主题列表必须来自 `CCBGZZY_getThemeOptions()`；**禁止**手写固定主题、**禁止**在正文上方横排 14 个主题按钮。
+  - 展开态 = `.ccbgzzy-theme-popover`（PC 右上 dropdown；移动端底部 bottom-sheet + scrim），列出默认开放的稳定主题，含色点 + 当前 ✓，底部「深/浅切换」。
+- 主题列表必须来自 `CCBGZZY_getThemeOptions()`；**禁止**手写固定主题、**禁止**在正文上方横排主题按钮。
 - 色环/色点由 JS 用 `.style` 注入（避免成品出现硬编码颜色）；控件只用 `--surface/--title/--fg-2/--border/--primary/--accent`，无渐变。
 
 ### 侧栏 rail + 移动 drawer

@@ -8,11 +8,11 @@
 
 ---
 
-当前版本：**v1.0.0-rc.7**（以下面向维护者）
+当前版本：**v1.0.0-rc.8**（以下面向维护者）
 
 让 HTML **风格统一、展示逻辑正确**。
 内核逻辑链：**内容 → 信息密度 → 页面类型(Agent 内部判断) → 展示结构 → 组件 → 颜色语义 → 交付格式**。
-通用型——不绑定任何业务字段；默认主题 `sage`（共 7 套配色，含政金蓝）；产物自带 `CCBGZZY_DESIGN` 三层水印。
+通用型——不绑定任何业务字段；默认主题 `gov-finance-blue`（政金蓝）；默认 UI 只开放 3 套稳定主题，产物自带 `CCBGZZY_DESIGN` 三层水印。
 
 ## 仓库结构
 ```
@@ -25,8 +25,8 @@ ccbgzzy-design/
 │   ├── typography.md           # 字号/字体
 │   ├── tables.md  data-viz.md  i18n-fonts.md  components.md  motion.md  watermark.md
 ├── assets/
-│   ├── theme-config.js      # 7 个主题 + 切换 + 水印
-│   ├── base.css             # reset + token + 字号 + 组件
+│   ├── theme-config.js      # 默认主题 + 稳定/实验主题 + 切换 + 水印
+│   ├── base.css             # reset + token + 语义字号角色 + 组件
 │   ├── effects.css          # 精选动效（纯色·无渐变）
 │   └── template.html        # 起手模板
 ├── scripts/
@@ -59,7 +59,7 @@ node scripts/build-single-file.mjs assets/template.html example.html
 # 构建 single-file（把外链 css/js 内联进一个 html，复制即用）
 node scripts/build-single-file.mjs my-page/index.html my-page.single.html
 
-# 交付前自检（gradient/硬编码色/水印/版本/小字/!important/首屏裸表格/移动 table-card）
+# 交付前自检（gradient/硬编码色/水印/版本/字号角色/!important/首屏裸表格/calendar-report/移动 table-card）
 # package 模式会连外链 base.css 一起查，不再误杀
 node scripts/lint.mjs my-page.single.html
 node scripts/lint.mjs my-page/index.html --mode=package
@@ -74,11 +74,16 @@ node scripts/check-mobile.mjs            # 默认测 package template + examples
 - **package**：HTML 外链 `assets/base.css`、`effects.css`、`theme-config.js`，适合多页共享/统一升级。
 
 ## 主题
-当前共有 **7 个 theme key**，全部进 `CCBGZZY_THEME_META`、默认 UI 可切换；默认 `sage`。
-完整名单：`sage`（默认）/ `gov-finance-blue` / `gov-finance-blue-dark` / `sky-field` / `sky-field-dark` / `summer-coast` / `warm-sand`。
-配对深浅（`CCBGZZY_toggleMode()` 有效）的是 `gov-finance-blue` 与 `sky-field`；`sage`/`summer-coast`/`warm-sand` 仅 light。
-推荐稳定：`sage`（奶油底 + 鼠尾草同色阶 + 标志橙强调 + #1A1A1A）。
-模板通过 `CCBGZZY_getThemeOptions()` 渲染完整主题列表；增删/换主题只改 `theme-config.js` 一处（见 references/experimental-themes.md）。
+默认主题：`gov-finance-blue`（政金蓝）。
+
+默认 UI 只开放 3 套稳定主题：`gov-finance-blue` / `sage` / `warm-sand`。
+
+保留但不进默认 UI 的 experimental 主题：`gov-finance-blue-dark` / `sky-field` / `sky-field-dark` / `summer-coast`。
+
+模板通过 `CCBGZZY_getThemeOptions()` 渲染默认主题列表；增删/换主题只改 `theme-config.js` 一处（见 references/experimental-themes.md）。底层 token 可以多，但对用户和 Agent 暴露的选择必须少。
+
+## 字号
+业务页面只使用固定语义字号角色：Display/KPI 44px、Page Title 32px、Section Title 24/28px、Card Title 20px、Body/Table 16px、Meta/Tag/Footnote 13/14px。页面局部不要随手写 `font-size`，优先使用变量或组件类。
 
 ## 版本
-v1.0.0-rc.7，详见 CHANGELOG.md。
+v1.0.0-rc.8，详见 CHANGELOG.md。

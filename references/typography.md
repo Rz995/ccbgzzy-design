@@ -1,45 +1,60 @@
-# 字体与字号系统（硬性规定）
+# 字体与字号系统（语义角色规则）
 
-> ⚠️ 字号是**硬性规定，违反即不合格**。"小字显得专业"是误区——参考图里的丑，
-> 一半来自字太小。宁可大，不可小。下面的最小值是**底线**，不是起点。
+> 字号系统追求统一，不追求每页都不同。底层 token 可以保留兼容别名，但业务页面和 Agent 只暴露少数语义角色。
 
-## 一、硬性最小字号（任何情况下不得低于）
+## 一、业务页面只使用固定字号角色
 
-| 场景 | 最小字号 | 说明 |
-|------|----------|------|
-| 正文 / 表格单元 | **16px** | 看板、报告正文一律 ≥16px |
-| 表格表头 / 标签 / KPI 标签 | **16px** | 别再用 12–13px 的"小标签" |
-| 角标 / 水印 / 版权 | 14px | 仅限边角非内容文字 |
-| 模块标题 | ≥ 28px | section-title |
-| KPI 大数字 | ≥ 44px | 越大越好，撑视觉 |
+| 角色 | 变量 | 字号 | 用途 |
+|------|------|------|------|
+| Display / KPI | `--text-display` | 44px | KPI 大数字、核心数字 |
+| Page Title | `--text-page-title` | 32px | 页面标题、一级标题 |
+| Section Title | `--text-section-title` / `--text-section-title-sm` | 28px / 24px | 模块标题，二选一 |
+| Card Title | `--text-card-title` | 20px | 卡片标题、列表项标题 |
+| Body / Table | `--text-body` / `--text-table` | 16px | 正文、表格单元、按钮 |
+| Meta / Tag / Footnote | `--text-meta` / `--text-tag` / `--text-footnote` | 14px / 13px | 图例、脚注、标签、徽章、角标 |
 
-**绝对禁止**：正文/表格里出现 `0.7rem`、`0.75rem`、`12px`、`13px` 这类字号。
+业务正文和表格不得低于 16px。移动端正文不得低于 15px。
 
-## 二、等比字号刻度（基准 17px · 1.25）
+## 二、禁止局部随手写字号
 
-| 变量 | 字号 | 语义 |
-|------|------|------|
-| `--text-hero` | 68px | 大数字 / 主视觉 |
-| `--text-h1` | 51px | 页面主标题 |
-| `--text-h2` | 38px | 栏目大标题 |
-| `--text-h3` | 30px | 模块标题 |
-| `--text-h4` | 23px | 卡片标题 |
-| `--text-lead` | 21px | 前言 / 突出 |
-| `--text-body` | 17px | 正文基准 |
-| `--text-sm` | 16px | 辅助（**下限**） |
-| `--text-xs` | 14px | 仅角标 / 水印 |
+业务 CSS 中不要写：
 
-`h1–h4` 已绑定字号；正文用默认；小字用 `.text-sm`（=16px）。**按语义选档，不写死 px。**
-KPI 数字组件 `.kpi-value` 已内置 51px，不要覆盖改小。
+```css
+.xxx { font-size: 15px; }
+.xxx { font-size: 0.875rem; }
+```
 
-## 三、字体栈
-- `--font-display`（标题）：`Sora` → 思源宋体系 → 系统衬线。有辨识度、非"AI 味"。
-- `--font-body`（正文）：思源黑体 简/繁/日/韩 → 系统中文 → system-ui。覆盖简繁日韩英法。
-- `--font-mono`：数字/代码等宽。数字展示加 `.num`（tabular-nums）。
+必须写：
 
-## 四、字重与行高
-- 中文正文 400/500，标题 700；避免 100–300 超细字重用于中文。
-- 行高：标题 1.2，正文 1.6，长文/CJK 段落 1.75（CJK 比拉丁密，需要更大行高）。
+```css
+.xxx { font-size: var(--text-body); }
+.xxx-title { font-size: var(--text-card-title); }
+```
+
+例外只包括：
+
+- 响应式规则中为移动端做必要收敛，但正文仍不得低于 15px。
+- 水印、版本号、版权角标。
+- SVG 内部图表文字或特殊辅助元素，且不得影响正文阅读。
+- 主题系统内部控件的极小非业务装饰。
+
+## 三、组件绑定
+
+- `h1/h2` → Page Title。
+- `h3/.section-title` → Section Title。
+- `h4/.card-title` → Card Title。
+- `.kpi-value` → Display / KPI。
+- `.table` → Body / Table。
+- `.badge/.cal-tag/.kpi-label/.kpi-sub/.table-info` → Meta / Tag。
+
+高密度表格只能通过 `.table-compact` 收紧 padding，不得改小字号。
+
+## 四、字体栈
+
+- `--font-display` 与 `--font-body` 全程无衬线：Noto Sans SC/TC/JP/KR → 苹方/微软雅黑/系统黑体 → system-ui。
+- `--font-mono` 用于数字和代码。数字展示加 `.num`（tabular-nums）。
+- 不使用宋体、衬线、超细字重。中文正文 400/500，标题 700。
 
 ## 五、多语言
-给 `<html lang>` 或局部 `lang` 打正确语种，Pan-CJK 才显示正确地区字形（简繁日字形不同）。详见 i18n-fonts.md。
+
+给 `<html lang>` 或局部 `lang` 打正确语种，Pan-CJK 才显示正确地区字形（简繁日字形不同）。详见 `i18n-fonts.md`。

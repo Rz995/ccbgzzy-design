@@ -41,7 +41,7 @@
 | 人文 / 阅读 | editorial sketch | 杂志式排版、衬线标题、大字、留白叙事。 |
 | 生活 / 消费 | organic modern + soft geometry | 柔和几何、更大圆角、温暖中性。 |
 
-> 我们的看板/报告基本都属"金融商务"——默认就用 corporate elegance：默认 `sage` 主题 + 大 KPI + 清爽表格（需要冷调商务可切 `gov-finance-blue` / `sky-field`）。
+> 我们的看板/报告基本都属"金融商务"——默认就用 corporate elegance：默认 `gov-finance-blue`（政金蓝）主题 + 大 KPI + 清爽表格。需要更温和的内部说明再切 `sage` 或 `warm-sand`。
 
 ## 维度四 · 哲学：可亲近的高级感（approachable luxury）
 
