@@ -74,3 +74,38 @@
 - 数字列保留 `.num`。
 
 **铁律**：① 移动端不出现横向滚动/拖拽；② 字段超过 ~6 个时，把次要列 `data-mobile-hide` 收进"展开详情"（`<details>`）；③ 高密度 lookup 页移动端默认每页 5–10 条卡片 + 顶部筛选，不一次性渲染全量。
+
+## 移动端长表：渐进披露（首选，受众多为手机端领导）
+
+⚠️ 误区：在移动端靠 `.tall` 限高 + 内部滚动来"压短"长表——**`.tall` 在 ≤760px 已被 base.css 第 556 行有意关闭**（`overflow:visible; max-height:none`），因为卡片内二次滚动体验更差。移动端正确做法是**减少首屏信息量**，不是塞进小滚动框。
+
+行数多（如 20–30+ 条明细）时，默认走**渐进披露**：每条收起为「标题 + 1 个关键指标」，点按才展开其余字段。这是 NNG/Smashing 推荐的下钻模式，能把手机端页面高度砍到约 1/3，领导扫一眼关键列即可定位。
+
+```html
+<div class="data-table">
+  <table class="table mobile-accordion" data-ccbgzzy-mobile-accordion>
+    <thead><tr><th>客户</th><th>客户经理</th><th>产品</th><th class="num">金额</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-mobile-title>恒生制造</td>           <!-- 收起时的卡片标题 -->
+        <td data-label="客户经理">张磊</td>
+        <td data-label="产品">流动资金贷款</td>
+        <td class="num" data-mobile-summary>¥120万</td> <!-- 收起时仍显示的关键指标 -->
+        <td data-label="状态"><span class="badge is-warning">待回访</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+要点：
+
+- 加 `data-ccbgzzy-mobile-accordion`（由 `interactive.js` 接管）+ 一个 `data-mobile-title` + 一个 `data-mobile-summary`。
+- ≤760px 默认收起，点按标题展开；**键盘可达**（Enter/Space）+ `aria-expanded`；桌面端不变。
+- **渐进增强**：无 JS 时全字段照常显示（CSS 折叠只在 `html.ccbgzzy-js` 下生效），内容不丢。
+- 仍需 `data-mobile-hide` 砍掉永远不必看的次要列；二者可叠加。
+- 用了本组件的页面必须引用/内联 `assets/interactive.js`（lint 会校验）。
+
+## 首屏信息优先级（移动端）
+
+手机端首屏只放**结论 + 3–5 个核心 KPI**；KPI 过多时，次要的用 `data-mobile-hide` 下移或折叠，不要在首屏堆满小卡。明细一律后置（折叠/渐进披露/分页）。详见 [information-density.md](information-density.md)。

@@ -30,19 +30,19 @@
 
 window.CCBGZZY_THEMES = {
 
-  'sage': { mode:'light', '--bg':'#EFEAE0', '--surface':'#E5DFD2', '--surface-2':'#DBD4C5', '--title':'#1A1A1A', '--fg':'#3A382F', '--fg-2':'#6A685B', '--fg-muted':'#908D7E', '--primary':'#6B8A6F', '--primary-strong':'#56745B', '--accent':'#CD6F47', '--accent-soft':'rgba(205,111,71,0.14)', '--border':'rgba(26,26,26,0.10)', '--border-strong':'rgba(26,26,26,0.20)', '--success':'#5E8B5A', '--warning':'#C0883C', '--attention':'#9C8A63', '--danger':'#B5503C', '--info':'#5E7E86', '--seq-1':'#D7E1D7', '--seq-2':'#BDCEC0', '--seq-3':'#95B099', '--seq-4':'#6B8A6F', '--seq-5':'#4E6A52' },
+  'sage': { mode:'light', '--bg':'#EFEAE0', '--surface':'#E5DFD2', '--surface-2':'#DBD4C5', '--title':'#1A1A1A', '--fg':'#3A382F', '--fg-2':'#5E5D51', '--fg-muted':'#5E5C52', '--primary':'#4B614E', '--primary-strong':'#48614C', '--accent':'#894A30', '--accent-soft':'rgba(137,74,48,0.14)', '--border':'rgba(26,26,26,0.10)', '--border-strong':'rgba(26,26,26,0.20)', '--success':'#5E8B5A', '--warning':'#C0883C', '--attention':'#9C8A63', '--danger':'#B5503C', '--info':'#5E7E86', '--seq-1':'#D7E1D7', '--seq-2':'#BDCEC0', '--seq-3':'#95B099', '--seq-4':'#6B8A6F', '--seq-5':'#4E6A52' },
 
-  'gov-finance-blue': { mode:'light', '--bg':'#EEF3F8', '--surface':'#FFFFFF', '--surface-2':'#F6F8FB', '--title':'#183153', '--fg':'#4B5D73', '--fg-2':'#718094', '--fg-muted':'#98A4B3', '--primary':'#2F73B8', '--primary-strong':'#1F5E9D', '--accent':'#D6A63A', '--accent-soft':'rgba(214,166,58,0.14)', '--border':'rgba(24,49,83,0.12)', '--border-strong':'rgba(24,49,83,0.24)', '--success':'#4FA66A', '--warning':'#D0882E', '--attention':'#8A96A6', '--danger':'#D45B4F', '--info':'#4A91C9', '--seq-1':'#E6F0FA', '--seq-2':'#C7DDF2', '--seq-3':'#8FB9E2', '--seq-4':'#4F8DCC', '--seq-5':'#1F5E9D' },
+  'gov-finance-blue': { mode:'light', '--bg':'#EEF3F8', '--surface':'#FFFFFF', '--surface-2':'#F6F8FB', '--title':'#183153', '--fg':'#4B5D73', '--fg-2':'#626F81', '--fg-muted':'#67707A', '--primary':'#2E71B4', '--primary-strong':'#1F5E9D', '--accent':'#896A25', '--accent-soft':'rgba(137,106,37,0.14)', '--border':'rgba(24,49,83,0.12)', '--border-strong':'rgba(24,49,83,0.24)', '--success':'#4FA66A', '--warning':'#D0882E', '--attention':'#8A96A6', '--danger':'#D45B4F', '--info':'#4A91C9', '--seq-1':'#E6F0FA', '--seq-2':'#C7DDF2', '--seq-3':'#8FB9E2', '--seq-4':'#4F8DCC', '--seq-5':'#1F5E9D' },
 
-  'gov-finance-blue-dark': { mode:'dark', '--bg':'#0F2036', '--surface':'#16304F', '--surface-2':'#1E3C61', '--title':'#EAF1F8', '--fg':'#C6D3E2', '--fg-2':'#9DB0C6', '--fg-muted':'#74879E', '--primary':'#5C9BD6', '--primary-strong':'#7FB4E2', '--accent':'#E0B452', '--accent-soft':'rgba(224,180,82,0.18)', '--border':'rgba(234,241,248,0.12)', '--border-strong':'rgba(234,241,248,0.24)', '--success':'#5FB87C', '--warning':'#DDA445', '--attention':'#9DB0C6', '--danger':'#DD6E62', '--info':'#6BA8DE', '--seq-1':'#1B3554', '--seq-2':'#254E78', '--seq-3':'#3372A8', '--seq-4':'#5C9BD6', '--seq-5':'#9CC8EA' },
+  'gov-finance-blue-dark': { mode:'dark', '--bg':'#0F2036', '--surface':'#16304F', '--surface-2':'#1E3C61', '--title':'#EAF1F8', '--fg':'#C6D3E2', '--fg-2':'#9DB0C6', '--fg-muted':'#98A6B7', '--primary':'#74AADC', '--primary-strong':'#7FB4E2', '--accent':'#E0B452', '--accent-soft':'rgba(224,180,82,0.18)', '--border':'rgba(234,241,248,0.12)', '--border-strong':'rgba(234,241,248,0.24)', '--success':'#5FB87C', '--warning':'#DDA445', '--attention':'#9DB0C6', '--danger':'#DD6E62', '--info':'#6BA8DE', '--seq-1':'#1B3554', '--seq-2':'#254E78', '--seq-3':'#3372A8', '--seq-4':'#5C9BD6', '--seq-5':'#9CC8EA' },
 
-  'sky-field': { mode:'light', '--bg':'#F3F9FC', '--surface':'#FFFFFF', '--surface-2':'#E1F3FA', '--title':'#1E2E3C', '--fg':'#38485A', '--fg-2':'#647686', '--fg-muted':'#93A0AB', '--primary':'#377EB8', '--primary-strong':'#2A608E', '--accent':'#DC7369', '--accent-soft':'rgba(220,115,105,0.14)', '--border':'rgba(30,46,60,0.12)', '--border-strong':'rgba(30,46,60,0.22)', '--success':'#5A9A55', '--warning':'#C99A2E', '--attention':'#B6A86A', '--danger':'#B23648', '--info':'#377EB8', '--seq-1':'#E1F3FA', '--seq-2':'#A9D2EA', '--seq-3':'#6FA9D0', '--seq-4':'#377EB8', '--seq-5':'#285C86' },
+  'sky-field': { mode:'light', '--bg':'#F3F9FC', '--surface':'#FFFFFF', '--surface-2':'#E1F3FA', '--title':'#1E2E3C', '--fg':'#38485A', '--fg-2':'#5E6F7E', '--fg-muted':'#656E76', '--primary':'#3271A6', '--primary-strong':'#2A608E', '--accent':'#A5564F', '--accent-soft':'rgba(165,86,79,0.14)', '--border':'rgba(30,46,60,0.12)', '--border-strong':'rgba(30,46,60,0.22)', '--success':'#5A9A55', '--warning':'#C99A2E', '--attention':'#B6A86A', '--danger':'#B23648', '--info':'#377EB8', '--seq-1':'#E1F3FA', '--seq-2':'#A9D2EA', '--seq-3':'#6FA9D0', '--seq-4':'#377EB8', '--seq-5':'#285C86' },
 
-  'sky-field-dark': { mode:'dark', '--bg':'#101E2A', '--surface':'#1A2D3D', '--surface-2':'#233A4D', '--title':'#EAF2F8', '--fg':'#C6D6E2', '--fg-2':'#9AAEBE', '--fg-muted':'#6F8294', '--primary':'#5E9FD0', '--primary-strong':'#7FB6E0', '--accent':'#E08A80', '--accent-soft':'rgba(224,138,128,0.18)', '--border':'rgba(234,242,248,0.12)', '--border-strong':'rgba(234,242,248,0.24)', '--success':'#6FB46A', '--warning':'#D8AE55', '--attention':'#C2B488', '--danger':'#C9505F', '--info':'#5E9FD0', '--seq-1':'#21425E', '--seq-2':'#2F6491', '--seq-3':'#377EB8', '--seq-4':'#6FA9D0', '--seq-5':'#A9D2EA' },
+  'sky-field-dark': { mode:'dark', '--bg':'#101E2A', '--surface':'#1A2D3D', '--surface-2':'#233A4D', '--title':'#EAF2F8', '--fg':'#C6D6E2', '--fg-2':'#9AAEBE', '--fg-muted':'#94A3B0', '--primary':'#6BA7D4', '--primary-strong':'#7FB6E0', '--accent':'#E08A80', '--accent-soft':'rgba(224,138,128,0.18)', '--border':'rgba(234,242,248,0.12)', '--border-strong':'rgba(234,242,248,0.24)', '--success':'#6FB46A', '--warning':'#D8AE55', '--attention':'#C2B488', '--danger':'#C9505F', '--info':'#5E9FD0', '--seq-1':'#21425E', '--seq-2':'#2F6491', '--seq-3':'#377EB8', '--seq-4':'#6FA9D0', '--seq-5':'#A9D2EA' },
 
-  'summer-coast': { mode:'light', '--bg':'#FBF7F0', '--surface':'#FFFFFF', '--surface-2':'#F1EAE0', '--title':'#2A2622', '--fg':'#4A443D', '--fg-2':'#756D63', '--fg-muted':'#A39A8E', '--primary':'#3C9BC9', '--primary-strong':'#2C77A0', '--accent':'#F4775A', '--accent-soft':'rgba(244,119,90,0.14)', '--border':'rgba(42,38,34,0.12)', '--border-strong':'rgba(42,38,34,0.22)', '--success':'#6FAE63', '--warning':'#E6A23C', '--attention':'#E2B96A', '--danger':'#D8504F', '--info':'#3C9BC9', '--seq-1':'#CDEBEA', '--seq-2':'#8FD0CD', '--seq-3':'#65BDBA', '--seq-4':'#3C9BC9', '--seq-5':'#2C77A0' },
+  'summer-coast': { mode:'light', '--bg':'#FBF7F0', '--surface':'#FFFFFF', '--surface-2':'#F1EAE0', '--title':'#2A2622', '--fg':'#4A443D', '--fg-2':'#70695F', '--fg-muted':'#6F6961', '--primary':'#2C7193', '--primary-strong':'#297096', '--accent':'#A6513D', '--accent-soft':'rgba(166,81,61,0.14)', '--border':'rgba(42,38,34,0.12)', '--border-strong':'rgba(42,38,34,0.22)', '--success':'#6FAE63', '--warning':'#E6A23C', '--attention':'#E2B96A', '--danger':'#D8504F', '--info':'#3C9BC9', '--seq-1':'#CDEBEA', '--seq-2':'#8FD0CD', '--seq-3':'#65BDBA', '--seq-4':'#3C9BC9', '--seq-5':'#2C77A0' },
 
-  'warm-sand': { mode:'light', '--bg':'#F4EFE8', '--surface':'#FBF8F3', '--surface-2':'#EAE1D5', '--title':'#2E3A45', '--fg':'#574F45', '--fg-2':'#837868', '--fg-muted':'#A89C8B', '--primary':'#4E7C93', '--primary-strong':'#3A6173', '--accent':'#B56B7A', '--accent-soft':'rgba(181,107,122,0.12)', '--border':'rgba(46,58,69,0.12)', '--border-strong':'rgba(46,58,69,0.22)', '--success':'#5E8B5A', '--warning':'#C28A3E', '--attention':'#A8916A', '--danger':'#B5604A', '--info':'#4E7C93', '--seq-1':'#CBD9DE', '--seq-2':'#9DBAC4', '--seq-3':'#6E97A5', '--seq-4':'#4E7C93', '--seq-5':'#355A68' },
+  'warm-sand': { mode:'light', '--bg':'#F4EFE8', '--surface':'#FBF8F3', '--surface-2':'#EAE1D5', '--title':'#2E3A45', '--fg':'#574F45', '--fg-2':'#6C6355', '--fg-muted':'#6C6459', '--primary':'#42697D', '--primary-strong':'#3A6173', '--accent':'#8D535F', '--accent-soft':'rgba(141,83,95,0.12)', '--border':'rgba(46,58,69,0.12)', '--border-strong':'rgba(46,58,69,0.22)', '--success':'#5E8B5A', '--warning':'#C28A3E', '--attention':'#A8916A', '--danger':'#B5604A', '--info':'#4E7C93', '--seq-1':'#CBD9DE', '--seq-2':'#9DBAC4', '--seq-3':'#6E97A5', '--seq-4':'#4E7C93', '--seq-5':'#355A68' },
 
 };
 
@@ -55,13 +55,13 @@ window.CCBGZZY_THEME_ORDER = [
 /* 主题元信息（切换器 UI）。
    family 用于分组/下拉展示；label 用于可见标签；swatch* 用于色卡。 */
 window.CCBGZZY_THEME_META = {
-  'gov-finance-blue': { family:'政务金融', label:'政金蓝', mode:'light', swatchBg:'#EEF3F8', swatchAccent:'#D6A63A' },
+  'gov-finance-blue': { family:'政务金融', label:'政金蓝', mode:'light', swatchBg:'#EEF3F8', swatchAccent:'#896A25' },
   'gov-finance-blue-dark': { family:'政务金融', label:'政金·夜', mode:'dark', swatchBg:'#0F2036', swatchAccent:'#E0B452' },
-  'sage': { family:'通用默认', label:'砂绿', mode:'light', swatchBg:'#EFEAE0', swatchAccent:'#CD6F47' },
-  'sky-field': { family:'复盘风险', label:'蓝天绿地', mode:'light', swatchBg:'#F3F9FC', swatchAccent:'#DC7369' },
+  'sage': { family:'通用默认', label:'砂绿', mode:'light', swatchBg:'#EFEAE0', swatchAccent:'#894A30' },
+  'sky-field': { family:'复盘风险', label:'蓝天绿地', mode:'light', swatchBg:'#F3F9FC', swatchAccent:'#A5564F' },
   'sky-field-dark': { family:'复盘风险', label:'蓝天·夜', mode:'dark', swatchBg:'#101E2A', swatchAccent:'#E08A80' },
-  'summer-coast': { family:'活动指引', label:'夏日海滩', mode:'light', swatchBg:'#FBF7F0', swatchAccent:'#F4775A' },
-  'warm-sand': { family:'暖中性', label:'暖砂', mode:'light', swatchBg:'#F4EFE8', swatchAccent:'#B56B7A' },
+  'summer-coast': { family:'活动指引', label:'夏日海滩', mode:'light', swatchBg:'#FBF7F0', swatchAccent:'#A6513D' },
+  'warm-sand': { family:'暖中性', label:'暖砂', mode:'light', swatchBg:'#F4EFE8', swatchAccent:'#8D535F' },
 };
 window.CCBGZZY_EXPERIMENTAL = [];  /* 全部 7 个 theme key 进 ORDER、默认 UI 可切换；默认 gov-finance-blue */
 
@@ -101,6 +101,7 @@ window.CCBGZZY_applyTheme = function (themeName) {
       try { f.contentWindow.postMessage({ type:'ccbgzzyTheme', theme:name }, '*'); } catch (e) {}
     });
   } catch (e) {}
+  try { if (typeof window.CCBGZZY_renderAllCharts === 'function') window.CCBGZZY_renderAllCharts(); } catch (e) {}
 };
 
 /* 同色相一键深↔浅（冷配冷、暖配暖） */
@@ -268,6 +269,24 @@ window.CCBGZZY_initHeadroom = function () {
   update();
 };
 
+/* 回到顶部浮标：滚过一屏才显示，点按平滑回顶。长页阅读（受众多为手机端领导）尤其有用。 */
+window.CCBGZZY_initTotop = function () {
+  if (document.getElementById('ccbgzzy-totop')) return;
+  var btn = document.createElement('button');
+  btn.id = 'ccbgzzy-totop'; btn.className = 'ccbgzzy-totop'; btn.type = 'button';
+  btn.setAttribute('aria-label', '回到顶部'); btn.title = '回到顶部'; btn.textContent = '↑';
+  btn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  document.body.appendChild(btn);
+  var ticking = false;
+  function update() {
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    btn.classList.toggle('is-visible', y > window.innerHeight);   /* 滚过一屏才出现 */
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; window.requestAnimationFrame(update); } }, { passive: true });
+  update();
+};
+
 /* 启动 */
 (function () {
   /* 渐进增强标记：JS 在场才启用 [data-reveal] 隐藏动画；
@@ -304,6 +323,7 @@ window.CCBGZZY_initHeadroom = function () {
       document.addEventListener('click', function () { window.CCBGZZY_closeAllOverlays(); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') window.CCBGZZY_closeAllOverlays(); });
       window.CCBGZZY_initHeadroom();
+      window.CCBGZZY_initTotop();
     } catch (e) {}
   }
   try { if (document.readyState !== 'loading') CCBGZZY_initToolLayer(); else document.addEventListener('DOMContentLoaded', CCBGZZY_initToolLayer); } catch (e) {}

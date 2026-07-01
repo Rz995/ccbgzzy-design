@@ -51,9 +51,9 @@
 
   /* —— 语义色默认值（政金蓝 gov-finance-blue；theme-config.js 即时覆盖）—— */
   --bg:#EEF3F8; --surface:#FFFFFF; --surface-2:#F6F8FB;
-  --title:#183153; --fg:#4B5D73; --fg-2:#718094; --fg-muted:#98A4B3;
-  --primary:#2F73B8; --primary-strong:#1F5E9D;
-  --accent:#D6A63A; --accent-soft:rgba(214,166,58,.14);
+  --title:#183153; --fg:#4B5D73; --fg-2:#626F81; --fg-muted:#67707A;
+  --primary:#2E71B4; --primary-strong:#1F5E9D;
+  --accent:#896A25; --accent-soft:rgba(137,106,37,.14);
   --border:rgba(24,49,83,.12); --border-strong:rgba(24,49,83,.24);
   --success:#4FA66A; --warning:#D0882E; --attention:#8A96A6; --danger:#D45B4F; --info:#4A91C9;
   --seq-1:#E6F0FA; --seq-2:#C7DDF2; --seq-3:#8FB9E2; --seq-4:#4F8DCC; --seq-5:#1F5E9D;
@@ -139,13 +139,14 @@ small,.text-sm{ font-size:var(--text-meta); }   /* 仅辅助信息 */
 
 /* ---------- Badge / 状态 ---------- */
 .badge{ display:inline-flex; align-items:center; gap:6px; font-size:var(--text-tag); font-weight:600;
-  padding:3px 11px; border-radius:var(--radius-pill); border:1px solid var(--border); color:var(--fg-2); }
-.badge::before{ content:''; width:7px; height:7px; border-radius:50%; background:currentColor; }
-.badge.is-success{ color:var(--success); border-color:color-mix(in srgb,var(--success) 38%,transparent); background:color-mix(in srgb,var(--success) 10%,transparent); }
-.badge.is-warning{ color:var(--warning); border-color:color-mix(in srgb,var(--warning) 38%,transparent); background:color-mix(in srgb,var(--warning) 10%,transparent); }
-.badge.is-danger{ color:var(--danger); border-color:color-mix(in srgb,var(--danger) 38%,transparent); background:color-mix(in srgb,var(--danger) 10%,transparent); }
-.badge.is-attention{ color:var(--attention); border-color:color-mix(in srgb,var(--attention) 38%,transparent); background:color-mix(in srgb,var(--attention) 10%,transparent); }
-.badge.is-info{ color:var(--info); border-color:color-mix(in srgb,var(--info) 38%,transparent); background:color-mix(in srgb,var(--info) 10%,transparent); }
+  padding:3px 11px; border-radius:var(--radius-pill); border:1px solid var(--border); color:var(--title);
+  --badge-color:var(--fg-2); background:color-mix(in srgb,var(--badge-color) 8%,transparent); }
+.badge::before{ content:''; width:7px; height:7px; border-radius:50%; background:var(--badge-color); }
+.badge.is-success{ --badge-color:var(--success); border-color:color-mix(in srgb,var(--success) 38%,transparent); background:color-mix(in srgb,var(--success) 10%,transparent); }
+.badge.is-warning{ --badge-color:var(--warning); border-color:color-mix(in srgb,var(--warning) 38%,transparent); background:color-mix(in srgb,var(--warning) 10%,transparent); }
+.badge.is-danger{ --badge-color:var(--danger); border-color:color-mix(in srgb,var(--danger) 38%,transparent); background:color-mix(in srgb,var(--danger) 10%,transparent); }
+.badge.is-attention{ --badge-color:var(--attention); border-color:color-mix(in srgb,var(--attention) 38%,transparent); background:color-mix(in srgb,var(--attention) 10%,transparent); }
+.badge.is-info{ --badge-color:var(--info); border-color:color-mix(in srgb,var(--info) 38%,transparent); background:color-mix(in srgb,var(--info) 10%,transparent); }
 
 /* ---------- Button（≥44px 点击区）---------- */
 .btn{ display:inline-flex; align-items:center; gap:8px; font-family:inherit; font-size:var(--text-body); font-weight:600;
@@ -445,9 +446,10 @@ html.ccbgzzy-scrolled .ccbgzzy-title-oneline .sub{ display:none; }
   html.ccbgzzy-scrolled .ccbgzzy-title-oneline{ font-size:var(--text-sm); }
   .ccbgzzy-sidebar-rail{ display:none; }                      /* 侧栏移动端隐藏，走 drawer */
   .ccbgzzy-shell{ display:block; }
-  /* 主题控件移动端：默认 icon-only（≈40px），不横铺、不撑高 */
+  /* 主题控件移动端：默认 icon-only，触达 ≥44px（B：抬高点击区，原 38px 偏小）*/
   .ccbgzzy-theme-trigger-text{ display:none; }
-  .ccbgzzy-theme-trigger{ padding:6px; max-width:none; }
+  .ccbgzzy-theme-trigger{ padding:6px; max-width:none; min-width:44px; min-height:44px; justify-content:center; }
+  .ccbgzzy-iconbtn{ min-width:44px; min-height:44px; }   /* 移动端图标按钮触达 ≥44px */
   /* popover → 底部 sheet，不占正文流 */
   .ccbgzzy-theme-popover{
     position:fixed; left:0; right:0; bottom:0; top:auto; width:auto; max-width:none;
@@ -583,4 +585,72 @@ body{ overflow-x:clip; }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{ animation-duration:.01ms!important; transition-duration:.01ms!important; }
   html.ccbgzzy-js [data-reveal]{ opacity:1!important; transform:none!important; }
+}
+
+/* ===================================================================
+ * 移动端阅读体验（受众：手机端领导）—— A 回到顶部 / D 明细表渐进披露 / E 章节锚点
+ * =================================================================== */
+
+/* —— A. 回到顶部浮标（由 theme-config.js 注入；滚过一屏才显示）—— */
+.ccbgzzy-totop{
+  position:fixed; right:14px; bottom:56px; z-index:2147483500;
+  width:44px; height:44px; border-radius:50%; border:1px solid var(--border-strong);
+  background:var(--surface); color:var(--primary); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; font-size:20px; line-height:1;
+  box-shadow:var(--shadow-lg, 0 6px 20px rgba(24,49,83,.18));
+  opacity:0; visibility:hidden; transform:translateY(8px); transition:opacity .25s,transform .25s,visibility .25s;
+}
+.ccbgzzy-totop.is-visible{ opacity:.92; visibility:visible; transform:none; }
+.ccbgzzy-totop:hover{ opacity:1; border-color:var(--primary); background:var(--surface-2); }
+
+/* —— E. 章节锚点导航 / mini-TOC（report 首屏；移动端 sticky 横滑）—— */
+.ccbgzzy-mini-toc{
+  display:flex; gap:8px; flex-wrap:wrap; margin:0 0 var(--space-5);
+}
+.ccbgzzy-mini-toc a{
+  flex:0 0 auto; padding:7px 13px; border-radius:var(--radius-pill);
+  border:1px solid var(--border-strong); background:var(--surface); color:var(--fg);
+  font-size:var(--text-sm); white-space:nowrap; text-decoration:none;
+}
+.ccbgzzy-mini-toc a:hover{ border-color:var(--primary); color:var(--primary); }
+html{ scroll-behavior:smooth; }
+[id]{ scroll-margin-top:72px; }   /* 锚点跳转后不被吸顶 appbar 盖住 */
+
+@media (max-width:760px){
+  .ccbgzzy-mini-toc{
+    position:sticky; top:48px; z-index:40; flex-wrap:nowrap; overflow-x:auto;
+    padding:8px 0; margin-bottom:var(--space-4);
+    background:var(--bg); -webkit-overflow-scrolling:touch;
+  }
+  .ccbgzzy-mini-toc::-webkit-scrollbar{ display:none; }
+  [id]{ scroll-margin-top:60px; }
+}
+
+/* —— D. 明细表渐进披露（≤760px）：默认只显示「标题 + 关键指标」，点按展开 ——
+   渐进增强：仅当 html.ccbgzzy-js 时才折叠；无 JS 时全字段照常显示（内容不丢）。 */
+@media (max-width:760px){
+  /* 标题格做成可点击表头（chevron 指示），整卡无多余内边距 */
+  .table.mobile-accordion tbody tr{ padding:0; }
+  .table.mobile-accordion td[data-mobile-title]{
+    display:flex; align-items:center; gap:10px;
+    padding:13px 14px; margin:0; border-bottom:none; cursor:pointer; user-select:none;
+  }
+  .table.mobile-accordion td[data-mobile-title]::after{
+    content:"▶"; margin-left:auto; color:var(--primary); font-size:var(--text-xs); transition:transform .2s;
+  }
+  .table.mobile-accordion tr.is-open td[data-mobile-title]::after{ transform:rotate(90deg); }
+  /* 关键指标（收起时仍显示，靠右） */
+  .table.mobile-accordion td[data-mobile-summary]{
+    padding:0 14px 12px; justify-content:flex-end; color:var(--title); font-weight:700; border-bottom:none;
+  }
+  .table.mobile-accordion td[data-mobile-summary]::before{ content:none; }
+  /* 展开后的明细字段内边距 */
+  .table.mobile-accordion tr.is-open td:not([data-mobile-title]):not([data-mobile-summary]){ padding:8px 14px; }
+  .table.mobile-accordion tr.is-open td:last-child{ padding-bottom:12px; }
+  /* JS 在场时：未展开的卡片隐藏非摘要字段（无 JS 不隐藏，内容可读） */
+  html.ccbgzzy-js .table.mobile-accordion tbody tr:not(.is-open) td:not([data-mobile-title]):not([data-mobile-summary]){
+    display:none;
+  }
+  /* 键盘聚焦可见 */
+  .table.mobile-accordion td[data-mobile-title]:focus-visible{ outline:2px solid var(--primary); outline-offset:-2px; }
 }

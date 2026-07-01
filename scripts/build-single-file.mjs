@@ -32,7 +32,7 @@ html = html.replace(/<link[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+\.css)
 
 // 内联 <script src="xxx.js"></script>
 html = html.replace(/<script[^>]*src=["']([^"']+\.js)["'][^>]*>\s*<\/script>/gi,
-  (_, src) => `<script>\n${read(path.basename(src))}\n</script>`);
+  (_, src) => `<script>\n${read(path.basename(src)).replace(/<\/script/gi, '<\\/script')}\n</script>`);
 
 fs.writeFileSync(output, html, 'utf8');
 console.log('✓ single-file 已生成: ' + output);

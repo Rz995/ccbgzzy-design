@@ -33,3 +33,28 @@ const seq = [1,2,3,4,5].map(i => cs.getPropertyValue('--seq-'+i).trim());
 // 把 seq 按需切片传给 datasets 的 backgroundColor
 ```
 深浅主题切换时重新读取并重绘即可。
+
+## 六、数据驱动图表组件（assets/chart.js，推荐）
+
+需要「可换图表类型 / 可被块级重生成」时，用 `assets/chart.js`：图表 = **一份 spec（数据+类型分离）+ 一个渲染器**。
+
+```html
+<figure class="ccbgzzy-chart" data-block-id="b7">
+  <script type="application/json" class="ccbgzzy-chart-spec">
+    {"type":"bar","title":"各区域营收",
+     "data":{"labels":["华东","华南","华北"],"series":[{"name":"营收","values":[120,90,45]}]},
+     "options":{"accentIndex":0}}
+  </script>
+  <div class="ccbgzzy-chart-canvas" role="img" aria-label="各区域营收"></div>
+  <noscript><!-- 静态降级：seq 条 / 表格，保证无 JS 可读 --></noscript>
+</figure>
+```
+
+要点：
+
+- **数据与类型分离。** 换类型 = 改 `spec.type` 重渲染，`spec.data` 不动。
+- **颜色只读 CSS 变量**（`--seq-*` / `--accent` / `--primary`），不硬编码；`theme-config.js` 切换主题时会触发 `CCBGZZY_renderAllCharts()` 重绘。
+- 内置类型：`bar / line / area / pie / donut / rose`；可切换范围由 `CCBGZZY_chartCompatTypes(spec)` 按数据形状给出（单系列少类别才给饼/环/玫瑰）。
+- **渐进增强**：`<noscript>` 放静态降级，无 JS 也能看（守 skill 铁律）。
+- `accentIndex` 指定唯一焦点项上 `--accent`，其余走 seq 台阶——延续「同色阶 + 单点强调」。
+- API：`CCBGZZY_renderChart(fig)` / `CCBGZZY_renderAllCharts(root?)` / `CCBGZZY_readChartSpec(fig)` / `CCBGZZY_writeChartSpec(fig, spec)`。

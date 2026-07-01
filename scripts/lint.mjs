@@ -164,7 +164,7 @@ if (!isShowcase) {
 }
 
 /* 9.6) 动态组件运行时守卫：有交互标记就必须引用/内联 interactive.js */
-const usesInteractive = /data-ccbgzzy-(tabs|segmented|sortable|accordion)|data-tab-target|data-filter-target/i.test(html);
+const usesInteractive = /data-ccbgzzy-(tabs|segmented|sortable|accordion|mobile-accordion)|data-tab-target|data-filter-target/i.test(html);
 if (usesInteractive) {
   const hasRuntime = /interactive\.js/i.test(html) || /CCBGZZY_initInteractive/i.test(html);
   if (!hasRuntime) errors.push('页面使用了 CCBGZZY 动态组件，但未引用/内联 assets/interactive.js');
@@ -272,10 +272,20 @@ if (/\bcal-report\b/.test(markupNoAssets)) {
   warns.push('汇报版日历中出现主题切换器/主题工具层；汇报交付默认应隐藏');
 }
 
+/* 体积预算（single 模式：目标 ≤250KB，硬上限 500KB；package 模式 CSS/JS 在外链，仅报告体积） */
+const kb = Buffer.byteLength(html, 'utf8') / 1024;
+const sizeStr = kb >= 1024 ? (kb / 1024).toFixed(2) + 'MB' : kb.toFixed(1) + 'KB';
+if (mode !== 'package') {
+  if (kb > 500) errors.push(`single-file 体积 ${sizeStr} 超过硬上限 500KB（请减重或改 package 模式）`);
+  else if (kb > 250) warns.push(`single-file 体积 ${sizeStr} 超过目标 250KB（建议减重）`);
+}
+
 /* 输出 */
 console.log(`\nCCBGZZY_DESIGN lint · ${file}`);
 if (!errors.length && !warns.length) console.log('  ✓ 全部通过');
 errors.forEach(e => console.log('  ✗ ERROR  ' + e));
 warns.forEach(w => console.log('  ! WARN   ' + w));
-console.log(`\n结果：${errors.length} error · ${warns.length} warning`);
+
+console.log(`\n体积：${sizeStr}`);
+console.log(`结果：${errors.length} error · ${warns.length} warning`);
 process.exit(errors.length ? 1 : 0);

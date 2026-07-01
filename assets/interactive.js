@@ -158,12 +158,55 @@
     });
   }
 
+  /* 移动端明细表渐进披露：≤760px 时每行收起为「标题 + 关键指标」，点按展开全部字段。
+     键盘可达（Enter/Space）+ aria-expanded；桌面端移除交互属性、表格照常。
+     CSS 仅在 html.ccbgzzy-js + ≤760px 下折叠，无 JS 时全字段可读（渐进增强）。 */
+  function initMobileDetailAccordion(root) {
+    if (!window.matchMedia) return;
+    var mq = window.matchMedia('(max-width:760px)');
+    $all(root, 'table[data-ccbgzzy-mobile-accordion]').forEach(function (table) {
+      table.classList.add('mobile-accordion');
+      var rows = $all(table, 'tbody tr');
+      function sync() {
+        var mobile = mq.matches;
+        rows.forEach(function (tr) {
+          var title = tr.querySelector('td[data-mobile-title]');
+          if (!title) return;
+          if (mobile) {
+            if (!title._ccAccBound) {
+              title._ccAccBound = true;
+              title._ccToggle = function () {
+                var open = tr.classList.toggle('is-open');
+                title.setAttribute('aria-expanded', open ? 'true' : 'false');
+              };
+              title.addEventListener('click', title._ccToggle);
+              title.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); title._ccToggle(); }
+              });
+            }
+            title.setAttribute('role', 'button');
+            title.tabIndex = 0;
+            title.setAttribute('aria-expanded', tr.classList.contains('is-open') ? 'true' : 'false');
+          } else {
+            title.removeAttribute('role');
+            title.removeAttribute('tabindex');
+            title.removeAttribute('aria-expanded');
+          }
+        });
+      }
+      sync();
+      if (mq.addEventListener) mq.addEventListener('change', sync);
+      else if (mq.addListener) mq.addListener(sync);
+    });
+  }
+
   window.CCBGZZY_initInteractive = function (root) {
     root = root || document;
     initTabs(root);
     initSegmented(root);
     initSortableTables(root);
     initAccordions(root);
+    initMobileDetailAccordion(root);
   };
 
   onReady(function () {

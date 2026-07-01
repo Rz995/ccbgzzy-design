@@ -254,10 +254,20 @@ STOP 规则：
 交付：
 
 - 默认 single-file HTML。
+- single-file 体积预算：正文目标 ≤ 250KB、硬上限 500KB（含内联 CSS/JS，不含 base64 大图）。超出时先减重：图片转外链或换矢量、去掉用不到的 reference 片段、合并重复样式。
+- 满足以下任一条件时改用 package 模式（外链 `base.css`/`effects.css`/`theme-config.js`/`interactive.js`，HTML 只留业务结构），并用 `node scripts/build-single-file.mjs` 在需要分发时再合成单文件：
+  - 减重后单文件仍超 500KB。
+  - 同一交付包含多张页面、需要共享同一套主题与脚本。
+  - 含大体积 base64 图片或数据，内联会让 HTML 难以维护。
+- package 模式下 lint 加 `--mode=package`：`node scripts/lint.mjs your.html --mode=package`。
 - 需要 Tab、筛选、排序、手风琴时，使用 `assets/interactive.js` 的原生动态组件；必须渐进增强，关闭 JS 后内容仍可读。
+- 图表优先用 `assets/chart.js` 的数据驱动组件（spec=数据+类型分离，颜色读 token，可换类型/可被块级重生成）；详见 [references/data-viz.md](references/data-viz.md) 第六节。
+- 需要「行内改字 / 换图表类型 / AI 块级重生成」时，加可选的 `assets/edit-layer.js`；**默认不进交付版**，锁定交付时移除。重生成只打块级补丁、绝不整页重写，详见 [references/edit-layer.md](references/edit-layer.md)。
 - 必须含 `CCBGZZY_DESIGN` 三层水印与版本号。
-- 必须跑 `node scripts/lint.mjs your.html`。
-- 有移动端工具层、主题控件、drawer、复杂响应式布局时，必须跑 `node scripts/check-mobile.mjs your.html`。
+- 必须跑 `node scripts/lint.mjs your.html`（结尾会报告文件体积，超预算时留意减重）。
+- 有移动端工具层、主题控件、drawer、复杂响应式布局时，必须跑 `node scripts/check-mobile.mjs your.html`；该脚本同时做 WCAG 对比度自检。
+- 改动 `chart.js` / `edit-layer.js` 等运行时逻辑后，必须跑 `node scripts/test.mjs`（纯逻辑单测，无需浏览器）。
+- 汇报页受众常为**手机端领导**：长页默认有回到顶部（自动），report 建议加章节 mini-TOC，长明细表用渐进披露（`data-ccbgzzy-mobile-accordion`），首屏只放结论 + 3–5 KPI。详见 [references/mobile.md](references/mobile.md)。
 
 ---
 
@@ -271,3 +281,6 @@ STOP 规则：
 | 字号角色 | [references/typography.md](references/typography.md) |
 | 颜色 token 与主题 | [references/color-system.md](references/color-system.md)、[references/experimental-themes.md](references/experimental-themes.md) |
 | 表格、图表、动效、水印 | [references/tables.md](references/tables.md)、[references/data-viz.md](references/data-viz.md)、[references/motion.md](references/motion.md)、[references/watermark.md](references/watermark.md) |
+| 数据驱动图表组件、可换类型 | [references/data-viz.md](references/data-viz.md) 第六节、`assets/chart.js` |
+| 可选编辑层、块级重生成、导出 | [references/edit-layer.md](references/edit-layer.md)、`assets/edit-layer.js` |
+| 移动端阅读：回到顶部/章节导航/明细渐进披露/首屏优先级 | [references/mobile.md](references/mobile.md)、[references/tables.md](references/tables.md) |
